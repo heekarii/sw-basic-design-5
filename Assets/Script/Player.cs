@@ -222,7 +222,7 @@ public class Player : MonoBehaviour
     /// <returns></returns>
     public PlayerStatus GetStatus()
     {
-        return new PlayerStatus(_attackPower, _moveSpeed, _maxHealth, _currentHealth);
+        return new PlayerStatus(_attackPower, _moveSpeed, _maxHealth, _currentHealth, _curBattery);
     }
 
     /// <summary>
@@ -261,10 +261,12 @@ public class Player : MonoBehaviour
 
     IEnumerator BatteryReduction()
     {
+        GameManager gm = GameManager.Instance;
         while (true)
         {
             yield return new WaitForSeconds(_batteryReductionTerm[_curStatus]);
             _curBattery -= _batteryReductionAmount[_curStatus];
+            gm.SetGameScore();
         }
     }
 }
@@ -280,13 +282,15 @@ public class PlayerStatus
     public readonly float MoveSpeed;
     public readonly float MaxHealth;
     public readonly float CurrentHealth;
+    public readonly int BatteryRemaining;
 
-    public PlayerStatus(float attack, float speed, float maxHP, float curHP)
+    public PlayerStatus(float attack, float speed, float maxHP, float curHP, int batteryRemaining)
     {
         AttackPower = attack;
         MoveSpeed = speed;
         MaxHealth = maxHP;
         CurrentHealth = curHP;
+        BatteryRemaining = batteryRemaining;
     }
 }
 

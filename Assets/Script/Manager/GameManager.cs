@@ -18,6 +18,7 @@ public class GameManager : Singleton<GameManager>
     
     private void Awake()
     {
+        base.Awake();
         InitStatus();
     }
 
@@ -32,9 +33,9 @@ public class GameManager : Singleton<GameManager>
     public void SetGameScore()
     {
         PlayerStatus curStat = Player.GetStatus();
-        
-        // _curScore = ???
-        
+
+        _curScore = curStat.BatteryRemaining;
+
     }
 
     public void ShowTargetUI()
