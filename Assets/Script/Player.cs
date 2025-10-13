@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -10,7 +12,11 @@ public class Player : MonoBehaviour
     [SerializeField] private float _currentHealth;       // 현재 체력
     [SerializeField] private bool _isGrounded = true;
     [SerializeField] private float _jumpForce = 5f;
-
+    [SerializeField] private int _curBattery = 100;
+    [SerializeField] private List<int> _batteryReductionAmount;
+    [SerializeField] private List<float> _batteryReductionTerm;
+    [SerializeField] private int _curStatus;
+    
     [Header("Combat")] 
     [SerializeField] private LayerMask _attackRaycastMask;
     [SerializeField] private float _attackRaycastDist = 100f;
@@ -44,7 +50,9 @@ public class Player : MonoBehaviour
         _animator = GetComponent<Animator>();
         _weaponSocket = transform.Find("WeaponSocket");
         _currentHealth = _maxHealth;
+        _curStatus = 0;
         Cursor.visible = false;
+        StartCoroutine(BatteryReduction());
     }
     
     private void FixedUpdate()
@@ -249,6 +257,15 @@ public class Player : MonoBehaviour
         }
 
         Debug.Log($"[Player] 무기 초기화 완료: {weaponData.WeaponName}, 공격력: {_attackPower}");
+    }
+
+    IEnumerator BatteryReduction()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(_batteryReductionTerm[_curStatus]);
+            _curBattery -= _batteryReductionAmount[_curStatus];
+        }
     }
 }
 
