@@ -16,7 +16,7 @@ public class GameManager : Singleton<GameManager>
     // [Header("UI")]
     
     
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         InitStatus();
@@ -38,6 +38,7 @@ public class GameManager : Singleton<GameManager>
 
     }
 
+    // TODO : 탐사 관련 매니저 구현 후 ShowTargetUI 함수 구현
     public void ShowTargetUI()
     {
         
