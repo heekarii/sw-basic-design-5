@@ -19,19 +19,20 @@ public class Player : MonoBehaviour
     
     [Header("Combat")] 
     [SerializeField] private LayerMask _attackRaycastMask;
-    [SerializeField] private float _attackRaycastDist = 100f;
+    [SerializeField] private float _attackRaycastDist;
     
     [Header("Camera")]
     [SerializeField] private Transform _camera;
     [SerializeField] private float _mouseSensitivity = 2f;
     private float _cameraPitch = 0f;
     
-    
+    [SerializeField]
     private WeaponData _currentWeaponData;
     private GameObject _currentWeaponModel;
     
     private Rigidbody _rb;
     private Animator _animator;
+    private WeaponManager _wm;
 
     private Transform _weaponSocket;
     
@@ -54,6 +55,14 @@ public class Player : MonoBehaviour
         Cursor.visible = false;
         StartCoroutine(BatteryReduction());
     }
+
+    private void Start()
+    {
+        _wm = WeaponManager.Instance;
+        _wm.EquipWeapon(0);
+        _attackRaycastDist = _currentWeaponData.range;
+        
+    }
     
     private void FixedUpdate()
     {
@@ -68,7 +77,7 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Camera cam = _camera.GetComponent<Camera>();
-            Ray ray  = cam.ScreenPointToRay(Input.mousePosition);
+            Ray ray  = cam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
             
             if (Physics.Raycast(ray, out RaycastHit hit, _attackRaycastDist, _attackRaycastMask))
             {
