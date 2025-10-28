@@ -43,4 +43,14 @@ public class JumpPlayer : MonoBehaviour
         // Scene 뷰에서 디버그용 Ray 표시
         Debug.DrawRay(origin, Vector2.down * 0.2f, isGrounded ? Color.green : Color.red);
     }
+    
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.collider.CompareTag("Obstacle"))
+        {
+            // GameManager에 충돌 알림
+            GameManager.Instance.OnPlayerHitObstacle();
+        }
+    }
+
 }
