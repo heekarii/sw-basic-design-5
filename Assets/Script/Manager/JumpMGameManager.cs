@@ -1,8 +1,8 @@
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class JumpGameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
+    public static JumpGameManager Instance { get; private set; }
 
     [Header("Rule")]
     public float gameTime = 30f;   // 제한 시간(초)

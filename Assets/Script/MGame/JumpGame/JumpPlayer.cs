@@ -49,7 +49,7 @@ public class JumpPlayer : MonoBehaviour
         if (collision.collider.CompareTag("Obstacle"))
         {
             // GameManager에 충돌 알림
-            GameManager.Instance.OnPlayerHitObstacle();
+            JumpGameManager.Instance.OnPlayerHitObstacle();
         }
     }
 

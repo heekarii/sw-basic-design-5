@@ -6,7 +6,7 @@ public class GoalLine : MonoBehaviour
     {
         if (other.CompareTag("Obstacle"))
         {
-            GameManager.Instance.OnObstaclePassed(); 
+            JumpGameManager.Instance.OnObstaclePassed(); 
             // Debug.Log("[GoalLine] 장애물 통과! 성공 +1");
         }
     }
