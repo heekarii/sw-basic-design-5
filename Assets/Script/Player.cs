@@ -54,6 +54,7 @@ public class Player : MonoBehaviour
         _curStatus = 0;
         Cursor.visible = false;
         StartCoroutine(BatteryReduction());
+        Cursor.visible = false;
     }
 
     private void Start()
@@ -332,10 +333,3 @@ public class PlayerStatus
 }
 
 
-// ===================================================
-// 👾 IEnemy 인터페이스 (참조용)
-// ===================================================
-public interface IEnemy
-{
-    void TakeDamage(float damage);
-}
