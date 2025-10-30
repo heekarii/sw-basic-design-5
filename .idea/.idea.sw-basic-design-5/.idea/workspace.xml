@@ -15,6 +15,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Assets/Script/Manager/MMazeGameManger.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 6
@@ -104,7 +107,7 @@
       <updated>1761751723908</updated>
       <workItem from="1761751725586" duration="600000" />
       <workItem from="1761821528527" duration="323000" />
-      <workItem from="1761821868606" duration="394000" />
+      <workItem from="1761821868606" duration="1126000" />
     </task>
     <servers />
   </component>

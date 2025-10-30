@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using TMPro; // ✅ TextMeshPro용
 
 public class MMazeGameManager : MonoBehaviour
 {
@@ -20,12 +21,15 @@ public class MMazeGameManager : MonoBehaviour
     [Header("Game Runtime")]
     [Tooltip("제한시간(초) - 요구: 50s")]
     public float timeLimit = 50f;
+    private float timeLeft;
+    private bool isRunning;
 
     [Tooltip("성공 시 플레이어 이동속도 증가값")]
     public float speedBonus = 0.2f;
 
-    private float timeLeft;
-    private bool isRunning;
+    [Header("UI Components")]
+    [Tooltip("왼쪽 상단 제한시간 표시 Text (TMP)")]
+    public TextMeshProUGUI Text_Timer; // ✅ TMP 연결
 
     private Vector2Int playerPos;
     private Vector2Int exitPos;
@@ -38,9 +42,9 @@ public class MMazeGameManager : MonoBehaviour
         { KeyCode.D, Vector2Int.right }
     };
 
-    private void Start() { StartGame(); } // 테스트 시 자동 시작
+    private void Start() { StartGame(); } // 테스트 시 자동 실행
 
-    // ====== StartGame : MMazeGameManager ======
+    // ====== StartGame ======
     public void StartGame()
     {
         timeLeft = timeLimit;
@@ -51,7 +55,8 @@ public class MMazeGameManager : MonoBehaviour
         PlaceStartAndExit();
         ShowMaze();
 
-        Debug.Log("[MMazeGameManager] StartGame() → 미로 생성 및 시작");
+        UpdateTimerUI();
+        Debug.Log("[MMazeGameManager] StartGame() → 미로 생성 및 게임 시작");
     }
 
     // ====== InitMaze ======
@@ -98,7 +103,7 @@ public class MMazeGameManager : MonoBehaviour
     {
         if (Tilemap_Maze == null || Tile_Wall == null || Tile_Floor == null)
         {
-            Debug.LogError("[MMazeGameManager] Tilemap 또는 Tile이 Inspector에 연결되지 않았습니다!");
+            Debug.LogError("[MMazeGameManager] Tilemap 또는 Tile이 연결되지 않음");
             return;
         }
 
@@ -144,16 +149,13 @@ public class MMazeGameManager : MonoBehaviour
         IsCompleteGame();
     }
 
-    // ====== IsCollision ======
     public int IsCollision() => 1;
 
-    // ====== IsCompleteGame ======
     public void IsCompleteGame()
     {
         if (playerPos == exitPos) EndGame(1);
     }
 
-    // ====== EndGame ======
     public void EndGame(int result)
     {
         if (!isRunning) return;
@@ -161,7 +163,7 @@ public class MMazeGameManager : MonoBehaviour
 
         if (result == 1)
         {
-            Debug.Log("🎉 [MMazeGameManager] 성공: 탈출!");
+            Debug.Log("🎉 [MMazeGameManager] 성공: 탈출 성공!");
             SendPlayer_Speed();
         }
         else
@@ -170,7 +172,6 @@ public class MMazeGameManager : MonoBehaviour
         }
     }
 
-    // ====== SendPlayer_Speed ======
     public void SendPlayer_Speed()
     {
         Debug.Log($"[MMazeGameManager] 이동속도 +{speedBonus} 전달 (Player 연동 필요)");
@@ -188,6 +189,8 @@ public class MMazeGameManager : MonoBehaviour
             return;
         }
 
+        UpdateTimerUI();
+
         foreach (var kv in inputMap)
         {
             if (Input.GetKeyDown(kv.Key))
@@ -199,12 +202,22 @@ public class MMazeGameManager : MonoBehaviour
         }
     }
 
+    // ====== Timer UI 업데이트 ======
+    private void UpdateTimerUI()
+    {
+        if (Text_Timer != null)
+        {
+            Text_Timer.text = $"Time: {timeLeft:F1}s";
+        }
+    }
+
+    // ====== 출발/도착 배치 ======
     private void PlaceStartAndExit()
     {
         playerPos = new Vector2Int(1, 1);
         maze[playerPos.x, playerPos.y] = 2;
 
-        // 출구는 실제로 길(0) 위에서 배치되도록 보정
+        // 출구는 하단 근처의 길(0) 위에 배치
         for (int x = width - 2; x > width / 2; x--)
         {
             for (int y = height - 2; y > height / 2; y--)
