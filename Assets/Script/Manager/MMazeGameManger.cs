@@ -4,7 +4,7 @@ using UnityEngine.Tilemaps;
 
 public class MMazeGameManager : MonoBehaviour
 {
-    [Header("RQ_ID 4301~4312 | Maze Settings")]
+    [Header("Maze Settings")]
     [Tooltip("미로 가로/세로 크기 (요구: 50x50)")]
     public int width = 50;
     public int height = 50;
@@ -22,7 +22,7 @@ public class MMazeGameManager : MonoBehaviour
     public float timeLimit = 50f;
 
     [Tooltip("성공 시 플레이어 이동속도 증가값")]
-    public float speedBonus = 1.0f;
+    public float speedBonus = 0.2f;
 
     private float timeLeft;
     private bool isRunning;
