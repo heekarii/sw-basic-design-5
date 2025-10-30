@@ -8,7 +8,7 @@ public class MCardGameManager : MonoBehaviour
 {
     [Header("Settings")]
     public float memorizeTime = 20f;      // 외울 시간
-    public float limitTime = 30f;        // 실제 플레이 제한 시간
+    public float limitTime = 20f;        // 실제 플레이 제한 시간
     public int totalCards = 10;          // 카드 개수
 
     [Header("References")]
