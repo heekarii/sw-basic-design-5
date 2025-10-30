@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ee3741f-a304-4701-8df8-cdaea70d4f2d" name="변경" comment="" />
+    <list default="true" id="5ee3741f-a304-4701-8df8-cdaea70d4f2d" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Art/MMazeGame/Tile_Floor.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Art/MMazeGame/Tile_Floor.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Art/MMazeGame/Tile_Wall.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Art/MMazeGame/Tile_Wall.png.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MMazeGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MMazeGame.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/MMazeGameManger.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/MMazeGameManger.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -106,6 +112,9 @@
       <workItem from="1761751725586" duration="600000" />
       <workItem from="1761821528527" duration="323000" />
       <workItem from="1761821868606" duration="1896000" />
+      <workItem from="1761824679200" duration="182000" />
+      <workItem from="1761827285601" duration="1000" />
+      <workItem from="1761827293322" duration="688000" />
     </task>
     <servers />
   </component>

@@ -5,7 +5,7 @@ using TMPro; // ✅ TextMeshPro용
 
 public class MMazeGameManager : MonoBehaviour
 {
-    [Header("Maze Settings")]
+    [Header("RQ_ID 4301~4312 | Maze Settings")]
     [Tooltip("미로 가로/세로 크기 (요구: 50x50)")]
     public int width = 50;
     public int height = 50;
@@ -101,25 +101,33 @@ public class MMazeGameManager : MonoBehaviour
     // ====== ShowMaze ======
     public void ShowMaze()
     {
-        if (Tilemap_Maze == null || Tile_Wall == null || Tile_Floor == null)
-        {
-            Debug.LogError("[MMazeGameManager] Tilemap 또는 Tile이 연결되지 않음");
-            return;
-        }
-
         Tilemap_Maze.ClearAllTiles();
-        for (int x = 0; x < width; x++)
+        int w = maze.GetLength(0);
+        int h = maze.GetLength(1);
+
+        for (int x = 0; x < w; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < h; y++)
             {
                 var pos = new Vector3Int(x, y, 0);
-                if (maze[x, y] == 1)
-                    Tilemap_Maze.SetTile(pos, Tile_Wall);
-                else
-                    Tilemap_Maze.SetTile(pos, Tile_Floor);
+                if (maze[x, y] == 1) Tilemap_Maze.SetTile(pos, Tile_Wall);
+                else                 Tilemap_Maze.SetTile(pos, Tile_Floor);
+                // 기본 색은 흰색(또는 원하는 바닥색)
+                Tilemap_Maze.SetColor(pos, Color.white);
             }
         }
+
+        // ✅ 입구/출구 색 강조
+        var startPos = new Vector3Int(playerPos.x, playerPos.y, 0);
+        var exitPos3 = new Vector3Int(exitPos.x, exitPos.y, 0);
+
+        Tilemap_Maze.SetTile(startPos, Tile_Floor);
+        Tilemap_Maze.SetColor(startPos, Color.green);
+
+        Tilemap_Maze.SetTile(exitPos3, Tile_Floor);
+        Tilemap_Maze.SetColor(exitPos3, Color.red);
     }
+
 
     // ====== HandleInput ======
     public void HandleInput(Vector3 dir3D)
