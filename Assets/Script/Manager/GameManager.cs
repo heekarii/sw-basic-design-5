@@ -5,7 +5,7 @@ public class GameManager : Singleton<GameManager>
     [Header("Game Status")] 
     [SerializeField] private int _curScore;
     [SerializeField] private int _curScrap;
-    [SerializeField] private int _curBattery;
+    [SerializeField] private float _curBattery;
     [SerializeField] private bool _isTreasureFound;
     public Player Player;
 
@@ -34,7 +34,7 @@ public class GameManager : Singleton<GameManager>
     {
         PlayerStatus curStat = Player.GetStatus();
 
-        _curScore = curStat.BatteryRemaining;
+        _curScore = (int)curStat.BatteryRemaining;
 
     }
 

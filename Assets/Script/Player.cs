@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _currentHealth;       // 현재 체력
     [SerializeField] private bool _isGrounded = true;
     [SerializeField] private float _jumpForce = 5f;
-    [SerializeField] private int _curBattery = 100;
+    [SerializeField] private  float _curBattery = 100;
     [SerializeField] private List<int> _batteryReductionAmount;
     [SerializeField] private List<float> _batteryReductionTerm;
     [SerializeField] private int _curStatus;
@@ -81,12 +81,12 @@ public class Player : MonoBehaviour
             
             if (Physics.Raycast(ray, out RaycastHit hit, _attackRaycastDist, _attackRaycastMask))
             {
-                Debug.Log($"[Player] 공격 목표: {hit.collider.name} @ {hit.point}");
+                //Debug.Log($"[Player] 공격 목표: {hit.collider.name} @ {hit.point}");
                 Attack(hit.point); // y=0 강제 필요하면 new Vector3(hit.point.x, 0f, hit.point.z)
             }
             else
             {
-                Debug.Log("[Player] 조준 지점에 충돌 없음");
+                //Debug.Log("[Player] 조준 지점에 충돌 없음");
             }
         }
     }
@@ -158,7 +158,7 @@ public class Player : MonoBehaviour
     /// 
     /// </summary>
     /// <param name="targetPosition"></param>
-    public void Attack(Vector3 targetPosition)
+    void Attack(Vector3 targetPosition)
     {
         if (_currentWeaponData == null)
         {
@@ -166,35 +166,63 @@ public class Player : MonoBehaviour
             return;
         }
 
+        
         _animator?.SetTrigger("attack");
 
-        Ray ray = new Ray(transform.position + Vector3.up, (targetPosition - transform.position).normalized);
-        if (Physics.Raycast(ray, out RaycastHit hit, _currentWeaponData.range))
-        {
-            IEnemy enemy = hit.collider.GetComponent<IEnemy>();
-            if (enemy != null)
-            {
-                enemy.TakeDamage(_attackPower);
+        string weaponName = _currentWeaponData.WeaponName;
 
-                // 공격 이펙트 생성
-                if (_currentWeaponData.HitEffectPrefab != null)
+
+        if (weaponName.Contains("Close"))
+        {
+            float range = _currentWeaponData.range;
+            float angle = 90f;
+            
+            Collider[] hits = Physics.OverlapSphere(transform.position, range);
+            Vector3 forward = transform.forward;
+
+            foreach (Collider col in hits)
+            {
+                IEnemy enemy = col.GetComponent<IEnemy>();
+                if (enemy != null)
                 {
-                    Instantiate(_currentWeaponData.HitEffectPrefab, hit.point, Quaternion.identity);
+                    Vector3 direction = (col.transform.position - transform.position).normalized;
+
+                    if (Vector3.Angle(forward, direction) < angle)
+                    {
+                        enemy.TakeDamage(_attackPower);
+
+                        Vector3 hitPos = col.ClosestPoint(transform.position);
+                        // TODO:
+                        //Instantiate(_currentWeaponData.HitEffectPrefab, hitPos, Quaternion.identity);
+                    }
+
+                    Debug.Log($"hit {col.name}");
                 }
             }
         }
-    }
+        else
+        {
+            // Ray ray = new Ray(transform.position + Vector3.up, (targetPosition - transform.position).normalized);
+            // if (Physics.Raycast(ray, out RaycastHit hit, _currentWeaponData.range))
+            // {
+            //     IEnemy enemy = hit.collider.GetComponent<IEnemy>();
+            //     if (enemy != null)
+            //     {
+            //         enemy.TakeDamage(_attackPower);
+            //
+            //         // 공격 이펙트 생성
+            //         if (_currentWeaponData.HitEffectPrefab != null)
+            //         {
+            //             Instantiate(_currentWeaponData.HitEffectPrefab, hit.point, Quaternion.identity);
+            //         }
+            //     }
+            // }
+            Debug.Log("No collider in range");
+        }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="additionalPower"></param>
-    public void SetAttackStatus(float additionalPower)
-    {
-        _attackPower += additionalPower;
-        Debug.Log($"[Player] 공격력 증가 → {_attackPower}");
+        _curBattery -= _currentWeaponData.BatteryUsage;
     }
-
+    
     /// <summary>
     /// 
     /// </summary>
@@ -291,9 +319,9 @@ public class PlayerStatus
     public readonly float MoveSpeed;
     public readonly float MaxHealth;
     public readonly float CurrentHealth;
-    public readonly int BatteryRemaining;
+    public readonly float BatteryRemaining;
 
-    public PlayerStatus(float attack, float speed, float maxHP, float curHP, int batteryRemaining)
+    public PlayerStatus(float attack, float speed, float maxHP, float curHP, float batteryRemaining)
     {
         AttackPower = attack;
         MoveSpeed = speed;
