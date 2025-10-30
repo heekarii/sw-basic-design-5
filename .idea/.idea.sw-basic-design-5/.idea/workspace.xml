@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/MCardGameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/MCardGameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MCardGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MCardGame.unity" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,6 +119,7 @@
       <workItem from="1761750841709" duration="34000" />
       <workItem from="1761750938010" duration="277000" />
       <workItem from="1761839144787" duration="62000" />
+      <workItem from="1761843332311" duration="477000" />
     </task>
     <servers />
   </component>
