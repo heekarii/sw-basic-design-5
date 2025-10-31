@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour
 {
     [Header("Player Status")]
     [SerializeField] private float _attackPower = 10f;   // 공격력
-    [SerializeField] private float _moveSpeed = 5f;      // 이동 속도
+    [SerializeField] private float _moveSpeed = 1f;      // 이동 속도
     [SerializeField] private float _maxHealth = 100f;    // 최대 체력
     [SerializeField] private float _currentHealth;       // 현재 체력
     [SerializeField] private bool _isGrounded = true;
@@ -15,7 +16,18 @@ public class Player : MonoBehaviour
     [SerializeField] private  float _curBattery = 100;
     [SerializeField] private List<int> _batteryReductionAmount;
     [SerializeField] private List<float> _batteryReductionTerm;
-    [SerializeField] private int _curStatus;
+    [FormerlySerializedAs("_curStatus")] [SerializeField] private int _curPlayerStatus;
+    [SerializeField] private int _curHealthLevel = 1;
+    [SerializeField] private int _curSpeedLevel = 1;
+    [SerializeField] private bool _isShifting = false;
+    
+    [SerializeField] private float[] _speedPerLevel =
+    {
+        1.3f,
+        1.5f,
+        1.7f
+    };
+    
     
     [Header("Combat")] 
     [SerializeField] private LayerMask _attackRaycastMask;
@@ -51,7 +63,7 @@ public class Player : MonoBehaviour
         _animator = GetComponent<Animator>();
         _weaponSocket = transform.Find("WeaponSocket");
         _currentHealth = _maxHealth;
-        _curStatus = 0;
+        _curPlayerStatus = 0;
         Cursor.visible = false;
         StartCoroutine(BatteryReduction());
         Cursor.visible = false;
@@ -107,6 +119,16 @@ public class Player : MonoBehaviour
     {
         float h = Input.GetAxisRaw("Horizontal");
         float v = Input.GetAxisRaw("Vertical");
+
+        if (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift))
+        {
+            _isShifting = true;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift) || Input.GetKeyUp(KeyCode.RightShift))
+        {
+            _isShifting = false;
+        }
+        
         _moveDirection = (transform.forward * v + transform.right * h).normalized;
 
         if (Input.GetKeyDown(KeyCode.Space) && _isGrounded)
@@ -120,7 +142,16 @@ public class Player : MonoBehaviour
     {
         if (_moveDirection.sqrMagnitude > 0f)
         {
-            Vector3 targetPos = _rb.position + _moveDirection * _moveSpeed * Time.fixedDeltaTime;
+            Vector3 targetPos;
+            if (_isShifting)
+            {
+                targetPos = _rb.position + _moveDirection * 
+                    (_moveSpeed* _speedPerLevel[_curSpeedLevel - 1] * Time.fixedDeltaTime);
+            }
+            else
+            {
+                targetPos = _rb.position + _moveDirection * (_moveSpeed * Time.fixedDeltaTime);
+            }
             _rb.MovePosition(Vector3.Lerp(_rb.position, targetPos, 0.8f));
             _animator?.SetBool("isMoving", true);
         }
@@ -129,8 +160,7 @@ public class Player : MonoBehaviour
             _animator?.SetBool("isMoving", false);
         }
     }
-
-
+    
     private void Jump()
     {
         _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
@@ -266,7 +296,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="weaponType"></param>
+    /// <param name="weaponData"></param>
     public void InitWeapon(WeaponData weaponData)
     {
         if (weaponData == null)
@@ -302,8 +332,8 @@ public class Player : MonoBehaviour
         GameManager gm = GameManager.Instance;
         while (true)
         {
-            yield return new WaitForSeconds(_batteryReductionTerm[_curStatus]);
-            _curBattery -= _batteryReductionAmount[_curStatus];
+            yield return new WaitForSeconds(_batteryReductionTerm[_curPlayerStatus]);
+            _curBattery -= _batteryReductionAmount[_curPlayerStatus];
             gm.SetGameScore();
         }
     }
@@ -322,12 +352,12 @@ public class PlayerStatus
     public readonly float CurrentHealth;
     public readonly float BatteryRemaining;
 
-    public PlayerStatus(float attack, float speed, float maxHP, float curHP, float batteryRemaining)
+    public PlayerStatus(float attack, float speed, float maxHp, float curHp, float batteryRemaining)
     {
         AttackPower = attack;
         MoveSpeed = speed;
-        MaxHealth = maxHP;
-        CurrentHealth = curHP;
+        MaxHealth = maxHp;
+        CurrentHealth = curHp;
         BatteryRemaining = batteryRemaining;
     }
 }
