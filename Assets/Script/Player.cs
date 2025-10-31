@@ -14,8 +14,15 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isGrounded = true;
     [SerializeField] private float _jumpForce = 5f;
     [SerializeField] private  float _curBattery = 100;
-    [SerializeField] private List<int> _batteryReductionAmount;
-    [SerializeField] private List<float> _batteryReductionTerm;
+
+    [SerializeField] private float[] _batteryReductionAmount =
+    {
+        0.5f
+    };
+    [SerializeField] private float[] _batteryReductionTerm =
+    {
+        30.0f,
+    };
     [FormerlySerializedAs("_curStatus")] [SerializeField] private int _curPlayerStatus;
     [SerializeField] private int _curHealthLevel = 1;
     [SerializeField] private int _curSpeedLevel = 1;
@@ -310,9 +317,12 @@ public class Player : MonoBehaviour
             Destroy(_currentWeaponModel);
 
         // 무기 모델 생성 및 장착
-        _currentWeaponModel = Instantiate(weaponData.ModelPrefab, _weaponSocket);
-        _currentWeaponModel.transform.localPosition = Vector3.zero;
+        _currentWeaponModel = Instantiate(weaponData.ModelPrefab, 
+            _weaponSocket.transform.Find("WeaponHolder"), 
+            false);
+        _currentWeaponModel.transform.localPosition = new Vector3(0, 0.25f, 1);
         _currentWeaponModel.transform.localRotation = Quaternion.identity;
+        _currentWeaponModel.transform.localScale = new Vector3(1, 1, 1);
 
         // 공격력, 모션, 사거리 등 세팅
         _attackPower = weaponData.baseAttackPower;

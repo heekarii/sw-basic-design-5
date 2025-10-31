@@ -18,5 +18,5 @@ MonoBehaviour:
   AttackAnimation: 
   baseAttackPower: 30
   BatteryUsage: 0.2
-  range: 1
+  range: 1.5
   HitEffectPrefab: {fileID: 0}
