@@ -95,7 +95,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            _wm.EquipWeapon(6); // 원거리 무기 장착
+            _wm.EquipWeapon(4); // 원거리 무기 장착
         }
         _attackRaycastDist = _currentWeaponData.range;
         
@@ -235,7 +235,8 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="targetPosition"></param>
+    /// <param name="hit"></param>
+    /// <param name="isHit"></param>
     void Attack(RaycastHit hit, bool isHit = true)
     {
         if (_currentWeaponData == null)
@@ -287,7 +288,7 @@ public class Player : MonoBehaviour
                 if (enemy != null)
                 {
                     float distance = Vector3.Distance(transform.position, hit.point);
-                    float multiplier = Mathf.Max(0f, 1f - (distance * 0.005f));
+                    float multiplier = Mathf.Max(0f, 1f - (distance * 0.05f));
                     float damage = _attackPower * multiplier;
                     enemy.TakeDamage(damage); // 거리 비례 데미지 감소
                     Debug.Log($"[Player] {hit.collider.name}에게 {damage} 데미지 입힘 (거리 보정 계수: {multiplier})");
@@ -309,16 +310,6 @@ public class Player : MonoBehaviour
         }
 
         _curBattery -= _currentWeaponData.BatteryUsage;
-    }
-    
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="additionalSpeed"></param>
-    public void SetSpeedStatus(float additionalSpeed)
-    {
-        _moveSpeed += additionalSpeed;
-        Debug.Log($"[Player] 이동속도 증가 → {_moveSpeed}");
     }
 
     /// <summary>
