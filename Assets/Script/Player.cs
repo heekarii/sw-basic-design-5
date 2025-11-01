@@ -14,7 +14,8 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isGrounded = true;
     [SerializeField] private float _jumpForce = 5f;
     [SerializeField] private  float _curBattery = 100;
-
+    [SerializeField] private int _curBullets;
+    
     [SerializeField] private float[] _batteryReductionAmount =
     {
         0.5f
@@ -94,7 +95,7 @@ public class Player : MonoBehaviour
         HandleInput();
         HandleCamera();
         
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             Camera cam = _camera.GetComponent<Camera>();
             Ray ray  = cam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
@@ -240,21 +241,21 @@ public class Player : MonoBehaviour
         }
         else
         {
-            // Ray ray = new Ray(transform.position + Vector3.up, (targetPosition - transform.position).normalized);
-            // if (Physics.Raycast(ray, out RaycastHit hit, _currentWeaponData.range))
-            // {
-            //     IEnemy enemy = hit.collider.GetComponent<IEnemy>();
-            //     if (enemy != null)
-            //     {
-            //         enemy.TakeDamage(_attackPower);
-            //
-            //         // 공격 이펙트 생성
-            //         if (_currentWeaponData.HitEffectPrefab != null)
-            //         {
-            //             Instantiate(_currentWeaponData.HitEffectPrefab, hit.point, Quaternion.identity);
-            //         }
-            //     }
-            // }
+            Ray ray = new Ray(transform.position + Vector3.up, (targetPosition - transform.position).normalized);
+            if (Physics.Raycast(ray, out RaycastHit hit, _currentWeaponData.range))
+            {
+                IEnemy enemy = hit.collider.GetComponent<IEnemy>();
+                if (enemy != null)
+                {
+                    enemy.TakeDamage(_attackPower);
+            
+                    // 공격 이펙트 생성
+                    if (_currentWeaponData.HitEffectPrefab != null)
+                    {
+                        Instantiate(_currentWeaponData.HitEffectPrefab, hit.point, Quaternion.identity);
+                    }
+                }
+            }
             Debug.Log("No collider in range");
         }
 
@@ -327,6 +328,7 @@ public class Player : MonoBehaviour
         // 공격력, 모션, 사거리 등 세팅
         _attackPower = weaponData.baseAttackPower;
         _currentWeaponData = weaponData;
+        _curBullets = weaponData.Bullets;
 
         // 애니메이션 클립 전환
         if (_animator != null && !string.IsNullOrEmpty(weaponData.AttackAnimation))

@@ -9,6 +9,7 @@ public class WeaponData : ScriptableObject
     public string AttackAnimation;
     public float baseAttackPower;
     public float BatteryUsage;
+    public int Bullets;
     public float range;
     public GameObject HitEffectPrefab;
 }
