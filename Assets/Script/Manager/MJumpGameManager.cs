@@ -59,18 +59,17 @@ public class MJumpGameManager : MonoBehaviour
         if (isSuccess)
         {
             Debug.Log($"SUCCES");
-            SendPlayer(true);
+            SendPlayer_HP();
         }
         else
         {
             Debug.Log("FAIL");
-            SendPlayer(false);
         }
 
         Time.timeScale = 0f;
     }
 
-    public void SendPlayer(bool isSuccess)
+    public void SendPlayer_HP()
     {
         Debug.Log($"true 전달");
     }
