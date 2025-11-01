@@ -878,6 +878,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   _attackRaycastDist: 100
+  _attackSpeedRate:
+  - 0.7
+  - 0.5
   _camera: {fileID: 330585546}
   _mouseSensitivity: 2
   _currentWeaponData: {fileID: 0}

@@ -5,14 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67a620b3-06d2-4b19-9ba1-a083e4c0c017" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/GameManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/LongLevel1.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObject/LongLevel1.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/LongLevel2.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObject/LongLevel2.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/LongLevel3.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObject/LongLevel3.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/LongLevel4.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObject/LongLevel4.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -98,7 +91,7 @@
       <workItem from="1760296193116" duration="1831000" />
       <workItem from="1761841125635" duration="820000" />
       <workItem from="1761926208729" duration="7501000" />
-      <workItem from="1762006154102" duration="4748000" />
+      <workItem from="1762006154102" duration="5059000" />
     </task>
     <servers />
   </component>

@@ -131,6 +131,10 @@ public class Player : MonoBehaviour
             }
             
         }
+        if (Input.GetKeyDown(KeyCode.R) && !_isReloading && _curBullets < _currentWeaponData.Bullets)
+        {
+            Reload();
+        }
     }
 
     private void HandleCamera()
