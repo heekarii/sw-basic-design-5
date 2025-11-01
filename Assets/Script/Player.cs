@@ -40,6 +40,14 @@ public class Player : MonoBehaviour
     [Header("Combat")] 
     [SerializeField] private LayerMask _attackRaycastMask;
     [SerializeField] private float _attackRaycastDist;
+
+    [SerializeField] private float[] _attackSpeedRate =
+    {
+        0.7f,
+        0.5f
+    };
+    private float _lastAttackTime = 0f;
+    private bool _isReloading = false;
     
     [Header("Camera")]
     [SerializeField] private Transform _camera;
@@ -53,6 +61,7 @@ public class Player : MonoBehaviour
     private Rigidbody _rb;
     private Animator _animator;
     private WeaponManager _wm;
+    private GameManager _gm;
 
     private Transform _weaponSocket;
     
@@ -74,13 +83,20 @@ public class Player : MonoBehaviour
         _curPlayerStatus = 0;
         Cursor.visible = false;
         StartCoroutine(BatteryReduction());
-        Cursor.visible = false;
     }
 
     private void Start()
     {
+        _gm = GameManager.Instance;
         _wm = WeaponManager.Instance;
-        _wm.EquipWeapon(0);
+        if (_gm.WeaponType == 0)
+        {
+            _wm.EquipWeapon(0); // 근접 무기 장착
+        }
+        else
+        {
+            _wm.EquipWeapon(4); // 원거리 무기 장착
+        }
         _attackRaycastDist = _currentWeaponData.range;
         
     }
@@ -95,20 +111,25 @@ public class Player : MonoBehaviour
         HandleInput();
         HandleCamera();
         
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && !_isReloading)
         {
-            Camera cam = _camera.GetComponent<Camera>();
-            Ray ray  = cam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+            if (Time.time - _lastAttackTime >= _attackSpeedRate[_gm.WeaponType])
+            {
+                _lastAttackTime = Time.time;
+                Camera cam = _camera.GetComponent<Camera>();
+                Ray ray  = cam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
+                
+                if (Physics.Raycast(ray, out RaycastHit hit, _attackRaycastDist, _attackRaycastMask))
+                {
+                    //Debug.Log($"[Player] 공격 목표: {hit.collider.name} @ {hit.point}");
+                    Attack(hit); // y=0 강제 필요하면 new Vector3(hit.point.x, 0f, hit.point.z)
+                }
+                else
+                {
+                    Attack(hit, false);
+                }
+            }
             
-            if (Physics.Raycast(ray, out RaycastHit hit, _attackRaycastDist, _attackRaycastMask))
-            {
-                //Debug.Log($"[Player] 공격 목표: {hit.collider.name} @ {hit.point}");
-                Attack(hit.point); // y=0 강제 필요하면 new Vector3(hit.point.x, 0f, hit.point.z)
-            }
-            else
-            {
-                //Debug.Log("[Player] 조준 지점에 충돌 없음");
-            }
         }
     }
 
@@ -192,12 +213,26 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void Reload()
+    {
+        if (!_isReloading)
+            StartCoroutine(ReloadCoroutine());
+    }
+    IEnumerator ReloadCoroutine()
+    {
+        _isReloading = true;
+        yield return new WaitForSeconds(2f); 
+        _curBullets = _currentWeaponData.Bullets;
+        _isReloading = false;
+        Debug.Log("[Player] 재장전 완료");
+    }
+
 
     /// <summary>
     /// 
     /// </summary>
     /// <param name="targetPosition"></param>
-    void Attack(Vector3 targetPosition)
+    void Attack(RaycastHit hit, bool isHit = true)
     {
         if (_currentWeaponData == null)
         {
@@ -241,22 +276,28 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Ray ray = new Ray(transform.position + Vector3.up, (targetPosition - transform.position).normalized);
-            if (Physics.Raycast(ray, out RaycastHit hit, _currentWeaponData.range))
+
+            if (isHit)
             {
                 IEnemy enemy = hit.collider.GetComponent<IEnemy>();
                 if (enemy != null)
                 {
                     enemy.TakeDamage(_attackPower);
-            
-                    // 공격 이펙트 생성
+
                     if (_currentWeaponData.HitEffectPrefab != null)
                     {
-                        Instantiate(_currentWeaponData.HitEffectPrefab, hit.point, Quaternion.identity);
+                        Instantiate(_currentWeaponData.HitEffectPrefab, hit.point, Quaternion.LookRotation(hit.normal));
                     }
+                    Debug.Log($"hit {hit.collider.name}");
                 }
+                
             }
-            Debug.Log("No collider in range");
+
+            _curBullets--;
+            if (_curBullets <= 0)
+            {
+                Reload();
+            }
         }
 
         _curBattery -= _currentWeaponData.BatteryUsage;
@@ -329,6 +370,7 @@ public class Player : MonoBehaviour
         _attackPower = weaponData.baseAttackPower;
         _currentWeaponData = weaponData;
         _curBullets = weaponData.Bullets;
+        _attackRaycastDist = weaponData.range;
 
         // 애니메이션 클립 전환
         if (_animator != null && !string.IsNullOrEmpty(weaponData.AttackAnimation))

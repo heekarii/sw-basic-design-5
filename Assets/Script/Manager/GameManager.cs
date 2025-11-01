@@ -8,6 +8,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private float _curBattery;
     [SerializeField] private bool _isTreasureFound;
     public Player Player;
+    public int WeaponType; // 0 : Short, 1 : long
 
     [Header("Game Setting")] 
     [SerializeField] private float _fScrapWeight;

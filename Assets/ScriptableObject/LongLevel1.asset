@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: LongLevel1
   m_EditorClassIdentifier: 
   WeaponName: 
-  ModelPrefab: {fileID: 0}
+  ModelPrefab: {fileID: 5220067963143404625, guid: 5bad30c835e655946a0428d00e46ae9e, type: 3}
   AnimatorController: {fileID: 0}
   AttackAnimation: 
-  baseAttackPower: 0
-  BatteryUsage: 0
+  baseAttackPower: 10
+  BatteryUsage: 0.1
+  Bullets: 1
   range: 5.5
   HitEffectPrefab: {fileID: 0}
