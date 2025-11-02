@@ -82,6 +82,8 @@ public class Player : MonoBehaviour
         _currentHealth = _maxHealth;
         _curPlayerStatus = 0;
         Cursor.visible = false;
+        
+
     }
 
     private void Start()
@@ -144,7 +146,7 @@ public class Player : MonoBehaviour
         float mouseY = Input.GetAxis("Mouse Y") * _mouseSensitivity;
 
         _cameraPitch -= mouseY;
-        _cameraPitch = Mathf.Clamp(_cameraPitch, -45f, 45f);
+        _cameraPitch = Mathf.Clamp(_cameraPitch, -60f, 60f);
 
         _camera.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
@@ -178,31 +180,25 @@ public class Player : MonoBehaviour
         {
             Vector3 targetPos;
             if (_isShifting)
-            {
-                targetPos = _rb.position + _moveDirection * 
-                    (_moveSpeed* _speedPerLevel[_curSpeedLevel - 1] * Time.fixedDeltaTime);
-            }
+                targetPos = _rb.position + _moveDirection * (_moveSpeed * _speedPerLevel[_curSpeedLevel - 1] * Time.fixedDeltaTime);
             else
-            {
                 targetPos = _rb.position + _moveDirection * (_moveSpeed * Time.fixedDeltaTime);
-            }
-            _rb.MovePosition(Vector3.Lerp(_rb.position, targetPos, 0.8f));
-            _animator?.SetBool("isMoving", true);
-        }
-        else
-        {
-            _animator?.SetBool("isMoving", false);
+
+            Vector3 nextPos = Vector3.Lerp(_rb.position, targetPos, 0.8f);
+            nextPos.y = _rb.position.y; // 🧩 점프 시 Y축은 물리에 맡김
+            _rb.MovePosition(nextPos);
         }
     }
+
     
     private void Jump()
     {
         _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
         _isGrounded = false;
-        _animator?.SetTrigger("jump");
+        //_animator?.SetTrigger("jump");
     }
     
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
         {

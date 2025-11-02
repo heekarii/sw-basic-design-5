@@ -8,7 +8,7 @@ public class Rat : MonoBehaviour, IEnemy
     [SerializeField] private float _curHp;
     [SerializeField] private float _damage = 30f;
     [SerializeField] private float _aggravationRange = 7.5f;
-    [SerializeField] private float _attackRange = 1.0f;
+    [SerializeField] private float _attackRange = 1f;
     [SerializeField] private float _moveSpeed = 2f;
 
     [SerializeField] private Player _player;
@@ -75,12 +75,14 @@ public class Rat : MonoBehaviour, IEnemy
         float worldDist = Vector3.Distance(transform.position, _player.transform.position);
         // ---------------------------------
 
-        // ✅ 공격 조건 : 경로 완료 & 이동 중단 & 거리 범위 내
-        if (!_agent.pathPending && navDist <= _attackRange && _agent.hasPath)
+    // ✅ 공격 조건: 실제 거리 기반 + 정지 상태 확인
+        if (worldDist <= _attackRange && _agent.velocity.sqrMagnitude < 0.1f)
         {
+            _agent.isStopped = true;
             AttackPlayer();
             return;
         }
+
 
         // ✅ 추적 조건
         if (worldDist <= _aggravationRange)
