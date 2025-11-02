@@ -167,18 +167,18 @@ MonoBehaviour:
   height: 19
   Tilemap_Maze: {fileID: 460419862}
   Tilemap_Trail: {fileID: 595828525}
-  Tile_Wall: {fileID: 11400000, guid: ea7157c53a35e474cb4523989a68182e, type: 2}
+  Tile_Wall: {fileID: 11400000, guid: 762e9fb618d442146bab378cf1802fbb, type: 2}
   Tile_Floor: {fileID: 11400000, guid: d87b2aa6bd29a5b40b2c6c643726c4f1, type: 2}
-  Tile_Start: {fileID: 11400000, guid: 2f3ae333a899bdd4daf0aabe9e284bbb, type: 2}
-  Tile_Exit: {fileID: 11400000, guid: 2f3ae333a899bdd4daf0aabe9e284bbb, type: 2}
-  playerSprite5px: {fileID: 21300000, guid: 58d0e7b604ae3d94cbeeab8ff0fc3009, type: 3}
+  Tile_Start: {fileID: 11400000, guid: d9463d34edb37d545b1fb1256c7a6115, type: 2}
+  Tile_Exit: {fileID: 11400000, guid: d9463d34edb37d545b1fb1256c7a6115, type: 2}
+  playerSprite5px: {fileID: 21300000, guid: fac7825fb5162354680e0c564b81da93, type: 3}
   moveSpeed: 4
   playerWorldSize: 0.5
   Text_Timer: {fileID: 93185747}
   timeLimit: 30
   speedBonus: 0.2
   cameraPadding: 2
-  trailSprite: {fileID: 21300000, guid: 78360d227e0be924dbe580c17190673b, type: 3}
+  trailSprite: {fileID: 21300000, guid: 78ce34a1713680f49a583f608ec84b8c, type: 3}
   trailStep: 0.08
   trailSortingOrder: 4
   trailPoolMax: 2000
