@@ -9,7 +9,7 @@ public class Player : MonoBehaviour
     [Header("Player Status")]
     [SerializeField] private float _attackPower = 10f;   // 공격력
     [SerializeField] private float _moveSpeed = 1f;      // 이동 속도
-    [SerializeField] private float _maxHealth = 100f;    // 최대 체력
+    [SerializeField] private float _maxHealth = 500f;    // 최대 체력
     [SerializeField] private float _currentHealth;       // 현재 체력
     [SerializeField] private bool _isGrounded = true;
     [SerializeField] private float _jumpForce = 5f;
