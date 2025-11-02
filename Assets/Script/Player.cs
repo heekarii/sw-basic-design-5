@@ -18,11 +18,11 @@ public class Player : MonoBehaviour
     
     [SerializeField] private float[] _batteryReductionAmount =
     {
-        0.5f
+        0.0002f
     };
     [SerializeField] private float[] _batteryReductionTerm =
     {
-        30.0f,
+        1f
     };
     [FormerlySerializedAs("_curStatus")] [SerializeField] private int _curPlayerStatus;
     [SerializeField] private int _curHealthLevel = 1;
@@ -82,7 +82,6 @@ public class Player : MonoBehaviour
         _currentHealth = _maxHealth;
         _curPlayerStatus = 0;
         Cursor.visible = false;
-        StartCoroutine(BatteryReduction());
     }
 
     private void Start()
@@ -98,6 +97,7 @@ public class Player : MonoBehaviour
             _wm.EquipWeapon(4); // 원거리 무기 장착
         }
         _attackRaycastDist = _currentWeaponData.range;
+        StartCoroutine(BatteryReduction());
         
     }
     
@@ -385,9 +385,12 @@ public class Player : MonoBehaviour
         GameManager gm = GameManager.Instance;
         while (true)
         {
-            yield return new WaitForSeconds(_batteryReductionTerm[_curPlayerStatus]);
-            _curBattery -= _batteryReductionAmount[_curPlayerStatus];
-            gm.SetGameScore();
+            yield return new WaitForSeconds(1f);
+            var reductionAmount = _curBattery * _batteryReductionAmount[_curPlayerStatus];
+            if (_isShifting) reductionAmount *= 2f;
+            Debug.Log("[Player] 배터리 감소: " + reductionAmount);
+            _curBattery -= reductionAmount;
+             gm.SetGameScore();
         }
     }
 }
