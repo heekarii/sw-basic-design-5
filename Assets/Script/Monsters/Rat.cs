@@ -12,13 +12,13 @@ public class Rat : MonoBehaviour, IEnemy
     
     void Start()
     {
-        _player = GetComponent<Player>();
+        _player = FindObjectOfType<Player>();
         _curHp = _maxHp;
     }
     
     void Update()
     {
-        MoveTowardsPlayer();
+        //MoveTowardsPlayer();
         if (_curHp <= 0)
         {
             Die();
@@ -30,16 +30,16 @@ public class Rat : MonoBehaviour, IEnemy
         if (_player == null) return;
 
         float distanceToPlayer = Vector3.Distance(transform.position, _player.transform.position);
+        if (distanceToPlayer <= 0.7f)
+        {
+            //AttackPlayer();
+        }
         if (distanceToPlayer <= _aggravationRange)
         {
             Vector3 direction = (_player.transform.position - transform.position).normalized;
             transform.position += direction * _moveSpeed * Time.deltaTime;
         }
 
-        if (distanceToPlayer <= 0.7f)
-        {
-            AttackPlayer();
-        }
     }
     
     private void AttackPlayer()
