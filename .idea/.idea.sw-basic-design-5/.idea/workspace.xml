@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4bcddbc1-44c5-414d-a4d0-918707dd00fa" name="Changes" comment="" />
+    <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MCardGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MCardGame.unity" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,68 +16,40 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Script/Player.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/MCardGame/CardNumber.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="Toolset" />
   </component>
   <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 5
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 6
 }</component>
-  <component name="ProjectId" id="33PrgzAGD52SNrs8ZcquhMu9pjL" />
+  <component name="ProjectId" id="34k9yfa1TnTa2iJVuzHZ5TqwuBU" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "feat/player",
-    "junie.onboarding.icon.badge.shown": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "configurable.group.tools",
-    "to.speed.mode.migration.done": "true",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feat/MGame2&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Unity 에디터에 연결.Unity 에디터에 연결">
     <configuration name="유닛 테스트(배치 모드)" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.58f1\Editor\Unity.exe" />
-      <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath C:\Users\qazwdf11\Desktop\sw-basic-design-5 -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
-      <option name="WORKING_DIRECTORY" value="C:\Users\qazwdf11\Desktop\sw-basic-design-5" />
-      <option name="PASS_PARENT_ENVS" value="1" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="ENV_FILE_PATHS" value="" />
-      <option name="REDIRECT_INPUT_PATH" value="" />
-      <option name="PTY_MODE" value="Auto" />
-      <option name="MIXED_MODE_DEBUG" value="0" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.58f1\Editor\Unity.exe" />
-      <option name="PROGRAM_PARAMETERS" value="-projectPath C:\Users\qazwdf11\Desktop\sw-basic-design-5 -debugCodeOptimization" />
-      <option name="WORKING_DIRECTORY" value="C:\Users\qazwdf11\Desktop\sw-basic-design-5" />
-      <option name="PASS_PARENT_ENVS" value="1" />
-      <option name="USE_EXTERNAL_CONSOLE" value="0" />
-      <option name="ENV_FILE_PATHS" value="" />
-      <option name="REDIRECT_INPUT_PATH" value="" />
-      <option name="PTY_MODE" value="Auto" />
-      <option name="MIXED_MODE_DEBUG" value="0" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.58f1\Editor\Unity.exe" />
-      <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath C:\Users\qazwdf11\Desktop\sw-basic-design-5 -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
-      <option name="WORKING_DIRECTORY" value="C:\Users\qazwdf11\Desktop\sw-basic-design-5" />
+      <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath D:\unity\software_design_basic\sw-basic-design-5 -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="D:\unity\software_design_basic\sw-basic-design-5" />
       <option name="PASS_PARENT_ENVS" value="1" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <option name="ENV_FILE_PATHS" value="" />
@@ -86,8 +60,8 @@
     </configuration>
     <configuration name="Unity 시작" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.0.58f1\Editor\Unity.exe" />
-      <option name="PROGRAM_PARAMETERS" value="-projectPath C:\Users\qazwdf11\Desktop\sw-basic-design-5 -debugCodeOptimization" />
-      <option name="WORKING_DIRECTORY" value="C:\Users\qazwdf11\Desktop\sw-basic-design-5" />
+      <option name="PROGRAM_PARAMETERS" value="-projectPath D:\unity\software_design_basic\sw-basic-design-5 -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="D:\unity\software_design_basic\sw-basic-design-5" />
       <option name="PASS_PARENT_ENVS" value="1" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <option name="ENV_FILE_PATHS" value="" />
@@ -124,27 +98,28 @@
       <option name="useMixedMode" value="false" />
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Device" type="UnityDevicePlayer" factoryName="UnityAttachToDevicePlayer">
+    <configuration name="기기에 연결" type="UnityDevicePlayer" factoryName="UnityAttachToDevicePlayer">
       <method v="2" />
     </configuration>
   </component>
   <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="4bcddbc1-44c5-414d-a4d0-918707dd00fa" name="Changes" comment="" />
-      <created>1759229665385</created>
+    <task active="true" id="Default" summary="디폴트 작업">
+      <changelist id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="" />
+      <created>1761746959808</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1759229665385</updated>
-      <workItem from="1759229668185" duration="15000" />
-      <workItem from="1759229697886" duration="13000" />
-      <workItem from="1760319638320" duration="937000" />
-      <workItem from="1760320605459" duration="1502000" />
-      <workItem from="1760423373928" duration="112000" />
-      <workItem from="1760427405751" duration="221000" />
-      <workItem from="1761543833399" duration="1946000" />
-      <workItem from="1761785370358" duration="4017000" />
-      <workItem from="1761791440640" duration="915000" />
-      <workItem from="1761808234975" duration="388000" />
+      <updated>1761746959808</updated>
+      <workItem from="1761746961215" duration="46000" />
+      <workItem from="1761747416810" duration="825000" />
+      <workItem from="1761748326129" duration="653000" />
+      <workItem from="1761749003387" duration="79000" />
+      <workItem from="1761749128338" duration="164000" />
+      <workItem from="1761750122878" duration="259000" />
+      <workItem from="1761750396672" duration="343000" />
+      <workItem from="1761750841709" duration="34000" />
+      <workItem from="1761750938010" duration="277000" />
+      <workItem from="1761839144787" duration="62000" />
+      <workItem from="1761843332311" duration="477000" />
     </task>
     <servers />
   </component>
@@ -153,6 +128,7 @@
   </component>
   <component name="UnityProjectConfiguration" hasMinimizedUI="true" />
   <component name="UnityProjectDiscoverer">
+    <option name="hasUnityReference" value="true" />
     <option name="unityProject" value="true" />
     <option name="unityProjectFolder" value="true" />
   </component>
@@ -177,9 +153,5 @@
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
-  </component>
-  <component name="XSLT-Support.FileAssociations.UIState">
-    <expand />
-    <select />
   </component>
 </project>
