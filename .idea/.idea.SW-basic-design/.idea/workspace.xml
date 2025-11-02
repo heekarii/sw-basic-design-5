@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="67a620b3-06d2-4b19-9ba1-a083e4c0c017" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/GameManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,7 +40,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feat/player&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;hotfix/player&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -93,6 +95,7 @@
       <workItem from="1761841125635" duration="820000" />
       <workItem from="1761926208729" duration="7501000" />
       <workItem from="1762006154102" duration="5759000" />
+      <workItem from="1762015168062" duration="2113000" />
     </task>
     <servers />
   </component>
