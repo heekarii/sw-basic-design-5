@@ -167,18 +167,18 @@ MonoBehaviour:
   height: 19
   Tilemap_Maze: {fileID: 460419862}
   Tilemap_Trail: {fileID: 595828525}
-  Tile_Wall: {fileID: 11400000, guid: d87b2aa6bd29a5b40b2c6c643726c4f1, type: 2}
-  Tile_Floor: {fileID: 11400000, guid: 8133093e62843fb47b9eb4e03cc4a184, type: 2}
-  Tile_Start: {fileID: 11400000, guid: 4f761ea74fc4e3c4183d4e2dadf7823d, type: 2}
-  Tile_Exit: {fileID: 11400000, guid: c282831db981e394e97c05ac6002cb43, type: 2}
-  playerSprite5px: {fileID: 21300000, guid: 7ae51b1c840fa004bafa34fd4099f9d9, type: 3}
+  Tile_Wall: {fileID: 11400000, guid: 762e9fb618d442146bab378cf1802fbb, type: 2}
+  Tile_Floor: {fileID: 11400000, guid: d87b2aa6bd29a5b40b2c6c643726c4f1, type: 2}
+  Tile_Start: {fileID: 11400000, guid: d9463d34edb37d545b1fb1256c7a6115, type: 2}
+  Tile_Exit: {fileID: 11400000, guid: d9463d34edb37d545b1fb1256c7a6115, type: 2}
+  playerSprite5px: {fileID: 21300000, guid: 69142c7352452ec4db62aebf1ee5a4fc, type: 3}
   moveSpeed: 4
   playerWorldSize: 0.5
   Text_Timer: {fileID: 93185747}
   timeLimit: 30
   speedBonus: 0.2
   cameraPadding: 2
-  trailSprite: {fileID: 21300000, guid: 9e112f044fa66124aba021c09d62ec31, type: 3}
+  trailSprite: {fileID: 21300000, guid: 78ce34a1713680f49a583f608ec84b8c, type: 3}
   trailStep: 0.08
   trailSortingOrder: 4
   trailPoolMax: 2000
@@ -694,6 +694,7 @@ GameObject:
   - component: {fileID: 609046258}
   - component: {fileID: 609046257}
   - component: {fileID: 609046260}
+  - component: {fileID: 609046261}
   m_Layer: 0
   m_Name: Camera_Maze
   m_TagString: MainCamera
@@ -772,7 +773,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1790873134}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &609046260
@@ -819,6 +821,66 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!114 &609046261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609046256}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 948f4100a11a5c24981795d21301da5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volumeTrigger: {fileID: 609046259}
+  volumeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  stopNaNPropagation: 1
+  finalBlitToCameraTarget: 0
+  antialiasingMode: 0
+  temporalAntialiasing:
+    jitterSpread: 0.75
+    sharpness: 0.25
+    stationaryBlending: 0.95
+    motionBlending: 0.85
+  subpixelMorphologicalAntialiasing:
+    quality: 2
+  fastApproximateAntialiasing:
+    fastMode: 0
+    keepAlpha: 0
+  fog:
+    enabled: 1
+    excludeSkybox: 1
+  debugLayer:
+    lightMeter:
+      width: 512
+      height: 256
+      showCurves: 1
+    histogram:
+      width: 512
+      height: 256
+      channel: 3
+    waveform:
+      exposure: 0.12
+      height: 256
+    vectorscope:
+      size: 256
+      exposure: 0.12
+    overlaySettings:
+      linearDepth: 0
+      motionColorIntensity: 4
+      motionGridSize: 64
+      colorBlindnessType: 0
+      colorBlindnessStrength: 1
+  m_Resources: {fileID: 11400000, guid: d82512f9c8e5d4a4d938b575d47f88d4, type: 2}
+  m_ShowToolkit: 0
+  m_ShowCustomSorter: 0
+  breakBeforeColorGrading: 0
+  m_BeforeTransparentBundles: []
+  m_BeforeStackBundles: []
+  m_AfterStackBundles: []
 --- !u!1 &1171736481
 GameObject:
   m_ObjectHideFlags: 0
@@ -1035,21 +1097,20 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1790873132}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 460419860}
   - {fileID: 595828523}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 609046259}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 609046259}
-  - {fileID: 1790873134}
   - {fileID: 36599890}
   - {fileID: 436339631}
   - {fileID: 1672127105}
