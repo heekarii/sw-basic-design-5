@@ -3,100 +3,143 @@ using UnityEngine.AI;
 
 public class Rat : MonoBehaviour, IEnemy
 {
-    [SerializeField] private NavMeshAgent _navMeshAgent;
-    [Header("Moster Status")]
-    [SerializeField] private float _curHp;
+    [Header("Monster Status")]
     [SerializeField] private float _maxHp = 15f;
-    [SerializeField] private Player _player;
+    [SerializeField] private float _curHp;
     [SerializeField] private float _damage = 30f;
-    [SerializeField] private float _moveSpeed = 2f;
     [SerializeField] private float _aggravationRange = 7.5f;
-    
+    [SerializeField] private float _attackRange = 1.0f;
+    [SerializeField] private float _moveSpeed = 2f;
+
+    [SerializeField] private Player _player;
+    private NavMeshAgent _agent;
+
     void Start()
     {
-        _navMeshAgent = GetComponent<NavMeshAgent>();
+        _agent = GetComponent<NavMeshAgent>();
         _player = FindObjectOfType<Player>();
         _curHp = _maxHp;
+
+        if (_agent == null)
+        {
+            Debug.LogError("[Rat] NavMeshAgent가 없습니다.");
+            enabled = false; return;
+        }
+        if (_player == null)
+        {
+            Debug.LogError("[Rat] Player를 찾지 못했습니다.");
+            enabled = false; return;
+        }
+
+        // 기본 파라미터
+        _agent.speed = _moveSpeed;
+        _agent.stoppingDistance = _attackRange;
+        _agent.updateRotation = true;
+        _agent.autoBraking = true;
+
+        // 시작 위치가 NavMesh 위가 아니면 가장 가까운 NavMesh 위치로 워프
+        if (!TrySnapToNavMesh(transform.position, out var snapped))
+        {
+            Debug.LogError("[Rat] 시작 위치 근처에 NavMesh가 없습니다. Bake/레이어/높이 확인 필요.");
+            enabled = false; return;
+        }
+        if ((snapped - transform.position).sqrMagnitude > 0.0001f)
+        {
+            _agent.Warp(snapped);
+            Debug.Log($"[Rat] NavMesh에 워프: {snapped}");
+        }
+        Debug.Log("[Rat] Start OK: OnNavMesh=" + _agent.isOnNavMesh);
     }
-    
+
     void Update()
     {
-        MoveTowardsPlayer();
-        if (_curHp <= 0)
-        {
-            Die();
-        }
-    }
-    
-    private void MoveTowardsPlayer()
-    {
-        if (_player == null) return;
+        if (_player == null || _agent == null) return;
 
-        // --- 콜라이더 기반 거리 계산 ---
-        Collider ratCol = GetComponent<Collider>();
-        Collider playerCol = _player.GetComponent<Collider>();
-
-        float distanceToPlayer;
-        if (ratCol != null && playerCol != null)
+        // NavMesh 이탈 복구
+        if (!_agent.isOnNavMesh)
         {
-            Vector3 ratPoint = ratCol.ClosestPoint(playerCol.bounds.center);
-            Vector3 playerPoint = playerCol.ClosestPoint(ratCol.bounds.center);
-            distanceToPlayer = Vector3.Distance(ratPoint, playerPoint);
+            if (TrySnapToNavMesh(transform.position, out var snapped))
+            {
+                _agent.Warp(snapped);
+                Debug.LogWarning("[Rat] NavMesh 이탈 감지 → 재워프");
+            }
+            else
+            {
+                Debug.LogError("[Rat] 재워프 실패: 주변에 NavMesh 없음");
+                return;
+            }
         }
-        else
-        {
-            // 콜라이더가 없으면 기존 방식 fallback
-            Vector3 ratPos = new Vector3(transform.position.x, 0, transform.position.z);
-            Vector3 playerPos = new Vector3(_player.transform.position.x, 0, _player.transform.position.z);
-            distanceToPlayer = Vector3.Distance(ratPos, playerPos);
-        }
-        // --------------------------------
 
-        if (distanceToPlayer <= 0.9f)
+        // --- ✅ NavMesh 기반 거리 판정 ---
+        float navDist = _agent.remainingDistance;
+        float worldDist = Vector3.Distance(transform.position, _player.transform.position);
+        // ---------------------------------
+
+        // ✅ 공격 조건 : 경로 완료 & 이동 중단 & 거리 범위 내
+        if (!_agent.pathPending && navDist <= _attackRange && _agent.hasPath)
         {
             AttackPlayer();
             return;
         }
 
-        if (distanceToPlayer <= _aggravationRange)
+        // ✅ 추적 조건
+        if (worldDist <= _aggravationRange)
         {
-            Vector3 direction = (_player.transform.position - transform.position);
-            direction.y = 0;
-            direction.Normalize();
-            // ✅ 회전: 플레이어 방향으로 부드럽게 Y축만 회전
-            if (direction.sqrMagnitude > 0.0001f)
+            _agent.isStopped = false;
+
+            Vector3 targetPos = _player.transform.position;
+
+            // 플레이어를 NavMesh 위로 투영
+            if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 3.0f, NavMesh.AllAreas))
             {
-                Quaternion targetRot = Quaternion.LookRotation(direction);
-                transform.rotation = Quaternion.Slerp(
-                    transform.rotation,       // 현재 회전
-                    targetRot,                // 목표 회전
-                    Time.deltaTime * 10f      // 회전 속도 (값 높일수록 더 빠름)
-                );
+                _agent.SetDestination(hit.position);
             }
-            transform.position += direction * _moveSpeed * Time.deltaTime;
+            else
+            {
+                Debug.LogWarning($"[Rat] Player 주변에 NavMesh 없음! 원본 위치: {targetPos}");
+            }
         }
+        else
+        {
+            _agent.isStopped = true;
+        }
+
+        Debug.Log($"[Rat] remainingDist={navDist:F2}, worldDist={worldDist:F2}, pathStatus={_agent.pathStatus}, hasPath={_agent.hasPath}");
+
+        if (_curHp <= 0f) Die();
     }
 
-    
+
+    private bool TrySnapToNavMesh(Vector3 origin, out Vector3 snapped)
+    {
+        // 높이 오차/피벗 문제를 감안해 반경을 충분히 준다
+        if (NavMesh.SamplePosition(origin, out var hit, 2.0f, NavMesh.AllAreas))
+        {
+            snapped = hit.position;
+            return true;
+        }
+        snapped = origin;
+        return false;
+    }
+
     private void AttackPlayer()
     {
-        if (_player != null)
-        {
-            _player.TakeDamage(_damage);
-            Debug.Log($"Rat attacked player for {_damage} damage.");
-            Destroy(gameObject);
-        }
+        _agent.isStopped = true;
+        _player?.TakeDamage(_damage);
+        Debug.Log($"Rat attacked player for {_damage} damage!");
+        Destroy(gameObject);
     }
-    
+
+    public void TakeDamage(float dmg)
+    {
+        _curHp -= dmg;
+        if (_curHp <= 0f) Die();
+        Debug.Log($"Rat took {dmg} damage, current HP: {_curHp}");
+    }
+
     private void Die()
     {
         Destroy(gameObject);
         Debug.Log("Rat has died.");
     }
-    public void TakeDamage(float damage)
-    {
-        _curHp -= damage;
-        Debug.Log($"Rat took {damage} damage, current HP: {_curHp}");
-    }
 }
-

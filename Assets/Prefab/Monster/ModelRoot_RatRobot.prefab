@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6234863342697257649}
   - component: {fileID: -404529005403484540}
+  - component: {fileID: 4749888145082481451}
+  - component: {fileID: 1957766271682050301}
   m_Layer: 0
   m_Name: ModelRoot_RatRobot
   m_TagString: Untagged
@@ -45,12 +47,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c66027c117b1144eb5bf77b02fabae7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _curHp: 0
   _maxHp: 15
-  _player: {fileID: 0}
+  _curHp: 0
   _damage: 30
-  _moveSpeed: 2
   _aggravationRange: 7.5
+  _attackRange: 0.9
+  _moveSpeed: 2
+  _player: {fileID: 0}
+--- !u!195 &4749888145082481451
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726582100990455483}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!54 &1957766271682050301
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 726582100990455483}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &869890133659225080
 GameObject:
   m_ObjectHideFlags: 0
@@ -103,7 +155,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 6301061604067457238, guid: e684686833e3f6c4399e41c1f18e99d0, type: 3}
 --- !u!1001 &7803763788509934607

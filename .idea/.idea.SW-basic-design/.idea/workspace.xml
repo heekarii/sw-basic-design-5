@@ -6,13 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/Lit Variant 1.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/Lit Variant 1.mat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Rattrap_idle.fbx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Rattrap_idle.fbx.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/Rattrap_idle.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/Rattrap_idle.prefab.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/ModelRoot_RatRobot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/ModelRoot_RatRobot.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/Rat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/Rat.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +83,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1762099968155</updated>
-      <workItem from="1762099970060" duration="3399000" />
+      <workItem from="1762099970060" duration="5295000" />
     </task>
     <servers />
   </component>
