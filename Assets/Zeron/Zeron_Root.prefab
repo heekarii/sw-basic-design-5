@@ -1152,8 +1152,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1514112834392732256}
-  - component: {fileID: 3989052086139521184}
-  - component: {fileID: 4918990553627503746}
   m_Layer: 0
   m_Name: Zeron_ModelRoot
   m_TagString: Untagged
@@ -1177,75 +1175,6 @@ Transform:
   - {fileID: 4902364022343436837}
   m_Father: {fileID: 8367027546914371287}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3989052086139521184
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3731767794455179096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe86fafbf2e76f1488a3101ecc477840, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _attackPower: 10
-  _moveSpeed: 1
-  _maxHealth: 500
-  _currentHealth: 0
-  _isGrounded: 1
-  _jumpForce: 5
-  _curBattery: 100
-  _curBullets: 0
-  _batteryReductionAmount:
-  - 0.0002
-  _batteryReductionTerm:
-  - 1
-  _curPlayerStatus: 0
-  _curHealthLevel: 1
-  _curSpeedLevel: 1
-  _isShifting: 0
-  _speedPerLevel:
-  - 1.3
-  - 1.5
-  - 1.7
-  _attackRaycastMask:
-    serializedVersion: 2
-    m_Bits: 0
-  _attackRaycastDist: 0
-  _attackSpeedRate:
-  - 0.7
-  - 0.5
-  _camera: {fileID: 0}
-  _mouseSensitivity: 2
-  _currentWeaponData: {fileID: 0}
---- !u!54 &4918990553627503746
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3731767794455179096}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!1 &3748149951340887154
 GameObject:
   m_ObjectHideFlags: 0
@@ -2407,7 +2336,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -8701492576417415843, guid: 069b9f582c18afb40a4c37eec346965f, type: 3}
 --- !u!1 &6609534714728560805
@@ -2545,6 +2474,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8367027546914371287}
+  - component: {fileID: 2889607393435467135}
+  - component: {fileID: 8777540611825799299}
+  - component: {fileID: 5570758233920690550}
   m_Layer: 0
   m_Name: Zeron_Root
   m_TagString: Untagged
@@ -2568,6 +2500,97 @@ Transform:
   - {fileID: 1514112834392732256}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2889607393435467135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7119302117570590318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe86fafbf2e76f1488a3101ecc477840, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackPower: 10
+  _moveSpeed: 1
+  _maxHealth: 500
+  _currentHealth: 0
+  _isGrounded: 1
+  _jumpForce: 5000
+  _curBattery: 100
+  _curBullets: 0
+  _batteryReductionAmount:
+  - 0.0002
+  _batteryReductionTerm:
+  - 1
+  _curPlayerStatus: 0
+  _curHealthLevel: 1
+  _curSpeedLevel: 1
+  _isShifting: 0
+  _speedPerLevel:
+  - 1.3
+  - 1.5
+  - 1.7
+  _attackRaycastMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _attackRaycastDist: 0
+  _attackSpeedRate:
+  - 0.7
+  - 0.5
+  _camera: {fileID: 0}
+  _mouseSensitivity: 2
+  _currentWeaponData: {fileID: 0}
+--- !u!54 &8777540611825799299
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7119302117570590318}
+  serializedVersion: 4
+  m_Mass: 1000
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 0
+  m_CollisionDetection: 1
+--- !u!95 &5570758233920690550
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7119302117570590318}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7168118005925297977
 GameObject:
   m_ObjectHideFlags: 0

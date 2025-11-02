@@ -46,9 +46,9 @@ public class Rat : MonoBehaviour, IEnemy
         if ((snapped - transform.position).sqrMagnitude > 0.0001f)
         {
             _agent.Warp(snapped);
-            Debug.Log($"[Rat] NavMesh에 워프: {snapped}");
+            //Debug.Log($"[Rat] NavMesh에 워프: {snapped}");
         }
-        Debug.Log("[Rat] Start OK: OnNavMesh=" + _agent.isOnNavMesh);
+        //Debug.Log("[Rat] Start OK: OnNavMesh=" + _agent.isOnNavMesh);
     }
 
     void Update()
@@ -61,11 +61,11 @@ public class Rat : MonoBehaviour, IEnemy
             if (TrySnapToNavMesh(transform.position, out var snapped))
             {
                 _agent.Warp(snapped);
-                Debug.LogWarning("[Rat] NavMesh 이탈 감지 → 재워프");
+               // Debug.LogWarning("[Rat] NavMesh 이탈 감지 → 재워프");
             }
             else
             {
-                Debug.LogError("[Rat] 재워프 실패: 주변에 NavMesh 없음");
+               // Debug.LogError("[Rat] 재워프 실패: 주변에 NavMesh 없음");
                 return;
             }
         }
@@ -98,7 +98,7 @@ public class Rat : MonoBehaviour, IEnemy
             }
             else
             {
-                Debug.LogWarning($"[Rat] Player 주변에 NavMesh 없음! 원본 위치: {targetPos}");
+               // Debug.LogWarning($"[Rat] Player 주변에 NavMesh 없음! 원본 위치: {targetPos}");
             }
         }
         else
@@ -106,7 +106,7 @@ public class Rat : MonoBehaviour, IEnemy
             _agent.isStopped = true;
         }
 
-        Debug.Log($"[Rat] remainingDist={navDist:F2}, worldDist={worldDist:F2}, pathStatus={_agent.pathStatus}, hasPath={_agent.hasPath}");
+      //  Debug.Log($"[Rat] remainingDist={navDist:F2}, worldDist={worldDist:F2}, pathStatus={_agent.pathStatus}, hasPath={_agent.hasPath}");
 
         if (_curHp <= 0f) Die();
     }
