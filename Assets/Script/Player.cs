@@ -388,7 +388,7 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(1f);
             var reductionAmount = _curBattery * _batteryReductionAmount[_curPlayerStatus];
             if (_isShifting) reductionAmount *= 2f;
-            Debug.Log("[Player] 배터리 감소: " + reductionAmount);
+            //Debug.Log("[Player] 배터리 감소: " + reductionAmount);
             _curBattery -= reductionAmount;
              gm.SetGameScore();
         }
