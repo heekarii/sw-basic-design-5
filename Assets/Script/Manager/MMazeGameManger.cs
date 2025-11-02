@@ -72,7 +72,7 @@ public class MMazeGameManager : MonoBehaviour
         // 타이머
         timeLeft -= Time.deltaTime;
         if (Text_Timer) Text_Timer.text = $"Time: {timeLeft:F1}s";
-        if (timeLeft <= 0f) { EndGame(0); return; }
+        if (timeLeft <= 0f) { EndGame(false); return; }
 
         HandleInput_FreeMove();   // 자유 이동 + 벽 닿으면 실패
         StampTrailIfNeeded();     // 플레이어 크기의 발자국을 현재/지나간 자리에만
@@ -103,12 +103,12 @@ public class MMazeGameManager : MonoBehaviour
         Debug.Log("[MMaze] Start (TopView + FreeMove, size=0.35, wall touch=fail, sprite trail)");
     }
 
-    public void EndGame(int result)
+    public void EndGame(bool isSuccess)
     {
         if (!isRunning) return;
         isRunning = false;
 
-        if (result == 1)
+        if (isSuccess)
         {
             Debug.Log("🎉 성공: 출구 도달");
             SendPlayer_Speed();
@@ -122,7 +122,6 @@ public class MMazeGameManager : MonoBehaviour
     public void SendPlayer_Speed()
     {
         Debug.Log($"Success");
-      
     }
 
     // ---------- Maze build ----------
@@ -265,12 +264,12 @@ public class MMazeGameManager : MonoBehaviour
     {
         // X축
         Vector2 test = playerPosW + new Vector2(delta.x, 0);
-        if (CollidesWithWall(test)) { EndGame(0); return; }
+        if (CollidesWithWall(test)) { EndGame(false); return; }
         else                         { playerPosW = test; }
 
         // Y축
         test = playerPosW + new Vector2(0, delta.y);
-        if (CollidesWithWall(test)) { EndGame(0); return; }
+        if (CollidesWithWall(test)) { EndGame(false); return; }
         else                         { playerPosW = test; }
     }
 
@@ -373,7 +372,7 @@ public class MMazeGameManager : MonoBehaviour
         Vector2 exitCenter = CellCenterWorld(exitPos);
         Vector2 exitHalf   = new(0.5f, 0.5f); // 한 칸 = 1×1 유닛
         bool overlap = AABBOverlap(playerPosW, playerHalf, exitCenter, exitHalf);
-        if (overlap) EndGame(1);
+        if (overlap) EndGame(true);
     }
 
     private static bool AABBOverlap(Vector2 cA, Vector2 hA, Vector2 cB, Vector2 hB)
