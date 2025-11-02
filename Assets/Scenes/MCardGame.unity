@@ -268,7 +268,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b8ffd49cb2a4c27459726a30abea9296, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 71608beabbf7b6248a7017cee8a22e05, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -942,7 +942,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   memorizeTime: 10
   limitTime: 10
-  totalCards: 10
+  totalCards: 8
   gridArea: {fileID: 857688769}
   cardPrefab: {fileID: 2475301531875440637, guid: 4a35dc05f4707cc4a967a3494baa43ca, type: 3}
   textTimer: {fileID: 1808230865}
