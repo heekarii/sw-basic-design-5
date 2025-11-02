@@ -282,10 +282,9 @@ public class Player : MonoBehaviour
         }
         else
         {
-
             if (isHit)
             {
-                IEnemy enemy = hit.collider.GetComponent<IEnemy>();
+                IEnemy enemy = hit.collider.GetComponentInParent<IEnemy>();
                 if (enemy != null)
                 {
                     float distance = Vector3.Distance(transform.position, hit.point);
