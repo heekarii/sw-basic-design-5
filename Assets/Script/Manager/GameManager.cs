@@ -23,6 +23,11 @@ public class GameManager : Singleton<GameManager>
         InitStatus();
     }
 
+    private void Start()
+    {
+        Player = FindAnyObjectByType<Player>();
+    }
+
     private void InitStatus()
     {
         _curScore = 0;

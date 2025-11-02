@@ -18,11 +18,11 @@ public class Player : MonoBehaviour
     
     [SerializeField] private float[] _batteryReductionAmount =
     {
-        0.5f
+        0.0002f
     };
     [SerializeField] private float[] _batteryReductionTerm =
     {
-        30.0f,
+        1f
     };
     [FormerlySerializedAs("_curStatus")] [SerializeField] private int _curPlayerStatus;
     [SerializeField] private int _curHealthLevel = 1;
@@ -82,7 +82,6 @@ public class Player : MonoBehaviour
         _currentHealth = _maxHealth;
         _curPlayerStatus = 0;
         Cursor.visible = false;
-        StartCoroutine(BatteryReduction());
     }
 
     private void Start()
@@ -95,9 +94,10 @@ public class Player : MonoBehaviour
         }
         else
         {
-            _wm.EquipWeapon(6); // 원거리 무기 장착
+            _wm.EquipWeapon(4); // 원거리 무기 장착
         }
         _attackRaycastDist = _currentWeaponData.range;
+        StartCoroutine(BatteryReduction());
         
     }
     
@@ -235,7 +235,8 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="targetPosition"></param>
+    /// <param name="hit"></param>
+    /// <param name="isHit"></param>
     void Attack(RaycastHit hit, bool isHit = true)
     {
         if (_currentWeaponData == null)
@@ -287,7 +288,7 @@ public class Player : MonoBehaviour
                 if (enemy != null)
                 {
                     float distance = Vector3.Distance(transform.position, hit.point);
-                    float multiplier = Mathf.Max(0f, 1f - (distance * 0.005f));
+                    float multiplier = Mathf.Max(0f, 1f - (distance * 0.05f));
                     float damage = _attackPower * multiplier;
                     enemy.TakeDamage(damage); // 거리 비례 데미지 감소
                     Debug.Log($"[Player] {hit.collider.name}에게 {damage} 데미지 입힘 (거리 보정 계수: {multiplier})");
@@ -309,16 +310,6 @@ public class Player : MonoBehaviour
         }
 
         _curBattery -= _currentWeaponData.BatteryUsage;
-    }
-    
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="additionalSpeed"></param>
-    public void SetSpeedStatus(float additionalSpeed)
-    {
-        _moveSpeed += additionalSpeed;
-        Debug.Log($"[Player] 이동속도 증가 → {_moveSpeed}");
     }
 
     /// <summary>
@@ -394,9 +385,12 @@ public class Player : MonoBehaviour
         GameManager gm = GameManager.Instance;
         while (true)
         {
-            yield return new WaitForSeconds(_batteryReductionTerm[_curPlayerStatus]);
-            _curBattery -= _batteryReductionAmount[_curPlayerStatus];
-            gm.SetGameScore();
+            yield return new WaitForSeconds(1f);
+            var reductionAmount = _curBattery * _batteryReductionAmount[_curPlayerStatus];
+            if (_isShifting) reductionAmount *= 2f;
+            Debug.Log("[Player] 배터리 감소: " + reductionAmount);
+            _curBattery -= reductionAmount;
+             gm.SetGameScore();
         }
     }
 }
