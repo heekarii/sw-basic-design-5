@@ -9,12 +9,12 @@ public class Player : MonoBehaviour
     [Header("Player Status")]
     [SerializeField] private float _attackPower = 10f;   // 공격력
     [SerializeField] private float _moveSpeed = 1f;      // 이동 속도
-    [SerializeField] private float _maxHealth = 100f;    // 최대 체력
+    [SerializeField] private float _maxHealth = 500f;    // 최대 체력
     [SerializeField] private float _currentHealth;       // 현재 체력
     [SerializeField] private bool _isGrounded = true;
     [SerializeField] private float _jumpForce = 5f;
     [SerializeField] private  float _curBattery = 100;
-    [SerializeField] private int _curBullets;
+    [SerializeField] private int _curBullets;   
     
     [SerializeField] private float[] _batteryReductionAmount =
     {
@@ -82,6 +82,8 @@ public class Player : MonoBehaviour
         _currentHealth = _maxHealth;
         _curPlayerStatus = 0;
         Cursor.visible = false;
+        
+
     }
 
     private void Start()
@@ -118,7 +120,8 @@ public class Player : MonoBehaviour
                 _lastAttackTime = Time.time;
                 Camera cam = _camera.GetComponent<Camera>();
                 Ray ray  = cam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-                
+                Debug.DrawRay(ray.origin, ray.direction * _attackRaycastDist, Color.red, 1f);
+
                 if (Physics.Raycast(ray, out RaycastHit hit, _attackRaycastDist, _attackRaycastMask))
                 {
                     //Debug.Log($"[Player] 공격 목표: {hit.collider.name} @ {hit.point}");
@@ -143,7 +146,7 @@ public class Player : MonoBehaviour
         float mouseY = Input.GetAxis("Mouse Y") * _mouseSensitivity;
 
         _cameraPitch -= mouseY;
-        _cameraPitch = Mathf.Clamp(_cameraPitch, -45f, 45f);
+        _cameraPitch = Mathf.Clamp(_cameraPitch, -60f, 60f);
 
         _camera.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
@@ -177,31 +180,25 @@ public class Player : MonoBehaviour
         {
             Vector3 targetPos;
             if (_isShifting)
-            {
-                targetPos = _rb.position + _moveDirection * 
-                    (_moveSpeed* _speedPerLevel[_curSpeedLevel - 1] * Time.fixedDeltaTime);
-            }
+                targetPos = _rb.position + _moveDirection * (_moveSpeed * _speedPerLevel[_curSpeedLevel - 1] * Time.fixedDeltaTime);
             else
-            {
                 targetPos = _rb.position + _moveDirection * (_moveSpeed * Time.fixedDeltaTime);
-            }
-            _rb.MovePosition(Vector3.Lerp(_rb.position, targetPos, 0.8f));
-            _animator?.SetBool("isMoving", true);
-        }
-        else
-        {
-            _animator?.SetBool("isMoving", false);
+
+            Vector3 nextPos = Vector3.Lerp(_rb.position, targetPos, 0.8f);
+            nextPos.y = _rb.position.y; // 🧩 점프 시 Y축은 물리에 맡김
+            _rb.MovePosition(nextPos);
         }
     }
+
     
     private void Jump()
     {
         _rb.AddForce(Vector3.up * _jumpForce, ForceMode.Impulse);
         _isGrounded = false;
-        _animator?.SetTrigger("jump");
+        //_animator?.SetTrigger("jump");
     }
     
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
@@ -261,7 +258,7 @@ public class Player : MonoBehaviour
 
             foreach (Collider col in hits)
             {
-                IEnemy enemy = col.GetComponent<IEnemy>();
+                IEnemy enemy = col.GetComponentInParent<IEnemy>();
                 if (enemy != null)
                 {
                     Vector3 direction = (col.transform.position - transform.position).normalized;
@@ -281,10 +278,9 @@ public class Player : MonoBehaviour
         }
         else
         {
-
             if (isHit)
             {
-                IEnemy enemy = hit.collider.GetComponent<IEnemy>();
+                IEnemy enemy = hit.collider.GetComponentInParent<IEnemy>();
                 if (enemy != null)
                 {
                     float distance = Vector3.Distance(transform.position, hit.point);
@@ -363,7 +359,7 @@ public class Player : MonoBehaviour
             false);
         _currentWeaponModel.transform.localPosition = new Vector3(0, 0.25f, 1);
         _currentWeaponModel.transform.localRotation = Quaternion.identity;
-        // _currentWeaponModel.transform.localScale = new Vector3(1, 1, 1);
+        //_currentWeaponModel.transform.localScale = new Vector3(1, 1, 1);
 
         // 공격력, 모션, 사거리 등 세팅
         _attackPower = weaponData.baseAttackPower;
@@ -388,7 +384,7 @@ public class Player : MonoBehaviour
             yield return new WaitForSeconds(1f);
             var reductionAmount = _curBattery * _batteryReductionAmount[_curPlayerStatus];
             if (_isShifting) reductionAmount *= 2f;
-            Debug.Log("[Player] 배터리 감소: " + reductionAmount);
+            //Debug.Log("[Player] 배터리 감소: " + reductionAmount);
             _curBattery -= reductionAmount;
              gm.SetGameScore();
         }
