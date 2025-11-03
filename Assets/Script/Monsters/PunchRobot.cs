@@ -4,14 +4,14 @@ using UnityEngine.AI;
 public class PunchRobot : MonoBehaviour, IEnemy
 {
     [Header("Monster Status")]
-    [SerializeField] private float _maxHp = 50f;
+    [SerializeField] private float _maxHp = 50.0f;
     [SerializeField] private float _curHp;
-    [SerializeField] private float _damage = 10f;
+    [SerializeField] private float _damage = 10.0f;
     [SerializeField] private float _attackCastingTime = 0.5f;
     [SerializeField] private float _attackCooldown = 1.0f;
     [SerializeField] private float _aggravationRange = 5.5f;
-    [SerializeField] private float _attackRange = 1f;
-    [SerializeField] private float _moveSpeed = 1f;
+    [SerializeField] private float _attackRange = 1.0f;
+    [SerializeField] private float _moveSpeed = 1.0f;
 
     [SerializeField] private Player _player;
     private bool _isAttacking = false;
