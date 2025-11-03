@@ -14,6 +14,8 @@ public class PunchRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _moveSpeed = 1f;
 
     [SerializeField] private Player _player;
+    private bool _isAttacking = false;
+    private bool _isCoolingDown = false;
     private NavMeshAgent _agent;
 
     void Start()
@@ -128,12 +130,46 @@ public class PunchRobot : MonoBehaviour, IEnemy
 
     private void AttackPlayer()
     {
-        _agent.isStopped = true;
-        _player?.TakeDamage(_damage);
-        Debug.Log($"PunchRobot attacked player for {_damage} damage!");
-        Destroy(gameObject);
+        if (_isAttacking || _isCoolingDown) return;
+        StartCoroutine(AttackRoutine());
     }
 
+    private System.Collections.IEnumerator AttackRoutine()
+    {
+        _isAttacking = true;
+        _agent.isStopped = true;
+        
+        Debug.Log("[PunchRobot] Start AttackCasting");
+        yield return new WaitForSeconds(_attackCastingTime);
+
+        float dist = Vector3.Distance(transform.position, _player.transform.position);
+        if (_player == null || dist > _attackRange * 1.05f) 
+        {
+            CancelAttack();
+            yield break;
+        }
+        
+        _player.TakeDamage(_damage);
+        Debug.Log($"PunchRobot attacked player for {_damage} damage!");
+
+        _isAttacking = false;
+        _isCoolingDown = true;
+        _agent.isStopped = false;
+        Debug.Log($"PunchRobot Start Cooldown");
+        yield return new WaitForSeconds(_attackCooldown);
+
+        Debug.Log($"PunchRobot End Cooldown");
+        _isCoolingDown = false;
+
+    }
+    
+    public void CancelAttack()
+    {
+        Debug.Log($"PunchRobot Fail Attack");
+        _isAttacking = false;
+        _agent.isStopped = false;
+    }
+    
     public void TakeDamage(float dmg)
     {
         _curHp -= dmg;
