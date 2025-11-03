@@ -139,7 +139,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
         _isAttacking = true;
         _agent.isStopped = true;
         
-        Debug.Log("[PunchRobot] Start AttackCasting");
+        Debug.Log($"[PunchRobot] Start AttackCasting");
         yield return new WaitForSeconds(_attackCastingTime);
 
         float dist = Vector3.Distance(transform.position, _player.transform.position);
@@ -150,15 +150,15 @@ public class PunchRobot : MonoBehaviour, IEnemy
         }
         
         _player.TakeDamage(_damage);
-        Debug.Log($"PunchRobot attacked player for {_damage} damage!");
+        // Debug.Log($"PunchRobot attacked player for {_damage} damage!");
 
         _isAttacking = false;
         _isCoolingDown = true;
         _agent.isStopped = false;
-        Debug.Log($"PunchRobot Start Cooldown");
+        // Debug.Log($"PunchRobot Start Cooldown");
         yield return new WaitForSeconds(_attackCooldown);
 
-        Debug.Log($"PunchRobot End Cooldown");
+        // Debug.Log($"PunchRobot End Cooldown");
         _isCoolingDown = false;
 
     }
