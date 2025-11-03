@@ -14,7 +14,7 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isGrounded = true;
     [SerializeField] private float _jumpForce = 5f;
     [SerializeField] private  float _curBattery = 100;
-    [SerializeField] private int _curBullets;
+    [SerializeField] private int _curBullets;   
     
     [SerializeField] private float[] _batteryReductionAmount =
     {
@@ -258,7 +258,7 @@ public class Player : MonoBehaviour
 
             foreach (Collider col in hits)
             {
-                IEnemy enemy = col.GetComponent<IEnemy>();
+                IEnemy enemy = col.GetComponentInParent<IEnemy>();
                 if (enemy != null)
                 {
                     Vector3 direction = (col.transform.position - transform.position).normalized;
