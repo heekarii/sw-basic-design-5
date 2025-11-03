@@ -363,7 +363,7 @@ public class Player : MonoBehaviour
             false);
         _currentWeaponModel.transform.localPosition = new Vector3(0, 0.25f, 1);
         _currentWeaponModel.transform.localRotation = Quaternion.identity;
-        _currentWeaponModel.transform.localScale = new Vector3(1, 1, 1);
+        // _currentWeaponModel.transform.localScale = new Vector3(1, 1, 1);
 
         // 공격력, 모션, 사거리 등 세팅
         _attackPower = weaponData.baseAttackPower;
