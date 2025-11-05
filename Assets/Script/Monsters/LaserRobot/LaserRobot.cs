@@ -8,7 +8,7 @@ public class LaserRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _curHp;
     [SerializeField] private float _damage = 10.0f;
     [SerializeField] private float _attackCastingTime = 0.5f;
-    [SerializeField] private float _attackCooldown = 1.0f;
+    [SerializeField] private float _attackCooldown = 1.5f;
     [SerializeField] private float _aggravationRange = 6.5f;
     [SerializeField] private float _attackRange = 5.5f;
     [SerializeField] private float _moveSpeed = 1.3f;
