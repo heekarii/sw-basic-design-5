@@ -157,47 +157,48 @@ public class LaserRobot : MonoBehaviour, IEnemy
         _isAttacking = true;
         _agent.isStopped = true;
 
-        // 1) 캐스팅 시작 시점의 "발사 방향" 스냅샷(트래킹 금지)
-        Vector3 lockedDir = (_eyeMuzzle != null) ? _eyeMuzzle.forward : transform.forward;
+        // NavMeshAgent의 회전 제어 끄기 (공격 중엔 우리가 직접 조종)
+        _agent.updateRotation = false;
 
-        // 선택: 캐스팅 동안 몸을 그 방향으로 부드럽게 정렬하고 싶을 때
-        // (상하 회전은 빼고 수평만 맞춤)
-        Quaternion startRot  = transform.rotation;
-        Vector3 flatDir      = new Vector3(lockedDir.x, 0f, lockedDir.z);
-        Quaternion targetRot = flatDir.sqrMagnitude > 0.0001f
-            ? Quaternion.LookRotation(flatDir)
-            : transform.rotation;
+        // 1️⃣ 공격 시작 시점의 '고정 방향' 스냅샷
+        Vector3 lockedDir = (_player != null)
+            ? (_player.transform.position - transform.position)
+            : transform.forward;
+        lockedDir.y = 0f;
+        lockedDir.Normalize();
 
+        // 몸을 스냅샷 방향으로 즉시 정렬
+        if (lockedDir.sqrMagnitude > 0.001f)
+            transform.rotation = Quaternion.LookRotation(lockedDir);
+
+        // (선택) 캐스팅 타임 동안 대기
         float elapsed = 0f;
         while (elapsed < _attackCastingTime)
         {
             elapsed += Time.deltaTime;
-
-            // ※ “그 방향만 보기”를 원하면 아래 줄 유지,
-            //    "가만히 서있게" 하고 싶으면 아래 줄을 주석처리하면 됨.
-            transform.rotation = Quaternion.Slerp(
-                startRot, targetRot,
-                Mathf.Clamp01(elapsed / _attackCastingTime)
-            );
-
             yield return null;
         }
 
-        // 2) 따–당(버스트) 발사: 한 눈에서 여러 발, 고정 방향으로 직진
+        // 2️⃣ 따당 2발 고정 방향으로 발사
         for (int i = 0; i < _burstCount; i++)
         {
             FireLaser(_eyeMuzzle, Vector3.zero);
-            if (i < _burstCount - 1)
+            if (i < _burstCount - 1 && i + 1 != _burstCount)   
                 yield return new WaitForSeconds(_betweenShotDelay);
         }
 
-        // CoolDowning
-        _isAttacking   = false;
+        // 3️⃣ 공격 종료 → 다시 회전/추적 복구
+        _agent.updateRotation = true; // NavMeshAgent 회전 복원
+        _agent.isStopped = false;     // 이동 재개
+        _isAttacking = false;
         _isCoolingDown = true;
-        _agent.isStopped = false;
+
+        // 쿨다운 대기
         yield return new WaitForSeconds(_attackCooldown);
+
         _isCoolingDown = false;
     }
+
 
     
     public void TakeDamage(float dmg)
