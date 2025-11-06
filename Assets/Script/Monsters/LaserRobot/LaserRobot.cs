@@ -7,10 +7,10 @@ public class LaserRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _maxHp = 30.0f;
     [SerializeField] private float _curHp;
     [SerializeField] private float _damage = 10.0f;
-    [SerializeField] private float _attackCastingTime = 0.5f;
-    [SerializeField] private float _attackCooldown = 1.5f;
-    [SerializeField] private float _aggravationRange = 6.5f;
-    [SerializeField] private float _attackRange = 5.5f;
+    [SerializeField] private float _attackCastingTime = 0f;
+    [SerializeField] private float _attackCooldown = 2.5f;
+    [SerializeField] private float _aggravationRange = 15.9f;
+    [SerializeField] private float _attackRange = 12.9f;
     [SerializeField] private float _moveSpeed = 1.3f;
     [SerializeField] private Player _player;
     [SerializeField] private Transform _eyeMuzzle;
@@ -18,7 +18,7 @@ public class LaserRobot : MonoBehaviour, IEnemy
     
     [Header("Burst Settings")]
     [SerializeField] private int _burstCount = 2;
-    [SerializeField] private float _betweenShotDelay = 0.5f;
+    [SerializeField] private float _betweenShotDelay = 0.3f;
     
     
     private bool _isAttacking = false;
