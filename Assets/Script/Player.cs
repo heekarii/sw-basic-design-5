@@ -14,7 +14,8 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isGrounded = true;
     [SerializeField] private float _jumpForce = 5f;
     [SerializeField] private  float _curBattery = 100;
-    [SerializeField] private int _curBullets;   
+    [SerializeField] private int _curBullets;
+    [SerializeField] private bool _isSlowed = false;
     
     [SerializeField] private float[] _batteryReductionAmount =
     {
@@ -35,7 +36,6 @@ public class Player : MonoBehaviour
         1.5f,
         1.7f
     };
-    
     
     [Header("Combat")] 
     [SerializeField] private LayerMask _attackRaycastMask;
@@ -62,7 +62,8 @@ public class Player : MonoBehaviour
     private Animator _animator;
     private WeaponManager _wm;
     private GameManager _gm;
-
+    
+        
     private Transform _weaponSocket;
     
     private Vector3 _moveDirection;
@@ -82,8 +83,6 @@ public class Player : MonoBehaviour
         _currentHealth = _maxHealth;
         _curPlayerStatus = 0;
         Cursor.visible = false;
-        
-
     }
 
     private void Start()
@@ -106,7 +105,6 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
-
     }
     private void Update()
     {
@@ -328,6 +326,27 @@ public class Player : MonoBehaviour
         Debug.Log($"[Player] 피격됨: {damage}, 남은 체력: {_currentHealth}");
     }
 
+    /// <summary>
+    /// 바람에 맞을 때 이동속도 20% 감소
+    /// </summary>
+    public void ApplyWindSlow(bool enable)
+    {
+        // 최초로 슬로우 상태 진입
+        if (enable && !_isSlowed)
+        {
+            _isSlowed = true;
+            _moveSpeed *= 0.8f; // 20% 감소
+            Debug.Log("[Player] 바람 감속 적용");
+        }
+        // 바람 범위를 벗어나면 원래 속도 복원
+        else if (!enable && _isSlowed)
+        {
+            _isSlowed = false;
+            _moveSpeed = _speedPerLevel[_curSpeedLevel];
+            Debug.Log("[Player] 바람 감속 해제");
+        }
+    }
+    
     /// <summary>
     /// 
     /// </summary>
