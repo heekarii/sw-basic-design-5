@@ -12,8 +12,15 @@ public class LaserRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _aggravationRange = 6.5f;
     [SerializeField] private float _attackRange = 5.5f;
     [SerializeField] private float _moveSpeed = 1.3f;
-
     [SerializeField] private Player _player;
+    [SerializeField] private Transform _eyeMuzzle;
+    [SerializeField] private GameObject _laserProjectilePrefab;
+    
+    [Header("Burst Settings")]
+    [SerializeField] private int _burstCount = 2;              // 따당=2발
+    [SerializeField] private float _betweenShotDelay = 1f;     // 1초 간격
+    
+    
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
     private NavMeshAgent _agent;
@@ -128,6 +135,17 @@ public class LaserRobot : MonoBehaviour, IEnemy
         return false;
     }
 
+    private void FireLaser(Transform muzzle, Vector3 targetPoint)
+    {
+        if (!muzzle || !_laserProjectilePrefab) return;
+
+        Vector3 dir = (targetPoint - muzzle.position).normalized;
+
+        var go = Instantiate(_laserProjectilePrefab, muzzle.position, Quaternion.LookRotation(dir));
+        if (go.TryGetComponent(out LaserProjectile proj))
+            proj.Init(dir, _player);
+    }
+    
     private void AttackPlayer()
     {
         if (_isAttacking || _isCoolingDown) return;
@@ -138,36 +156,43 @@ public class LaserRobot : MonoBehaviour, IEnemy
     {
         _isAttacking = true;
         _agent.isStopped = true;
-        
-        Debug.Log($"[LaserRobot] Start AttackCasting");
-        yield return new WaitForSeconds(_attackCastingTime);
 
-        float dist = Vector3.Distance(transform.position, _player.transform.position);
-        if (_player == null || dist > _attackRange * 1.05f) 
+        // 1) 캐스팅 시작 시점의 '조준 지점' 스냅샷 (트래킹 금지)
+        Vector3 targetPoint = (_player != null) ? _player.transform.position
+            : transform.position + transform.forward * _attackRange;
+
+        // 2) 캐스팅 동안은 스냅샷 지점만 향하게 부드럽게 회전
+        float elapsed = 0f;
+        while (elapsed < _attackCastingTime)
         {
-            CancelAttack();
-            yield break;
-        }
-        
-        _player.TakeDamage(_damage);
-        // Debug.Log($"LaserRobot attacked player for {_damage} damage!");
+            elapsed += Time.deltaTime;
 
+            Vector3 dir = targetPoint - transform.position;
+            dir.y = 0f;
+            if (dir.sqrMagnitude > 0.0001f)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(dir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 10f * Time.deltaTime);
+            }
+            yield return null;
+        }
+
+        // 3) 따–당: 한 눈에서 2발, 1초 간격으로 발사
+        for (int i = 0; i < _burstCount; i++)
+        {
+            FireLaser(_eyeMuzzle, targetPoint);
+
+            // 마지막 발 전까지만 간격 대기
+            if (i < _burstCount - 1)
+                yield return new WaitForSeconds(_betweenShotDelay);
+        }
+
+        // 4) 쿨다운 (쿨다운 동안 이동 가능)
         _isAttacking = false;
         _isCoolingDown = true;
         _agent.isStopped = false;
-        // Debug.Log($"LaserRobot Start Cooldown");
         yield return new WaitForSeconds(_attackCooldown);
-
-        // Debug.Log($"LaserRobot End Cooldown");
         _isCoolingDown = false;
-
-    }
-    
-    public void CancelAttack()
-    {
-        Debug.Log($"LaserRobot Fail Attack");
-        _isAttacking = false;
-        _agent.isStopped = false;
     }
     
     public void TakeDamage(float dmg)
