@@ -137,7 +137,6 @@ public class AirRobot : MonoBehaviour, IEnemy
             {
                 Debug.Log("[AirRobot] WindEffect 해제 (플레이어 이탈)");
                 Destroy(_activeWindFX);
-                _player.ApplyWindSlow(false);
                 _activeWindFX = null;
             }
         }
