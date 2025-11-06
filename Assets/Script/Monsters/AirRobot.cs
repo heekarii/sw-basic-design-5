@@ -7,8 +7,8 @@ public class AirRobot : MonoBehaviour, IEnemy
     [Header("Settings")]
     [SerializeField] private float _maxHealth = 40;
     [SerializeField] private float _currentHealth;
-    [SerializeField] private float _detectDistance = 7.5f; // 활성화 거리
-    [SerializeField] private float _windLength = 7.5f;       // 바람 길이 (앞으로 뻗는 거리)
+    [SerializeField] private float _detectDistance = 15.5f; // 활성화 거리
+    [SerializeField] private float _windLength = 15.5f;       // 바람 길이 (앞으로 뻗는 거리)
     [SerializeField] private float _windRadius = 1.5f;       // 바람 반지름 (원통형 범위)
     [FormerlySerializedAs("windEffectPrefab")] 
     [SerializeField] private GameObject _windEffectPrefab;

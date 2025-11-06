@@ -519,11 +519,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 705cd77f1e5dd0440945a9047dc015ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _detectDistance: 7.5
-  _attackRange: 5
   _maxHealth: 40
+  _currentHealth: 0
+  _detectDistance: 15.5
+  _windLength: 15.5
+  _windRadius: 1.5
   _windEffectPrefab: {fileID: 4509655623431386125, guid: 0d325efabdfc48743b652d6ee526362d, type: 3}
-  windOrigin: {fileID: 0}
+  _windOrigin: {fileID: 0}
+  _zeron: {fileID: 0}
+  _player: {fileID: 0}
+  _isActive: 0
+  _activeWindFX: {fileID: 0}
 --- !u!1 &7749859764735200053
 GameObject:
   m_ObjectHideFlags: 0
