@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class LaserProjectile : MonoBehaviour
 {
-    [SerializeField] private float _speed = 2.5f;   // 6124
+    [SerializeField] private float _speed = 6f;  
     [SerializeField] private float _lifeTime = 5f;
-    [SerializeField] private float _damage = 10f;   // 6123
+    [SerializeField] private float _damage = 10f;  
 
     private Vector3 _dir;        // 발사 방향 (정규화)
     private Player _target;      // ← 태그 대신 '플레이어 참조'를 직접 갖고 다님
