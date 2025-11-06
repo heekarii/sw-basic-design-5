@@ -27,8 +27,7 @@ public class LaserProjectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (_hit) return;
-
-        // 태그 비교 없이 '내 목표'와 같은 오브젝트인가만 확인
+        
         if (_target != null && other.gameObject == _target.gameObject)
         {
             _target.TakeDamage(_damage);

@@ -17,8 +17,8 @@ public class LaserRobot : MonoBehaviour, IEnemy
     [SerializeField] private GameObject _laserProjectilePrefab;
     
     [Header("Burst Settings")]
-    [SerializeField] private int _burstCount = 2;              // 따당=2발
-    [SerializeField] private float _betweenShotDelay = 1f;     // 1초 간격
+    [SerializeField] private int _burstCount = 2;
+    [SerializeField] private float _betweenShotDelay = 0.5f;
     
     
     private bool _isAttacking = false;
@@ -139,9 +139,9 @@ public class LaserRobot : MonoBehaviour, IEnemy
     {
         if (!muzzle || !_laserProjectilePrefab) return;
 
-        Vector3 dir = (targetPoint - muzzle.position).normalized;
+        Vector3 dir = muzzle.forward;
 
-        var go = Instantiate(_laserProjectilePrefab, muzzle.position, Quaternion.LookRotation(dir));
+        var go = Instantiate(_laserProjectilePrefab, muzzle.position, muzzle.rotation);
         if (go.TryGetComponent(out LaserProjectile proj))
             proj.Init(dir, _player);
     }
@@ -157,43 +157,48 @@ public class LaserRobot : MonoBehaviour, IEnemy
         _isAttacking = true;
         _agent.isStopped = true;
 
-        // 1) 캐스팅 시작 시점의 '조준 지점' 스냅샷 (트래킹 금지)
-        Vector3 targetPoint = (_player != null) ? _player.transform.position
-            : transform.position + transform.forward * _attackRange;
+        // 1) 캐스팅 시작 시점의 "발사 방향" 스냅샷(트래킹 금지)
+        Vector3 lockedDir = (_eyeMuzzle != null) ? _eyeMuzzle.forward : transform.forward;
 
-        // 2) 캐스팅 동안은 스냅샷 지점만 향하게 부드럽게 회전
+        // 선택: 캐스팅 동안 몸을 그 방향으로 부드럽게 정렬하고 싶을 때
+        // (상하 회전은 빼고 수평만 맞춤)
+        Quaternion startRot  = transform.rotation;
+        Vector3 flatDir      = new Vector3(lockedDir.x, 0f, lockedDir.z);
+        Quaternion targetRot = flatDir.sqrMagnitude > 0.0001f
+            ? Quaternion.LookRotation(flatDir)
+            : transform.rotation;
+
         float elapsed = 0f;
         while (elapsed < _attackCastingTime)
         {
             elapsed += Time.deltaTime;
 
-            Vector3 dir = targetPoint - transform.position;
-            dir.y = 0f;
-            if (dir.sqrMagnitude > 0.0001f)
-            {
-                Quaternion targetRot = Quaternion.LookRotation(dir);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, 10f * Time.deltaTime);
-            }
+            // ※ “그 방향만 보기”를 원하면 아래 줄 유지,
+            //    "가만히 서있게" 하고 싶으면 아래 줄을 주석처리하면 됨.
+            transform.rotation = Quaternion.Slerp(
+                startRot, targetRot,
+                Mathf.Clamp01(elapsed / _attackCastingTime)
+            );
+
             yield return null;
         }
 
-        // 3) 따–당: 한 눈에서 2발, 1초 간격으로 발사
+        // 2) 따–당(버스트) 발사: 한 눈에서 여러 발, 고정 방향으로 직진
         for (int i = 0; i < _burstCount; i++)
         {
-            FireLaser(_eyeMuzzle, targetPoint);
-
-            // 마지막 발 전까지만 간격 대기
+            FireLaser(_eyeMuzzle, Vector3.zero);
             if (i < _burstCount - 1)
                 yield return new WaitForSeconds(_betweenShotDelay);
         }
 
-        // 4) 쿨다운 (쿨다운 동안 이동 가능)
-        _isAttacking = false;
+        // CoolDowning
+        _isAttacking   = false;
         _isCoolingDown = true;
         _agent.isStopped = false;
         yield return new WaitForSeconds(_attackCooldown);
         _isCoolingDown = false;
     }
+
     
     public void TakeDamage(float dmg)
     {

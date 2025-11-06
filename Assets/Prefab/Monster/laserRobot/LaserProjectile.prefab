@@ -145,6 +145,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6352525848851531223}
+  - component: {fileID: 5297267240433029464}
   m_Layer: 0
   m_Name: LaserProjectile
   m_TagString: Untagged
@@ -168,3 +169,18 @@ Transform:
   - {fileID: 1019605180640249708}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5297267240433029464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6720638304031163954}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 554e8a457d5ce8449a9eab49bcd7ff03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 2.5
+  _lifeTime: 5
+  _damage: 10
