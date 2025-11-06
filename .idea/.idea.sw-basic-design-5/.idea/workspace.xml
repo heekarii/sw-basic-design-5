@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/laserRobot/LaserProjectile.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/laserRobot/LaserProjectile.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/LaserRobot/LaserRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/LaserRobot/LaserRobot.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

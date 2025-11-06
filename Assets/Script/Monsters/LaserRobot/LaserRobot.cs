@@ -11,6 +11,7 @@ public class LaserRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _attackCooldown = 2.5f;
     [SerializeField] private float _aggravationRange = 15.9f;
     [SerializeField] private float _attackRange = 12.9f;
+    [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절
     [SerializeField] private float _moveSpeed = 1.3f;
     [SerializeField] private Player _player;
     [SerializeField] private Transform _eyeMuzzle;
@@ -120,6 +121,9 @@ public class LaserRobot : MonoBehaviour, IEnemy
       //  Debug.Log($"[LaserRobot] remainingDist={navDist:F2}, worldDist={worldDist:F2}, pathStatus={_agent.pathStatus}, hasPath={_agent.hasPath}");
 
         if (_curHp <= 0f) Die();
+        
+        if (!_isAttacking) 
+            LookAtPlayerSmooth();
     }
 
 
@@ -145,6 +149,25 @@ public class LaserRobot : MonoBehaviour, IEnemy
         if (go.TryGetComponent(out LaserProjectile proj))
             proj.Init(dir, _player);
     }
+
+    private void LookAtPlayerSmooth()
+    {
+        if (_player == null) return;
+
+        // 플레이어와의 방향 계산 (수평 회전만)
+        Vector3 dir = _player.transform.position - transform.position;
+        dir.y = 0f;
+        if (dir.sqrMagnitude < 0.001f) return;
+
+        // 부드럽게 회전
+        Quaternion targetRot = Quaternion.LookRotation(dir);
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRot,
+            _lookAtTurnSpeed * Time.deltaTime
+        );
+    }
+
     
     private void AttackPlayer()
     {
@@ -170,14 +193,6 @@ public class LaserRobot : MonoBehaviour, IEnemy
         // 몸을 스냅샷 방향으로 즉시 정렬
         if (lockedDir.sqrMagnitude > 0.001f)
             transform.rotation = Quaternion.LookRotation(lockedDir);
-
-        // (선택) 캐스팅 타임 동안 대기
-        float elapsed = 0f;
-        while (elapsed < _attackCastingTime)
-        {
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
 
         // 2️⃣ 따당 2발 고정 방향으로 발사
         for (int i = 0; i < _burstCount; i++)
