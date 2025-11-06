@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int _curSpeedLevel = 1;
     [SerializeField] private bool _isShifting = false;
     
-    [SerializeField] private float[] _speedPerLevel =
+    [FormerlySerializedAs("_speedPerLevel")] [SerializeField] private float[] _speedWithBoostPerLevel =
     {
         1.3f,
         1.5f,
@@ -178,7 +178,7 @@ public class Player : MonoBehaviour
         {
             Vector3 targetPos;
             if (_isShifting)
-                targetPos = _rb.position + _moveDirection * (_moveSpeed * _speedPerLevel[_curSpeedLevel - 1] * Time.fixedDeltaTime);
+                targetPos = _rb.position + _moveDirection * (_moveSpeed * _speedWithBoostPerLevel[_curSpeedLevel - 1] * Time.fixedDeltaTime);
             else
                 targetPos = _rb.position + _moveDirection * (_moveSpeed * Time.fixedDeltaTime);
 
@@ -342,7 +342,7 @@ public class Player : MonoBehaviour
         else if (!enable && _isSlowed)
         {
             _isSlowed = false;
-            _moveSpeed = _speedPerLevel[_curSpeedLevel];
+            _moveSpeed = 1f;
             Debug.Log("[Player] 바람 감속 해제");
         }
     }

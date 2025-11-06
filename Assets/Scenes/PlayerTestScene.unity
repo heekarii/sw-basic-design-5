@@ -835,12 +835,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 330585546}
     - target: {fileID: 2889607393435467135, guid: 765737fed2abae0439bc7543861fdadf, type: 3}
+      propertyPath: _moveSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2889607393435467135, guid: 765737fed2abae0439bc7543861fdadf, type: 3}
       propertyPath: _attackRaycastMask.m_Bits
       value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7119302117570590318, guid: 765737fed2abae0439bc7543861fdadf, type: 3}
       propertyPath: m_Name
       value: Zeron_Root (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7119302117570590318, guid: 765737fed2abae0439bc7543861fdadf, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8367027546914371287, guid: 765737fed2abae0439bc7543861fdadf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -881,6 +889,10 @@ PrefabInstance:
     - target: {fileID: 8367027546914371287, guid: 765737fed2abae0439bc7543861fdadf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8777540611825799299, guid: 765737fed2abae0439bc7543861fdadf, type: 3}
+      propertyPath: m_Mass
+      value: 1000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1683,33 +1695,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 7601444662767756481, guid: 461571f023f72e14ba6bc5fa2e410c47, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2021506479}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 461571f023f72e14ba6bc5fa2e410c47, type: 3}
---- !u!1 &2021506478 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7601444662767756481, guid: 461571f023f72e14ba6bc5fa2e410c47, type: 3}
-  m_PrefabInstance: {fileID: 2021506477}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2021506479
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2021506478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 705cd77f1e5dd0440945a9047dc015ac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _detectDistance: 7.5
-  _attackRange: 5
-  _maxHealth: 40
-  _windEffectPrefab: {fileID: 0}
-  windOrigin: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
