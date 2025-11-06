@@ -65,8 +65,10 @@ public class LaserRobot : MonoBehaviour, IEnemy
 
     void Update()
     {
+        
         if (_player == null || _agent == null) return;
-
+        
+        
         // NavMesh 이탈 복구
         if (!_agent.isOnNavMesh)
         {
@@ -87,6 +89,10 @@ public class LaserRobot : MonoBehaviour, IEnemy
         float worldDist = Vector3.Distance(transform.position, _player.transform.position);
         // ---------------------------------
 
+        // 인식범위 밖의 플레이어가 아니라면 계속 쳐다보게
+        if (!_isAttacking && worldDist <= _aggravationRange)   
+            LookAtPlayer();
+        
     // ✅ 공격 조건: 실제 거리 기반 + 정지 상태 확인
         if (worldDist <= _attackRange && _agent.velocity.sqrMagnitude < 0.1f)
         {
@@ -121,9 +127,6 @@ public class LaserRobot : MonoBehaviour, IEnemy
       //  Debug.Log($"[LaserRobot] remainingDist={navDist:F2}, worldDist={worldDist:F2}, pathStatus={_agent.pathStatus}, hasPath={_agent.hasPath}");
 
         if (_curHp <= 0f) Die();
-        
-        if (!_isAttacking) 
-            LookAtPlayerSmooth();
     }
 
 
@@ -150,22 +153,19 @@ public class LaserRobot : MonoBehaviour, IEnemy
             proj.Init(dir, _player);
     }
 
-    private void LookAtPlayerSmooth()
+    private void LookAtPlayer()
     {
         if (_player == null) return;
 
-        // 플레이어와의 방향 계산 (수평 회전만)
-        Vector3 dir = _player.transform.position - transform.position;
-        dir.y = 0f;
-        if (dir.sqrMagnitude < 0.001f) return;
-
-        // 부드럽게 회전
-        Quaternion targetRot = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.Slerp(
-            transform.rotation,
-            targetRot,
-            _lookAtTurnSpeed * Time.deltaTime
-        );
+        Vector3 lockedDir = (_player != null)
+            ? (_player.transform.position - transform.position)
+            : transform.forward;
+        lockedDir.y = 0f;
+        lockedDir.Normalize();
+        
+        // 몸을 스냅샷 방향으로 즉시 정렬
+        if (lockedDir.sqrMagnitude > 0.001f)
+            transform.rotation = Quaternion.LookRotation(lockedDir);
     }
 
     
@@ -179,38 +179,20 @@ public class LaserRobot : MonoBehaviour, IEnemy
     {
         _isAttacking = true;
         _agent.isStopped = true;
-
-        // NavMeshAgent의 회전 제어 끄기 (공격 중엔 우리가 직접 조종)
-        _agent.updateRotation = false;
-
-        // 1️⃣ 공격 시작 시점의 '고정 방향' 스냅샷
-        Vector3 lockedDir = (_player != null)
-            ? (_player.transform.position - transform.position)
-            : transform.forward;
-        lockedDir.y = 0f;
-        lockedDir.Normalize();
-
-        // 몸을 스냅샷 방향으로 즉시 정렬
-        if (lockedDir.sqrMagnitude > 0.001f)
-            transform.rotation = Quaternion.LookRotation(lockedDir);
-
-        // 2️⃣ 따당 2발 고정 방향으로 발사
+        
+        LookAtPlayer();
+        
         for (int i = 0; i < _burstCount; i++)
         {
             FireLaser(_eyeMuzzle, Vector3.zero);
             if (i < _burstCount - 1 && i + 1 != _burstCount)   
                 yield return new WaitForSeconds(_betweenShotDelay);
         }
-
-        // 3️⃣ 공격 종료 → 다시 회전/추적 복구
-        _agent.updateRotation = true; // NavMeshAgent 회전 복원
-        _agent.isStopped = false;     // 이동 재개
+        
+        _agent.isStopped = false;
         _isAttacking = false;
         _isCoolingDown = true;
-
-        // 쿨다운 대기
         yield return new WaitForSeconds(_attackCooldown);
-
         _isCoolingDown = false;
     }
 
