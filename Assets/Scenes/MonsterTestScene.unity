@@ -609,6 +609,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -2426646934839334387, guid: 309b19545591296458639d2f1ead78ff, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4225664151131126698, guid: 309b19545591296458639d2f1ead78ff, type: 3}
       propertyPath: _attackCastingTime
       value: 0
