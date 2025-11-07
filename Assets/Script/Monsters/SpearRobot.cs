@@ -13,6 +13,7 @@ public class SpearRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _aggravationRange = 12.25f;
     [SerializeField] private float _attackRange = 5.25f;
     [SerializeField] private float _moveSpeed = 5.0f;
+    [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절
 
     [SerializeField] private Player _player;
     private bool _isAttacking = false;
@@ -80,6 +81,10 @@ public class SpearRobot : MonoBehaviour, IEnemy
         float worldDist = Vector3.Distance(transform.position, _player.transform.position);
         // ---------------------------------
 
+        // 인식범위 밖의 플레이어가 아니라면 계속 쳐다보게
+        if (worldDist <= _aggravationRange)   
+            LookAtPlayer();
+        
     // ✅ 공격 조건: 실제 거리 기반 + 정지 상태 확인
         if (worldDist <= _attackRange && _agent.velocity.sqrMagnitude < 0.1f)
         {
@@ -129,6 +134,21 @@ public class SpearRobot : MonoBehaviour, IEnemy
         return false;
     }
 
+    private void LookAtPlayer()
+    {
+        if (_player == null) return;
+
+        Vector3 lockedDir = (_player != null)
+            ? (_player.transform.position - transform.position)
+            : transform.forward;
+        lockedDir.y = 0f;
+        lockedDir.Normalize();
+        
+        // 몸을 스냅샷 방향으로 즉시 정렬
+        if (lockedDir.sqrMagnitude > 0.001f)
+            transform.rotation = Quaternion.LookRotation(lockedDir);
+    }
+    
     private void AttackPlayer()
     {
         if (_isAttacking || _isCoolingDown) return;
