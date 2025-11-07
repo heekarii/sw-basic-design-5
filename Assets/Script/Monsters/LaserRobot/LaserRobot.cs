@@ -1,5 +1,8 @@
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.AI;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 public class LaserRobot : MonoBehaviour, IEnemy
 {
@@ -90,7 +93,7 @@ public class LaserRobot : MonoBehaviour, IEnemy
         // ---------------------------------
 
         // 인식범위 밖의 플레이어가 아니라면 계속 쳐다보게
-        if (!_isAttacking && worldDist <= _aggravationRange)   
+        if (worldDist <= _aggravationRange)   
             LookAtPlayer();
         
     // ✅ 공격 조건: 실제 거리 기반 + 정지 상태 확인
@@ -184,6 +187,7 @@ public class LaserRobot : MonoBehaviour, IEnemy
         
         for (int i = 0; i < _burstCount; i++)
         {
+            LookAtPlayer();
             FireLaser(_eyeMuzzle, Vector3.zero);
             if (i < _burstCount - 1 && i + 1 != _burstCount)   
                 yield return new WaitForSeconds(_betweenShotDelay);
