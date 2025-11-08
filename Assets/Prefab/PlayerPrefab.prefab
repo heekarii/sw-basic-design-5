@@ -218,7 +218,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7119302117570590318, guid: 765737fed2abae0439bc7543861fdadf, type: 3}
       propertyPath: m_Name
-      value: Zeron_Root (1) Variant
+      value: PlayerPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 7119302117570590318, guid: 765737fed2abae0439bc7543861fdadf, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 8367027546914371287, guid: 765737fed2abae0439bc7543861fdadf, type: 3}
       propertyPath: m_LocalPosition.x
