@@ -88,7 +88,7 @@ public class SpearRobot : MonoBehaviour, IEnemy
             LookAtPlayer();
         
     // ✅ 공격 조건: 실제 거리 기반 + 정지 상태 확인
-        if (worldDist <= _attackRange && _agent.velocity.sqrMagnitude < 0.1f)
+        if (worldDist <= _attackRange && HasLineOfSight() && _agent.velocity.sqrMagnitude < 0.1f)
         {
             _agent.isStopped = true;
             AttackPlayer();
@@ -97,25 +97,17 @@ public class SpearRobot : MonoBehaviour, IEnemy
 
 
         // ✅ 추적 조건
-        if (worldDist <= _aggravationRange)
+        if (worldDist <= _aggravationRange && HasLineOfSight())
         {
             _agent.isStopped = false;
-
             Vector3 targetPos = _player.transform.position;
-
-            // 플레이어를 NavMesh 위로 투영
             if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 3.0f, NavMesh.AllAreas))
-            {
                 _agent.SetDestination(hit.position);
-            }
-            else
-            {
-               // Debug.LogWarning($"[SpearRobot] Player 주변에 NavMesh 없음! 원본 위치: {targetPos}");
-            }
         }
         else
         {
             _agent.isStopped = true;
+            _agent.ResetPath();
         }
 
       //  Debug.Log($"[SpearRobot] remainingDist={navDist:F2}, worldDist={worldDist:F2}, pathStatus={_agent.pathStatus}, hasPath={_agent.hasPath}");
@@ -136,10 +128,54 @@ public class SpearRobot : MonoBehaviour, IEnemy
         return false;
     }
     
+    private bool HasLineOfSight()
+    {
+        if (_player == null) return false;
 
+        Vector3 origin = transform.position + Vector3.up * 1.2f;
+        Vector3 target = _player.transform.position + Vector3.up * 1.0f;
+
+        Vector3 dir = target - origin;
+        float dist = dir.magnitude;
+        if (dist <= 0.001f) return true;
+
+        dir.Normalize();
+
+        // 첫 번째로 맞은 것이 플레이어면 "시야 있음"
+        if (Physics.Raycast(origin, dir, out RaycastHit hit, dist, ~0, QueryTriggerInteraction.Ignore))
+        {
+            // 자기 자신 콜라이더는 무시
+            if (hit.collider.transform.IsChildOf(transform))
+            {
+                // 자기 자신을 맞았으면 그 다음 것을 보기 위해 RaycastAll 사용
+                var hits = Physics.RaycastAll(origin, dir, dist, ~0, QueryTriggerInteraction.Ignore);
+                System.Array.Sort(hits, (a,b) => a.distance.CompareTo(b.distance));
+                foreach (var h in hits)
+                {
+                    if (h.collider.transform.IsChildOf(transform)) continue; // 내 콜라이더 스킵
+                    // 첫 번째 유효한 히트가 플레이어면 LOS 있음
+                    if (h.collider.GetComponentInParent<Player>() != null) return true;
+                    // 아니면 가려짐
+                    return false;
+                }
+                return true; // 유효 히트가 없으면 가려진 게 없음
+            }
+
+            // 첫 히트가 플레이어면 시야 OK
+            if (hit.collider.GetComponentInParent<Player>() != null) return true;
+
+            // 그 외(벽/지형/기타)가 먼저 맞으면 가려짐
+            return false;
+        }
+
+        // 아무것도 안 맞았으면 가려진 게 없는 것으로 간주
+        return true;
+    }
+
+    
     private void LookAtPlayer()
     {
-        if (_player == null) return;
+        if (_player == null || !HasLineOfSight()) return;
 
         Vector3 lockedDir = (_player != null)
             ? (_player.transform.position - transform.position)
@@ -166,8 +202,9 @@ public class SpearRobot : MonoBehaviour, IEnemy
         Debug.Log($"[SpearRobot] Start AttackCasting");
         yield return new WaitForSeconds(_attackCastingTime);
 
+        // 공격 시점에 다시 조건 검사 (거리 + 시야 + 존재)
         float dist = Vector3.Distance(transform.position, _player.transform.position);
-        if (_player != null || dist < _attackRange * 1.05f)
+        if (_player != null && dist < _attackRange * 1.05f && HasLineOfSight()) 
         {
             _player.TakeDamage(_damage);
             _player.ConsumeBatteryPercentOfCurrent(_Batterydamage);
