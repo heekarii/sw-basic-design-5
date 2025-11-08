@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float _jumpForce = 5f;
     [SerializeField] private  float _curBattery = 100;
     [SerializeField] private int _curBullets;
+    [SerializeField] private bool _isStunned = false;   
+    
     [SerializeField] private bool _isSlowed = false;
     
     [SerializeField] private float[] _batteryReductionAmount =
@@ -104,10 +106,14 @@ public class Player : MonoBehaviour
     
     private void FixedUpdate()
     {
+        //스턴중이면 움직임과 카메라가 멈추도록
+        if (_isStunned) return;
         Move();
     }
     private void Update()
     {
+        //스턴중이면 움직임과 카메라가 멈추도록
+        if (_isStunned) return;
         HandleInput();
         HandleCamera();
         
@@ -325,6 +331,32 @@ public class Player : MonoBehaviour
         _currentHealth = Mathf.Max(0, _currentHealth - damage);
         Debug.Log($"[Player] 피격됨: {damage}, 남은 체력: {_currentHealth}");
     }
+    private Coroutine _stunCo;
+
+    public void Stun(float seconds)
+    {
+        if (seconds <= 0f) return;
+        if (_stunCo != null) StopCoroutine(_stunCo);
+        Debug.Log($"[Player] isStunned");
+        _stunCo = StartCoroutine(StunRoutine(seconds));
+    }
+
+    private IEnumerator StunRoutine(float seconds)
+    {
+        _isStunned = true;
+        _rb.linearVelocity = Vector3.zero;   // 관성 즉시 제거
+        _moveDirection = Vector3.zero; // 입력 방향 초기화
+
+        Debug.Log($"[Player] isStunned");
+        yield return new WaitForSeconds(seconds);
+        Debug.Log($"[Player] release Stun");
+        
+        _isStunned = false;            // ▶ 자동 복귀 (속도값은 그대로)
+        _stunCo = null;
+    }
+
+    
+    
 
     /// <summary>
     /// 바람에 맞을 때 이동속도 20% 감소
@@ -407,6 +439,20 @@ public class Player : MonoBehaviour
             _curBattery -= reductionAmount;
              gm.SetGameScore();
         }
+    }
+    
+    /// <summary>
+    /// 현재 배터리의 percent%만큼 즉시 감소 (예: 1 -> 현재값의 1%)
+    /// </summary>
+    public void ConsumeBatteryPercentOfCurrent(float percent)
+    {
+        if (percent <= 0f) return;
+
+        float reduction = _curBattery * (percent * 0.01f);
+        _curBattery = Mathf.Max(0f, _curBattery - reduction);
+
+        // Debug.Log($"[Player] 배터리 {reduction:F3}감소  현재 → {_curBattery:F2}");
+        GameManager.Instance?.SetGameScore();
     }
 }
 

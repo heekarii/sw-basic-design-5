@@ -1,17 +1,21 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class PunchRobot : MonoBehaviour, IEnemy
+public class SpearRobot : MonoBehaviour, IEnemy
 {
     [Header("Monster Status")]
-    [SerializeField] private float _maxHp = 50.0f;
+    [SerializeField] private float _maxHp = 150.0f;
     [SerializeField] private float _curHp;
-    [SerializeField] private float _damage = 10.0f;
+    [SerializeField] private float _damage = 50.0f;
+    [SerializeField] private float _Batterydamage = 1.0f;
     [SerializeField] private float _attackCastingTime = 0.5f;
-    [SerializeField] private float _attackCooldown = 1.0f;
-    [SerializeField] private float _aggravationRange = 5.5f;
-    [SerializeField] private float _attackRange = 1.0f;
-    [SerializeField] private float _moveSpeed = 1.0f;
+    [SerializeField] private float _attackCooldown = 3.0f;
+    [SerializeField] private float _attackingTime = 1.0f;
+    [SerializeField] private float _stunTime = 1.0f;
+    [SerializeField] private float _aggravationRange = 12.25f;
+    [SerializeField] private float _attackRange = 5.25f;
+    [SerializeField] private float _moveSpeed = 5.0f;
+    [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절
 
     [SerializeField] private Player _player;
     private bool _isAttacking = false;
@@ -26,12 +30,12 @@ public class PunchRobot : MonoBehaviour, IEnemy
 
         if (_agent == null)
         {
-            Debug.LogError("[PunchRobot] NavMeshAgent가 없습니다.");
+            Debug.LogError("[SpearRobot] NavMeshAgent가 없습니다.");
             enabled = false; return;
         }
         if (_player == null)
         {
-            Debug.LogError("[PunchRobot] Player를 찾지 못했습니다.");
+            Debug.LogError("[SpearRobot] Player를 찾지 못했습니다.");
             enabled = false; return;
         }
 
@@ -44,15 +48,15 @@ public class PunchRobot : MonoBehaviour, IEnemy
         // 시작 위치가 NavMesh 위가 아니면 가장 가까운 NavMesh 위치로 워프
         if (!TrySnapToNavMesh(transform.position, out var snapped))
         {
-            Debug.LogError("[PunchRobot] 시작 위치 근처에 NavMesh가 없습니다. Bake/레이어/높이 확인 필요.");
+            Debug.LogError("[SpearRobot] 시작 위치 근처에 NavMesh가 없습니다. Bake/레이어/높이 확인 필요.");
             enabled = false; return;
         }
         if ((snapped - transform.position).sqrMagnitude > 0.0001f)
         {
             _agent.Warp(snapped);
-            //Debug.Log($"[PunchRobot] NavMesh에 워프: {snapped}");
+            //Debug.Log($"[SpearRobot] NavMesh에 워프: {snapped}");
         }
-        //Debug.Log("[PunchRobot] Start OK: OnNavMesh=" + _agent.isOnNavMesh);
+        //Debug.Log("[SpearRobot] Start OK: OnNavMesh=" + _agent.isOnNavMesh);
     }
 
     void Update()
@@ -65,11 +69,11 @@ public class PunchRobot : MonoBehaviour, IEnemy
             if (TrySnapToNavMesh(transform.position, out var snapped))
             {
                 _agent.Warp(snapped);
-                // Debug.LogWarning("[SpearRobot] NavMesh 이탈 감지 → 재워프");
+               // Debug.LogWarning("[SpearRobot] NavMesh 이탈 감지 → 재워프");
             }
             else
             {
-                // Debug.LogError("[SpearRobot] 재워프 실패: 주변에 NavMesh 없음");
+               // Debug.LogError("[SpearRobot] 재워프 실패: 주변에 NavMesh 없음");
                 return;
             }
         }
@@ -83,7 +87,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
         if (worldDist <= _aggravationRange)   
             LookAtPlayer();
         
-        // ✅ 공격 조건: 실제 거리 기반 + 정지 상태 확인
+    // ✅ 공격 조건: 실제 거리 기반 + 정지 상태 확인
         if (worldDist <= _attackRange && HasLineOfSight() && _agent.velocity.sqrMagnitude < 0.1f)
         {
             _agent.isStopped = true;
@@ -106,7 +110,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
             _agent.ResetPath();
         }
 
-        //  Debug.Log($"[SpearRobot] remainingDist={navDist:F2}, worldDist={worldDist:F2}, pathStatus={_agent.pathStatus}, hasPath={_agent.hasPath}");
+      //  Debug.Log($"[SpearRobot] remainingDist={navDist:F2}, worldDist={worldDist:F2}, pathStatus={_agent.pathStatus}, hasPath={_agent.hasPath}");
 
         if (_curHp <= 0f) Die();
     }
@@ -128,7 +132,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
     {
         if (_player == null) return false;
 
-        Vector3 origin = transform.position + Vector3.up * 0.8f;
+        Vector3 origin = transform.position + Vector3.up * 1.2f;
         Vector3 target = _player.transform.position + Vector3.up * 1.0f;
 
         Vector3 dir = target - origin;
@@ -167,6 +171,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
         // 아무것도 안 맞았으면 가려진 게 없는 것으로 간주
         return true;
     }
+
     
     private void LookAtPlayer()
     {
@@ -182,7 +187,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
         if (lockedDir.sqrMagnitude > 0.001f)
             transform.rotation = Quaternion.LookRotation(lockedDir);
     }
-
+    
     private void AttackPlayer()
     {
         if (_isAttacking || _isCoolingDown) return;
@@ -194,47 +199,41 @@ public class PunchRobot : MonoBehaviour, IEnemy
         _isAttacking = true;
         _agent.isStopped = true;
         
-        Debug.Log($"[PunchRobot] Start AttackCasting");
+        Debug.Log($"[SpearRobot] Start AttackCasting");
         yield return new WaitForSeconds(_attackCastingTime);
 
+        // 공격 시점에 다시 조건 검사 (거리 + 시야 + 존재)
         float dist = Vector3.Distance(transform.position, _player.transform.position);
-        if (_player == null || dist > _attackRange * 1.05f || !HasLineOfSight())  
+        if (_player != null && dist < _attackRange * 1.05f && HasLineOfSight()) 
         {
-            CancelAttack();
-            yield break;
+            _player.TakeDamage(_damage);
+            _player.ConsumeBatteryPercentOfCurrent(_Batterydamage);
+            _player.Stun(_stunTime);
         }
         
-        _player.TakeDamage(_damage);
-        // Debug.Log($"PunchRobot attacked player for {_damage} damage!");
-
+        // Debug.Log($"SpearRobot attacked player for {_damage} damage!");
+        
         _isAttacking = false;
         _isCoolingDown = true;
         _agent.isStopped = false;
-        // Debug.Log($"PunchRobot Start Cooldown");
+        // Debug.Log($"SpearRobot Start Cooldown");
         yield return new WaitForSeconds(_attackCooldown);
 
-        // Debug.Log($"PunchRobot End Cooldown");
+        // Debug.Log($"SpearRobot End Cooldown");
         _isCoolingDown = false;
 
-    }
-    
-    public void CancelAttack()
-    {
-        Debug.Log($"PunchRobot Fail Attack");
-        _isAttacking = false;
-        _agent.isStopped = false;
     }
     
     public void TakeDamage(float dmg)
     {
         _curHp -= dmg;
         if (_curHp <= 0f) Die();
-        Debug.Log($"PunchRobot took {dmg} damage, current HP: {_curHp}");
+        Debug.Log($"SpearRobot took {dmg} damage, current HP: {_curHp}");
     }
 
     private void Die()
     {
         Destroy(gameObject);
-        Debug.Log("PunchRobot has died.");
+        Debug.Log("SpearRobot has died.");
     }
 }
