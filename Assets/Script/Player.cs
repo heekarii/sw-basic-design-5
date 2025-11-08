@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int _curBullets;
     [SerializeField] private bool _isStunned = false;   
     
+    [SerializeField] private bool _isSlowed = false;
     
     [SerializeField] private float[] _batteryReductionAmount =
     {
@@ -31,13 +32,12 @@ public class Player : MonoBehaviour
     [SerializeField] private int _curSpeedLevel = 1;
     [SerializeField] private bool _isShifting = false;
     
-    [SerializeField] private float[] _speedPerLevel =
+    [FormerlySerializedAs("_speedPerLevel")] [SerializeField] private float[] _speedWithBoostPerLevel =
     {
         1.3f,
         1.5f,
         1.7f
     };
-    
     
     [Header("Combat")] 
     [SerializeField] private LayerMask _attackRaycastMask;
@@ -64,7 +64,8 @@ public class Player : MonoBehaviour
     private Animator _animator;
     private WeaponManager _wm;
     private GameManager _gm;
-
+    
+        
     private Transform _weaponSocket;
     
     private Vector3 _moveDirection;
@@ -84,8 +85,6 @@ public class Player : MonoBehaviour
         _currentHealth = _maxHealth;
         _curPlayerStatus = 0;
         Cursor.visible = false;
-        
-
     }
 
     private void Start()
@@ -110,7 +109,6 @@ public class Player : MonoBehaviour
         //스턴중이면 움직임과 카메라가 멈추도록
         if (_isStunned) return;
         Move();
-
     }
     private void Update()
     {
@@ -186,7 +184,7 @@ public class Player : MonoBehaviour
         {
             Vector3 targetPos;
             if (_isShifting)
-                targetPos = _rb.position + _moveDirection * (_moveSpeed * _speedPerLevel[_curSpeedLevel - 1] * Time.fixedDeltaTime);
+                targetPos = _rb.position + _moveDirection * (_moveSpeed * _speedWithBoostPerLevel[_curSpeedLevel - 1] * Time.fixedDeltaTime);
             else
                 targetPos = _rb.position + _moveDirection * (_moveSpeed * Time.fixedDeltaTime);
 
@@ -360,6 +358,27 @@ public class Player : MonoBehaviour
     
     
 
+    /// <summary>
+    /// 바람에 맞을 때 이동속도 20% 감소
+    /// </summary>
+    public void ApplyWindSlow(bool enable)
+    {
+        // 최초로 슬로우 상태 진입
+        if (enable && !_isSlowed)
+        {
+            _isSlowed = true;
+            _moveSpeed *= 0.8f; // 20% 감소
+            Debug.Log("[Player] 바람 감속 적용");
+        }
+        // 바람 범위를 벗어나면 원래 속도 복원
+        else if (!enable && _isSlowed)
+        {
+            _isSlowed = false;
+            _moveSpeed = 1f;
+            Debug.Log("[Player] 바람 감속 해제");
+        }
+    }
+    
     /// <summary>
     /// 
     /// </summary>

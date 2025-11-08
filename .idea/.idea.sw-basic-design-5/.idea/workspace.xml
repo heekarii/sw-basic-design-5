@@ -5,8 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/air_robot_material.mat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/air_robot_material.mat.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/material0_AO.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/material0_AO.jpg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/material0_albedo.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/material0_albedo.jpg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/material0_metallic.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/material0_metallic.jpg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/material0_normal.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/material0_normal.jpg.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/OriginalModels/air.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/OriginalModels/air/Thruster.glb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/OriginalModels/air/Thruster.glb.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/OriginalModels/air/air_robot.dae" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/OriginalModels/air/air_robot.dae.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/Air.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/Air.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/air_robot_ModelRoot.prefab" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/air_robot_ModelRoot.prefab.meta" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Monsters/AirRobot.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Assets/Script/Monsters/AirRobot.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/SpearRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/SpearRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +42,8 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/25ce29052dfe4e49a635a42f7798806b1e0000/9b/15941dad/Component.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Script/Monsters/AirRobot.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Script/Monsters/PunchRobot.cs" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProblemsViewState">
@@ -36,13 +63,14 @@
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feat/SpearRobot&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feat/air&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -125,11 +153,11 @@
       <workItem from="1762160162834" duration="805000" />
       <workItem from="1762161136520" duration="1738000" />
       <workItem from="1762173311618" duration="66000" />
-      <workItem from="1762513061590" duration="459000" />
-      <workItem from="1762514668474" duration="853000" />
-      <workItem from="1762521892798" duration="217000" />
-      <workItem from="1762602551511" duration="2073000" />
-      <workItem from="1762604656663" duration="4415000" />
+      <workItem from="1762390503360" duration="135000" />
+      <workItem from="1762390654237" duration="692000" />
+      <workItem from="1762391385257" duration="169000" />
+      <workItem from="1762391843793" duration="3546000" />
+      <workItem from="1762410545333" duration="3796000" />
     </task>
     <servers />
   </component>

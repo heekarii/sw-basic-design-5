@@ -50,9 +50,9 @@ MonoBehaviour:
   _maxHp: 15
   _curHp: 0
   _damage: 30
-  _aggravationRange: 7.5
-  _attackRange: 0.9
-  _moveSpeed: 2
+  _aggravationRange: 12.75
+  _attackRange: 1.05
+  _moveSpeed: 10
   _player: {fileID: 0}
 --- !u!195 &4749888145082481451
 NavMeshAgent:
