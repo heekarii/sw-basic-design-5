@@ -10,6 +10,8 @@ public class SpearRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _Batterydamage = 1.0f;
     [SerializeField] private float _attackCastingTime = 0.5f;
     [SerializeField] private float _attackCooldown = 3.0f;
+    [SerializeField] private float _attackingTime = 1.0f;
+    [SerializeField] private float _stunTime = 1.0f;
     [SerializeField] private float _aggravationRange = 12.25f;
     [SerializeField] private float _attackRange = 5.25f;
     [SerializeField] private float _moveSpeed = 5.0f;
@@ -133,6 +135,7 @@ public class SpearRobot : MonoBehaviour, IEnemy
         snapped = origin;
         return false;
     }
+    
 
     private void LookAtPlayer()
     {
@@ -164,15 +167,15 @@ public class SpearRobot : MonoBehaviour, IEnemy
         yield return new WaitForSeconds(_attackCastingTime);
 
         float dist = Vector3.Distance(transform.position, _player.transform.position);
-        if (_player == null || dist > _attackRange * 1.05f) 
+        if (_player != null || dist < _attackRange * 1.05f)
         {
-            CancelAttack();
-            yield break;
+            _player.TakeDamage(_damage);
+            _player.ConsumeBatteryPercentOfCurrent(_Batterydamage);
+            _player.Stun(_stunTime);
         }
         
-        _player.TakeDamage(_damage);
         // Debug.Log($"SpearRobot attacked player for {_damage} damage!");
-
+        
         _isAttacking = false;
         _isCoolingDown = true;
         _agent.isStopped = false;
@@ -182,13 +185,6 @@ public class SpearRobot : MonoBehaviour, IEnemy
         // Debug.Log($"SpearRobot End Cooldown");
         _isCoolingDown = false;
 
-    }
-    
-    public void CancelAttack()
-    {
-        Debug.Log($"SpearRobot Fail Attack");
-        _isAttacking = false;
-        _agent.isStopped = false;
     }
     
     public void TakeDamage(float dmg)
