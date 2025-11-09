@@ -496,6 +496,7 @@ GameObject:
   - component: {fileID: 4395187175818644200}
   - component: {fileID: -4312381607471391432}
   - component: {fileID: 5521334334075341776}
+  - component: {fileID: 5315567320004527438}
   m_Layer: 0
   m_Name: chainsawBot_ModelRoot
   m_TagString: Untagged
@@ -591,6 +592,28 @@ MonoBehaviour:
   _moveSpeed: 4
   _lookAtTurnSpeed: 8
   _player: {fileID: 5894040061406813158, guid: a37229b336ba2c346bef853d60ec9ae2, type: 3}
+--- !u!95 &5315567320004527438
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153351544232939528}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 02bf5e57411b52643b9a70f2af131003, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1430749960916960602
 GameObject:
   m_ObjectHideFlags: 0
