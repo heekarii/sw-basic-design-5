@@ -14,6 +14,13 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _attackRange = 4.25f;
     [SerializeField] private float _moveSpeed = 4.0f;
     [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절
+    [SerializeField] private Animator _anim;   // 인스펙터 비워두면 Start에서 찾아줌
+
+// Animator Parameters (Animator 창에 동일한 이름으로 만들어야 함)
+    private static readonly int HashIsMoving = Animator.StringToHash("IsMoving"); // bool
+    private static readonly int HashAttack   = Animator.StringToHash("Attack");   // trigger
+
+    
 
     [SerializeField] private Player _player;
     private bool _isAttacking = false;
@@ -26,6 +33,13 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
         _player = FindObjectOfType<Player>();
         _curHp = _maxHp;
 
+        //애니메이션 효과 적용을 위한 애니메이터 찾기
+        if (_anim == null)
+            _anim = GetComponentInChildren<Animator>(true); // 자식에 붙어도 탐색
+        if (_anim != null)
+            _anim.applyRootMotion = false;                  // 이동은 NavMeshAgent가 담당
+        
+        
         if (_agent == null)
         {
             Debug.LogError("[ChainsawRobot] NavMeshAgent가 없습니다.");
@@ -61,6 +75,13 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     {
         if (_player == null || _agent == null) return;
 
+        // 이동 애니메이션 on/off (공격 중에는 false)
+        if (_anim != null)
+        {
+            bool moving = !_isAttacking && !_agent.isStopped && _agent.velocity.sqrMagnitude > 0.04f;
+            _anim.SetBool(HashIsMoving, moving);
+        }
+        
         // NavMesh 이탈 복구
         if (!_agent.isOnNavMesh)
         {
@@ -106,6 +127,7 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
         {
             _agent.isStopped = true;
             _agent.ResetPath();
+            if (_anim != null) _anim.SetBool(HashIsMoving, false);
         }
 
       //  Debug.Log($"[ChainsawRobot] remainingDist={navDist:F2}, worldDist={worldDist:F2}, pathStatus={_agent.pathStatus}, hasPath={_agent.hasPath}");
@@ -189,36 +211,48 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     private void AttackPlayer()
     {
         if (_isAttacking || _isCoolingDown) return;
+        // Debug.Log("[ChainsawRobot] AttackPlayer() called");
         StartCoroutine(AttackRoutine());
     }
 
     private System.Collections.IEnumerator AttackRoutine()
     {
         _isAttacking = true;
+
+        // 이동 정지(관성 제거)
         _agent.isStopped = true;
-        
-        Debug.Log($"[ChainsawRobot] Start AttackCasting");
+        _agent.velocity = Vector3.zero;
+        _agent.ResetPath();
+
+        // 모션 전환
+        if (_anim != null)
+        {
+            _anim.SetBool(HashIsMoving, false); // 걷기 OFF
+            _anim.SetTrigger(HashAttack);       // 공격 트리거
+            _anim.CrossFade("Attack", 0.05f, 0, 0f); // Attack = 상태 이름 정확히
+
+        }
+
+        Debug.Log("ChainsawRobot start attack casting!");
         yield return new WaitForSeconds(_attackCastingTime);
 
-        // 공격 시점에 다시 조건 검사 (거리 + 시야 + 존재)
-        float dist = Vector3.Distance(transform.position, _player.transform.position);
-        if (_player != null && dist < _attackRange * 1.05f && HasLineOfSight()) 
+        // 유효성 재확인 후 대미지
+        if (_player != null)
         {
-            _player.TakeDamage(_damage);
+            float dist = Vector3.Distance(transform.position, _player.transform.position);
+            if (dist <= _attackRange * 1.05f && HasLineOfSight())
+                _player.TakeDamage(_damage);
         }
-        
-        // Debug.Log($"ChainsawRobot attacked player for {_damage} damage!");
-        
+
+        // 종료 → 쿨다운
         _isAttacking = false;
         _isCoolingDown = true;
         _agent.isStopped = false;
-        // Debug.Log($"ChainsawRobot Start Cooldown");
+
         yield return new WaitForSeconds(_attackCooldown);
-
-        // Debug.Log($"ChainsawRobot End Cooldown");
         _isCoolingDown = false;
-
     }
+
     
     public void TakeDamage(float dmg)
     {
