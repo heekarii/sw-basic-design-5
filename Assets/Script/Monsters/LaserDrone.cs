@@ -10,16 +10,15 @@ public class LaserDrone : MonoBehaviour, IEnemy
     [SerializeField] private float _hoverHeight = 4.2f;      // 공중 높이
     [SerializeField] private float _moveSpeed = 6f;          // 이동 속도
     [SerializeField] private int _maxHealth = 50;            // 체력
+    [SerializeField] private int _currentHealth;
     [SerializeField] private float _attackCooldown = 10f;    // 재공격 시간
     [SerializeField] private int _dropScrap = 5;             // 처치 시 스크랩 수
-    [SerializeField] private float _robotScale = 0.4f;       // 크기 (ZERON의 0.4배)
     [SerializeField] private GameObject _flashEffectPrefab;  // 공격시 밝은 불빛 이펙트
 
     [Header("참조 오브젝트")]
     [SerializeField] private Transform _player;              // ZERON
     [SerializeField] private Image _flashOverlay;            // 섬광 피격용 UI (Canvas Image)
 
-    private int _currentHealth;
     private bool _isActive = false;
     private bool _isAttacking = false;
     private float _lastAttackTime = -999f;
@@ -27,7 +26,6 @@ public class LaserDrone : MonoBehaviour, IEnemy
     private void Start()
     {
         _currentHealth = _maxHealth;
-        transform.localScale = Vector3.one * _robotScale;
 
         if (_player == null)
             _player = GameObject.FindWithTag("Player")?.transform;
@@ -61,7 +59,8 @@ public class LaserDrone : MonoBehaviour, IEnemy
     // ============================================================
     private void MoveTowardTarget()
     {
-        Vector3 targetPos = _player.position + Vector3.up * _hoverHeight;
+        Vector3 targetPos = _player.position;
+        targetPos.y = transform.position.y;
         transform.position = Vector3.MoveTowards(transform.position, targetPos, _moveSpeed * Time.deltaTime);
         transform.LookAt(_player);
     }
@@ -103,7 +102,7 @@ public class LaserDrone : MonoBehaviour, IEnemy
     private IEnumerator ApplyFlashEffect()
     {
         _flashOverlay.gameObject.SetActive(true);
-        _flashOverlay.color = new Color(1f, 1f, 0.7f, 1f); // 밝은 노란색
+        _flashOverlay.color = new Color(1f, 1f, 0.7f, 0.9f); // 밝은 노란색
         yield return new WaitForSeconds(3f);
         _flashOverlay.gameObject.SetActive(false);
     }

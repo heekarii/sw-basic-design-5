@@ -6,13 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/LaserRobot.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/LaserRobot.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Materials/SpearRobot.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Materials/SpearRobot.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/Air.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/Air.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/air_robot_ModelRoot.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/air_robot_ModelRoot.prefab.meta" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/LaserDrone.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/LaserDrone.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,7 +126,8 @@
       <workItem from="1762447837488" duration="58000" />
       <workItem from="1762702113093" duration="5000" />
       <workItem from="1762702743716" duration="1126000" />
-      <workItem from="1762704245001" duration="304000" />
+      <workItem from="1762704245001" duration="415000" />
+      <workItem from="1762786738894" duration="1893000" />
     </task>
     <servers />
   </component>
