@@ -5,33 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/air_robot_material.mat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/air_robot_material.mat.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/material0_AO.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/material0_AO.jpg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/material0_albedo.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/material0_albedo.jpg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/material0_metallic.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/material0_metallic.jpg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/material0_normal.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Materials/AirRobot/material0_normal.jpg.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/OriginalModels/air.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/OriginalModels/air/Thruster.glb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/OriginalModels/air/Thruster.glb.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/OriginalModels/air/air_robot.dae" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/OriginalModels/air/air_robot.dae.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/Air.prefab" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/Air.prefab.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/air_robot_ModelRoot.prefab" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/air_robot_ModelRoot.prefab.meta" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Monsters/AirRobot.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Script/Monsters/AirRobot.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/ChainsawRobot/controller.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/ChainsawRobot/controller.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MonsterTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MonsterTestScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/ChainsawRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/ChainsawRobot.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +25,7 @@
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="false" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="Toolset" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -64,7 +41,7 @@
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feat/air&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feat/ChainsawMan&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -159,6 +136,8 @@
       <workItem from="1762391385257" duration="169000" />
       <workItem from="1762391843793" duration="3546000" />
       <workItem from="1762410545333" duration="3796000" />
+      <workItem from="1762615681247" duration="250000" />
+      <workItem from="1762701812878" duration="1312000" />
     </task>
     <servers />
   </component>
