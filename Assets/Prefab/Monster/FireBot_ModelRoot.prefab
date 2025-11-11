@@ -237,6 +237,7 @@ GameObject:
   - component: {fileID: 8980754282029427413}
   - component: {fileID: 7891687684283019435}
   - component: {fileID: 500285252782226497}
+  - component: {fileID: 4972434884829508165}
   m_Layer: 0
   m_Name: FireBot_ModelRoot
   m_TagString: Untagged
@@ -285,7 +286,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 1
-  m_Constraints: 0
+  m_Constraints: 80
   m_CollisionDetection: 1
 --- !u!195 &500285252782226497
 NavMeshAgent:
@@ -309,6 +310,33 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &4972434884829508165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8695232056903681085}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2487865601e744b4a93b3837a6a3cdf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHp: 150
+  _curHp: 0
+  _damage: 15
+  _damageInterval: 1
+  _attackingTime: 3
+  _attackCooldown: 3
+  _aggravationRange: 9.1
+  _attackRange: 3.6
+  _moveSpeed: 5
+  _lookAtTurnSpeed: 8
+  _player: {fileID: 0}
+  _cylRadius: 1.5
+  _cylHeight: 3.6
+  _cylOrigin: {fileID: 0}
+  _cylFx: {fileID: 0}
 --- !u!1001 &1756356689200284674
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -7,14 +7,22 @@ public class FireRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _maxHp = 150.0f;
     [SerializeField] private float _curHp;
     [SerializeField] private float _damage = 15.0f;
-    [SerializeField] private float _attackCooldown = 3.0f;
+    [SerializeField] private float _damageInterval = 1.0f;
     [SerializeField] private float _attackingTime = 3.0f;
+    [SerializeField] private float _attackCooldown = 3.0f;
     [SerializeField] private float _aggravationRange = 9.1f;
     [SerializeField] private float _attackRange = 3.6f;
     [SerializeField] private float _moveSpeed = 5.0f;
     [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절
-
     [SerializeField] private Player _player;
+    
+    [Header("Cylinder AOE")]
+    [SerializeField] private float _cylRadius = 1.5f;     // 원통 반경
+    [SerializeField] private float _cylHeight = 3.6f;     // 원통 높이(위로)
+    [SerializeField] private Transform _cylOrigin;        // 원통 기준(없으면 robot 중심)
+    [SerializeField] private ParticleSystem _cylFx;       // 원통 이펙트(선택)
+
+    
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
     private NavMeshAgent _agent;
@@ -194,28 +202,65 @@ public class FireRobot : MonoBehaviour, IEnemy
     private System.Collections.IEnumerator AttackRoutine()
     {
         _isAttacking = true;
-        _agent.isStopped = true;
-        
-        Debug.Log($"[FireRobot] Start AttackCasting");
 
-        // 공격 시점에 다시 조건 검사 (거리 + 시야 + 존재)
-        float dist = Vector3.Distance(transform.position, _player.transform.position);
-        if (_player != null && dist < _attackRange * 1.05f && HasLineOfSight()) 
+        // 이동 정지(관성 제거)
+        _agent.isStopped = true;
+        _agent.velocity = Vector3.zero;
+        _agent.ResetPath();
+
+        float elapsed = 0f;
+        float tickTimer = 0f;
+
+        while (elapsed < _attackingTime + 0.1f) 
         {
-            _player.TakeDamage(_damage);
+            // 플레이어가 사거리/시야 내에 있는지 계속 확인
+            if (_player == null) break;
+
+            float dist = Vector3.Distance(transform.position, _player.transform.position);
+            if (dist <= _attackRange * 1.05f && HasLineOfSight())
+            {
+                // 1초마다 틱 처리
+                tickTimer += Time.deltaTime;
+                if (tickTimer >= _damageInterval)
+                {
+                    tickTimer = 0f;
+
+                    // 🔻 눕힌 캡슐로 AOE 계산 (전방 방향)
+                    GetAoECapsule(out var p0, out var p1);
+
+                    // 플레이어만 맞도록 필터링 (레이어 마스크 없이)
+                    Collider[] hits = Physics.OverlapCapsule(p0, p1, _cylRadius, ~0, QueryTriggerInteraction.Ignore);
+                    foreach (var col in hits)
+                    {
+                        var p = col.GetComponentInParent<Player>();
+                        if (p != null) p.TakeDamage(_damage);
+                    }
+                }
+            }
+            elapsed += Time.deltaTime;
+            yield return null;
         }
-        
-        // Debug.Log($"FireRobot attacked player for {_damage} damage!");
-        
+
+        // 쿨다운
         _isAttacking = false;
         _isCoolingDown = true;
         _agent.isStopped = false;
-        // Debug.Log($"FireRobot Start Cooldown");
         yield return new WaitForSeconds(_attackCooldown);
-
-        // Debug.Log($"FireRobot End Cooldown");
         _isCoolingDown = false;
     }
+
+    // 원통 AOE의 월드 좌표 캡슐 끝점 계산
+    private void GetAoECapsule(out Vector3 p0, out Vector3 p1)
+    {
+        // 중심 기준
+        Vector3 center = _cylOrigin ? _cylOrigin.position : transform.position;
+        Vector3 axisDir = transform.forward;          // ← 원통의 길이 방향 (눕힌 캡슐)
+        float half = _cylHeight * 0.5f;               // 끝점까지 반길이
+
+        p0 = center - axisDir * half;
+        p1 = center + axisDir * half;
+    }
+
     
     public void TakeDamage(float dmg)
     {
