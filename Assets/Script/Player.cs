@@ -405,7 +405,8 @@ public class Player : MonoBehaviour
             Destroy(_currentWeaponModel);
 
         // 무기 모델 생성 및 장착
-        _currentWeaponModel = Instantiate(weaponData.ModelPrefab, 
+        _currentWeaponModel = 
+            Instantiate(weaponData.ModelPrefab, 
             _weaponSocket.transform.Find("WeaponHolder"), 
             false);
         _currentWeaponModel.transform.localPosition = new Vector3(0, 0.25f, 1);
