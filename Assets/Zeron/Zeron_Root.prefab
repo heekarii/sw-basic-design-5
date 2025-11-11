@@ -706,7 +706,7 @@ GameObject:
   - component: {fileID: 3252189113107490757}
   m_Layer: 3
   m_Name: Zeron
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1154,7 +1154,7 @@ GameObject:
   - component: {fileID: 1514112834392732256}
   m_Layer: 3
   m_Name: Zeron_ModelRoot
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1946,7 +1946,7 @@ GameObject:
   - component: {fileID: 4902364022343436837}
   m_Layer: 3
   m_Name: Zeron_body
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2297,7 +2297,7 @@ GameObject:
   - component: {fileID: 5861969473850273147}
   m_Layer: 3
   m_Name: Zeron_Collider
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2520,6 +2520,7 @@ MonoBehaviour:
   _jumpForce: 5000
   _curBattery: 100
   _curBullets: 0
+  _isStunned: 0
   _isSlowed: 0
   _batteryReductionAmount:
   - 0.0002
