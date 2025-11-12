@@ -65,7 +65,7 @@ public class Player : MonoBehaviour
     private WeaponManager _wm;
     private GameManager _gm;
     
-        
+    [SerializeField]
     private Transform _weaponSocket;
     
     private Vector3 _moveDirection;
@@ -81,7 +81,8 @@ public class Player : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
-        _weaponSocket = transform.Find("WeaponSocket");
+        if (_weaponSocket == null)
+            _weaponSocket = transform.Find("WeaponSocket");
         _currentHealth = _maxHealth;
         _curPlayerStatus = 0;
         Cursor.visible = false;
@@ -191,6 +192,21 @@ public class Player : MonoBehaviour
             Vector3 nextPos = Vector3.Lerp(_rb.position, targetPos, 0.8f);
             nextPos.y = _rb.position.y; // 🧩 점프 시 Y축은 물리에 맡김
             _rb.MovePosition(nextPos);
+            if (_isShifting)
+            {
+                _animator.SetBool("isRunning", true);
+                _animator.SetBool("isWalking", false);
+            }
+            else
+            {
+                _animator.SetBool("isWalking", true);
+                _animator.SetBool("isRunning", false);
+            }
+        }
+        else
+        {
+            _animator.SetBool("isWalking", false);
+            _animator.SetBool("isRunning", false);
         }
     }
 
