@@ -270,7 +270,7 @@ public class FireRobot : MonoBehaviour, IEnemy
     
     private void AttackPlayer()
     {
-        if (_isAttacking || _isCoolingDown) return;
+        if (_isAttacking || _isCoolingDown || !HasLineOfSight()) return;
         StartCoroutine(AttackRoutine());
     }
 
@@ -290,7 +290,7 @@ public class FireRobot : MonoBehaviour, IEnemy
         while (elapsed < _attackingTime + 0.1f) 
         {
             // 플레이어가 사거리/시야 내에 있는지 계속 확인
-            if (_player == null) break;
+            if (_player == null || !HasLineOfSight()) break;
 
             float dist = Vector3.Distance(transform.position, _player.transform.position);
             if (dist <= _attackRange * 1.05f && HasLineOfSight())

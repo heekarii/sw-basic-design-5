@@ -542,10 +542,10 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 1
-  m_Constraints: 126
+  m_Constraints: 90
   m_CollisionDetection: 1
 --- !u!195 &-4312381607471391432
 NavMeshAgent:
@@ -591,6 +591,7 @@ MonoBehaviour:
   _attackRange: 4.25
   _moveSpeed: 4
   _lookAtTurnSpeed: 8
+  _anim: {fileID: 0}
   _player: {fileID: 5894040061406813158, guid: a37229b336ba2c346bef853d60ec9ae2, type: 3}
 --- !u!95 &5315567320004527438
 Animator:
@@ -1522,7 +1523,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5

@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/AirRobot/air_robot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/AirRobot/air_robot_ModelRoot.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/FireBot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/FireBot_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MonsterTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MonsterTestScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/FireRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/FireRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/Punch_ModelRoot 1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/Punch_ModelRoot 1.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/chainsawBot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/chainsawBot_ModelRoot.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/laserRobot/laserRobot_ModelRoot 1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/laserRobot/laserRobot_ModelRoot 1.prefab" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
