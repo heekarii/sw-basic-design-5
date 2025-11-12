@@ -6,23 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/ChainsawRobot/controller.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/ChainsawRobot/controller.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/PlayerPrefab.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/PlayerPrefab.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/WeaponManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/WeaponManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Zeron.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/Model_origin.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Zeron/Model_origin.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/Model_origin/3d Gravemind.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Zeron/Model_origin/3d Gravemind.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/Model_origin/3d Gravemind/Gravemind.fbx" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Zeron/Model_origin/3d Gravemind/Gravemind.fbx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/Model_origin/3d Gravemind/Gravemind.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Zeron/Model_origin/3d Gravemind/Gravemind.fbx.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/Model_origin/3d Gravemind/defaultMat_2D_View_1001.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Zeron/Model_origin/3d Gravemind/defaultMat_2D_View_1001.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/Model_origin/Gravemind.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/Model_origin/Gravemind.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/Zeron_Root.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/Zeron_Root.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion/zeron controler.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Zeron/motion/zeron controler.controller" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +129,7 @@
       <workItem from="1762702743716" duration="1126000" />
       <workItem from="1762704245001" duration="415000" />
       <workItem from="1762786738894" duration="1893000" />
-      <workItem from="1762961866522" duration="3353000" />
+      <workItem from="1762961866522" duration="4402000" />
     </task>
     <servers />
   </component>

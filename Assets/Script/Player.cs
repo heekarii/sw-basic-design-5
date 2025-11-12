@@ -262,9 +262,6 @@ public class Player : MonoBehaviour
             return;
         }
 
-        
-        _animator?.SetTrigger("attack");
-
         string weaponName = _currentWeaponData.WeaponName;
 
 
@@ -275,6 +272,17 @@ public class Player : MonoBehaviour
             
             Collider[] hits = Physics.OverlapSphere(transform.position, range);
             Vector3 forward = transform.forward;
+            if (_wm.GetWeaponLevel() == 0)
+            {
+                _animator.SetTrigger("isPunching");
+                Debug.Log("punch");
+            }
+            
+            else
+            {
+                _animator.SetTrigger("isSwing");
+            }
+            
 
             foreach (Collider col in hits)
             {

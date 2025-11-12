@@ -822,7 +822,7 @@ MonoBehaviour:
   _curBattery: 0
   _isTreasureFound: 0
   Player: {fileID: 0}
-  WeaponType: 1
+  WeaponType: 0
   _fScrapWeight: 0
   _fBatteryWeight: 0
 --- !u!1 &410087039
