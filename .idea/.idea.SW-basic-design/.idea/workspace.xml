@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/WeaponManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/WeaponManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/Player/UpperBodyMask.mask" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/Player/UpperBodyMask.mask" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Player.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion/zeron controler.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Zeron/motion/zeron controler.controller" afterDir="false" />
     </list>
@@ -129,7 +130,7 @@
       <workItem from="1762702743716" duration="1126000" />
       <workItem from="1762704245001" duration="415000" />
       <workItem from="1762786738894" duration="1893000" />
-      <workItem from="1762961866522" duration="4402000" />
+      <workItem from="1762961866522" duration="5233000" />
     </task>
     <servers />
   </component>

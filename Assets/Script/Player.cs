@@ -54,8 +54,10 @@ public class Player : MonoBehaviour
     [Header("Camera")]
     [SerializeField] private Transform _camera;
     [SerializeField] private float _mouseSensitivity = 2f;
+    [SerializeField] private Transform _cameraPitchTarget;
     private float _cameraPitch = 0f;
     
+    [Header("Weapon")]
     [SerializeField]
     private WeaponData _currentWeaponData;
     private GameObject _currentWeaponModel;
@@ -153,7 +155,7 @@ public class Player : MonoBehaviour
         _cameraPitch -= mouseY;
         _cameraPitch = Mathf.Clamp(_cameraPitch, -60f, 60f);
 
-        _camera.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
+        _cameraPitchTarget.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
     }
     private void HandleInput()
