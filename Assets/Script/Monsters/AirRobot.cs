@@ -1,3 +1,4 @@
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -18,6 +19,7 @@ public class AirRobot : MonoBehaviour, IEnemy
     [SerializeField] private Player _player;
     [SerializeField] bool _isActive = false;
     [SerializeField] private GameObject _activeWindFX;
+    [SerializeField] private ScrapData _scrapData;
 
     private void Start()
     { 
@@ -157,6 +159,15 @@ public class AirRobot : MonoBehaviour, IEnemy
         Debug.Log("[AirRobot] 파괴됨");
     }
 
+    public void DropScrap(int amount)
+    {
+        if (!_scrapData) return;
+        
+        //Scrap scrpaComponet = scrapComponent.AddComponent<Scrap>();
+        //scrpaComponet.InitScrap(amount);
+        Debug.Log($"[AirRobot] 스크랩 {amount} 드랍");
+    }
+    
     /// <summary>
     /// Scene에서 바람 범위 시각화 (디버그용)
     /// </summary>

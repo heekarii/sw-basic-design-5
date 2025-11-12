@@ -437,7 +437,6 @@ public class Player : MonoBehaviour
             if (_isShifting) reductionAmount *= 2f;
             //Debug.Log("[Player] 배터리 감소: " + reductionAmount);
             _curBattery -= reductionAmount;
-             gm.SetGameScore();
         }
     }
     
@@ -452,7 +451,6 @@ public class Player : MonoBehaviour
         _curBattery = Mathf.Max(0f, _curBattery - reduction);
 
         // Debug.Log($"[Player] 배터리 {reduction:F3}감소  현재 → {_curBattery:F2}");
-        GameManager.Instance?.SetGameScore();
     }
 }
 
