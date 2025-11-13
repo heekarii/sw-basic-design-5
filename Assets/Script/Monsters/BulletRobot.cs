@@ -14,7 +14,6 @@ public class BulletRobot : MonoBehaviour, IEnemy
     [SerializeField] private Player _player;
     [SerializeField] private Animator _anim;
 
-
     [Header("Bolt Setting")]
     [SerializeField] private Transform _muzzleVisual;
     [SerializeField] private Transform _muzzleDetect;
@@ -26,34 +25,52 @@ public class BulletRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _boltSpeed = 20f;
     [SerializeField] private GameObject _boltPrefab;
     [SerializeField] private int _boltsPerSecond = 24;       // 초당 생성 개수
-    
-    private Collider _playerCol;   // ★ 플레이어 콜라이더
+
+    // ===== 내부 캐시 =====
+    private Collider _playerCol;    // 플레이어 콜라이더
+    private Transform _playerTr;
+    private Transform _tr;
+    private NavMeshAgent _agent;
+
     private float _coneAngleDeg = 0.0f;
 
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
-    private NavMeshAgent _agent;
+
+    // 이동 판정용 상수
+    private const float STOP_VEL_SQR = 0.1f;
+
+    private void Awake()
+    {
+        _tr = transform;
+    }
 
     private void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
-        if (_player == null) _player = FindObjectOfType<Player>();
-        _curHp = _maxHp;
+
+        if (_player == null)
+            _player = FindObjectOfType<Player>();
 
         if (_agent == null || _player == null)
         {
-            enabled = false; 
+            enabled = false;
+            Debug.LogWarning("[BulletRobot] NavMeshAgent 또는 Player가 없습니다. 스크립트를 비활성화합니다.");
             return;
         }
-        
-        if (_anim == null)
-            _anim = GetComponentInChildren<Animator>();
-        
+
+        _playerTr = _player.transform;
         _playerCol = _player.GetComponentInChildren<Collider>();
+
         if (_playerCol == null)
             Debug.LogWarning("[BulletRobot] Player에 Collider가 없습니다.");
 
-        // Agent 기본
+        if (_anim == null)
+            _anim = GetComponentInChildren<Animator>();
+
+        _curHp = _maxHp;
+
+        // NavMesh 기본 세팅
         _agent.speed = _moveSpeed;
         _agent.stoppingDistance = _attackRange;
         _agent.updateRotation = true;
@@ -63,78 +80,98 @@ public class BulletRobot : MonoBehaviour, IEnemy
         _coneAngleDeg = Mathf.Atan(_coneRadius / _coneLength) * Mathf.Rad2Deg;
 
         // 시작 위치 NavMesh 보정
-        if (!_agent.isOnNavMesh && NavMesh.SamplePosition(transform.position, out var hit, 2f, NavMesh.AllAreas))
+        if (!_agent.isOnNavMesh &&
+            NavMesh.SamplePosition(_tr.position, out var hit, 2f, NavMesh.AllAreas))
+        {
             _agent.Warp(hit.position);
+        }
     }
 
     private void Update()
     {
-        if (_player == null || _agent == null) return;
+        if (_agent == null || _playerTr == null)
+            return;
 
+        // 애니메이션 Speed 파라미터 갱신
         if (_anim != null)
             _anim.SetFloat("Speed", _agent.velocity.magnitude);
-        
+
         // NavMesh 이탈 복구
         if (!_agent.isOnNavMesh)
         {
-            if (NavMesh.SamplePosition(transform.position, out var hit, 2f, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(_tr.position, out var hit, 2f, NavMesh.AllAreas))
                 _agent.Warp(hit.position);
             else
                 return;
         }
 
         // 사망 체크
-        if (_curHp <= 0f) { Die(); return; }
+        if (_curHp <= 0f)
+        {
+            Die();
+            return;
+        }
 
-        float worldDist = Vector3.Distance(transform.position, _player.transform.position);
+        // 기본 거리 / 시야 체크
+        float worldDist = Vector3.Distance(_tr.position, _playerTr.position);
         bool hasLOS = HasLineOfSight();
 
-        // 👉 인식 범위 안에 있으면 항상 플레이어를 수평으로 쳐다봄
-        if (worldDist <= _aggravationRange)
+        // 인식 범위 안에서는 플레이어 바라보기
+        if (worldDist <= _aggravationRange && hasLOS) 
             LookAtPlayer();
 
         // 공격 진입 조건
-        if (!_isAttacking && !_isCoolingDown &&
-            worldDist <= _attackRange && hasLOS &&
-            _agent.velocity.sqrMagnitude < 0.1f)
+        if (!_isAttacking &&
+            !_isCoolingDown &&
+            worldDist <= _attackRange &&
+            hasLOS &&
+            _agent.velocity.sqrMagnitude < STOP_VEL_SQR)
         {
             _agent.isStopped = true;
             StartCoroutine(AttackRoutine());
             return;
         }
 
-        // 추적
+        // 추적 로직
         if (!_isAttacking && worldDist <= _aggravationRange && hasLOS)
         {
             _agent.isStopped = false;
-            Vector3 targetPos = _player.transform.position;
+
+            Vector3 targetPos = _playerTr.position;
+
             if (NavMesh.SamplePosition(targetPos, out NavMeshHit navHit, 3f, NavMesh.AllAreas))
             {
-                if (!_agent.hasPath || (navHit.position - _agent.destination).sqrMagnitude > 0.25f)
+                // 목적지가 많이 다르면 갱신
+                if (!_agent.hasPath ||
+                    (navHit.position - _agent.destination).sqrMagnitude > 0.25f)
+                {
                     _agent.SetDestination(navHit.position);
+                }
             }
         }
         else if (!_isAttacking)
         {
+            // 추적 중이 아니면 정지
             _agent.isStopped = true;
-            if (_agent.hasPath) _agent.ResetPath();
+            if (_agent.hasPath)
+                _agent.ResetPath();
         }
     }
 
-    // 🔁 항상 수평으로 플레이어 바라보는 함수 (네가 원래 쓰던 역할)
+    // 항상 수평으로 플레이어 바라보기
     private void LookAtPlayer()
     {
-        if (_player == null) return;
+        if (_playerTr == null) return;
 
-        Vector3 dir = _player.transform.position - transform.position;
-        dir.y = 0f; // 수평만
+        Vector3 dir = _playerTr.position - _tr.position;
+        dir.y = 0f;
 
         if (dir.sqrMagnitude < 0.0001f)
             return;
 
         Quaternion targetRot = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.Slerp(
-            transform.rotation,
+        _tr.rotation = Quaternion.Slerp(
+            _tr.rotation,
             targetRot,
             _lookAtTurnSpeed * Time.deltaTime
         );
@@ -154,15 +191,18 @@ public class BulletRobot : MonoBehaviour, IEnemy
         float spawnTimer = 0f;
         float spawnInterval = (_boltsPerSecond > 0) ? (1f / _boltsPerSecond) : 999f;
 
-        Transform tDetect = _muzzleDetect != null ? _muzzleDetect : transform;
+        Transform tDetect = _muzzleDetect != null ? _muzzleDetect : _tr;
         Transform tVisual = _muzzleVisual != null ? _muzzleVisual : tDetect;
 
         while (elapsed < _attackingTime)
         {
-            if (_player == null || !HasLineOfSight()) break;
-            
+            if (_playerTr == null || !HasLineOfSight())
+                break;
+
+            // 공격 중에도 플레이어 바라보기
             LookAtPlayer();
-            
+
+            // 볼트 시각 효과 스폰
             spawnTimer += Time.deltaTime;
             while (spawnTimer >= spawnInterval)
             {
@@ -170,7 +210,7 @@ public class BulletRobot : MonoBehaviour, IEnemy
                 SpawnVisualBolt(tVisual);
             }
 
-            // 판정 틱
+            // 데미지 틱
             tickTimer += Time.deltaTime;
             if (tickTimer >= _damageInterval)
             {
@@ -186,69 +226,74 @@ public class BulletRobot : MonoBehaviour, IEnemy
         _isAttacking = false;
         _isCoolingDown = true;
         _agent.isStopped = false;
+
         yield return new WaitForSeconds(_attackCooldown);
+
         _isCoolingDown = false;
     }
 
     // ===== 시각용 볼트 스폰 =====
     private void SpawnVisualBolt(Transform muzzle)
     {
-        if (_boltPrefab == null || muzzle == null) return;
+        if (_boltPrefab == null || muzzle == null)
+            return;
 
-        // 원뿔 내부에서 임의 방향 뽑기 (네가 이미 가지고 있는 함수)
+        // 원뿔 내부에서 랜덤 방향 생성
         Vector3 dir = RandomDirectionInCone(muzzle.forward, _coneAngleDeg, muzzle);
 
-        GameObject go = Instantiate(_boltPrefab, muzzle.position, Quaternion.LookRotation(dir));
+        GameObject go = Instantiate(
+            _boltPrefab,
+            muzzle.position,
+            Quaternion.LookRotation(dir)
+        );
 
-        // 그냥 지금처럼 날아가게 그대로 두고
+        // 리지드바디로 직선 이동
         if (go.TryGetComponent<Rigidbody>(out var rb))
         {
+#if UNITY_6000_0_OR_NEWER
             rb.linearVelocity = dir * _boltSpeed;
+#else
+            rb.velocity = dir * _boltSpeed;
+#endif
         }
 
-        // 👉 여기서 Raycast로 "앞에 뭐 있나" 한 번만 체크해서
-        //    부딪히는 지점까지 날아갈 시간 계산
-        float maxDistance = _coneLength;   // 이 볼트가 최대 날아갈 거리
+        // Raycast로 앞으로 장애물 확인 후 생존 시간 계산
+        float maxDistance = _coneLength;
         float lifeTime;
 
         if (Physics.Raycast(
-                muzzle.position,         // 시작 위치
-                dir,                     // 방향
+                muzzle.position,
+                dir,
                 out RaycastHit hit,
                 maxDistance,
-                ~0,                      // 모든 레이어 대상
+                ~0,
                 QueryTriggerInteraction.Ignore))
         {
-            // 장애물까지 거리 / 속도 = 실제 생존 시간
             lifeTime = hit.distance / _boltSpeed;
         }
         else
         {
-            // 아무것도 안 맞으면 최대 사거리까지
             lifeTime = maxDistance / _boltSpeed;
         }
 
-        // 살짝 여유
-        lifeTime += 0.02f;
+        lifeTime += 0.02f;    // 여유 조금
 
         Destroy(go, lifeTime);
     }
 
-
-    
     // ===== 판정 틱(거리 1당 5% 데미지 감소, 콜라이더가 원뿔에 "조금이라도" 걸리면 히트) =====
     private void ConeDamageTick(Transform t)
     {
-        if (_player == null || t == null) return;
+        if (_player == null || t == null)
+            return;
 
-        // 콜라이더가 없으면 예전처럼 "센터 포인트"만 검사
+        // 콜라이더가 없으면 센터 포인트만 검사
         if (_playerCol == null)
         {
-            Vector3 center = _player.transform.position;
+            Vector3 center = _playerTr.position;
             if (!IsPointInsideCone(center, t, _coneAngleDeg, _coneLength))
                 return;
 
-            // 데미지 감소는 평면(XZ) 거리 기준
             Vector3 flat = center - t.position;
             flat.y = 0f;
             float distFlat = flat.magnitude;
@@ -259,13 +304,11 @@ public class BulletRobot : MonoBehaviour, IEnemy
             return;
         }
 
-        // ★ 콜라이더의 여러 샘플 포인트를 검사해서
-        //    하나라도 원뿔 안에 들어오면 "맞은 것"으로 처리
+        // 콜라이더의 여러 샘플 포인트 중 하나라도 원뿔 안에 들어오면 히트
         Bounds b = _playerCol.bounds;
         Vector3 c = b.center;
         Vector3 e = b.extents;
 
-        // 샘플 포인트들 (센터 + 6방향)
         Vector3[] samples =
         {
             c,
@@ -287,19 +330,18 @@ public class BulletRobot : MonoBehaviour, IEnemy
             }
         }
 
-        if (!anyInside) return;   // 콜라이더 전체가 원뿔 밖
+        if (!anyInside)
+            return;
 
-        // ★ 데미지 감소용 거리는 "머즐 기준 XZ 평면"에서 가장 가까운 지점 사용
-        Vector3 closest = _playerCol.ClosestPoint(t.position); // 머즐에서 가장 가까운 콜라이더 표면
+        // falloff는 머즐 기준 XZ 평면에서 가장 가까운 지점 기준
+        Vector3 closest = _playerCol.ClosestPoint(t.position);
         Vector3 flatFromMuzzle = closest - t.position;
         flatFromMuzzle.y = 0f;
         float distFlat2 = flatFromMuzzle.magnitude;
 
         float falloff2 = Mathf.Max(0f, 1f - 0.05f * distFlat2);
         float dmg2 = _tickDamage * falloff2;
-
         _player.TakeDamage(dmg2);
-        // Debug.Log($"[BulletRobot] Hit cone (flatDist={distFlat2:F2}, dmg={dmg2:F2})");
     }
 
     private Vector3 RandomDirectionInCone(Vector3 forward, float coneAngleDeg, Transform basis)
@@ -317,64 +359,71 @@ public class BulletRobot : MonoBehaviour, IEnemy
 
         return (rotPitch * yRot).normalized;
     }
-    
+
     private bool IsPointInsideCone(Vector3 point, Transform t, float angleDeg, float length)
     {
-        if (t == null) return false;
-        if (length <= 0f) return false;
+        if (t == null || length <= 0f)
+            return false;
 
-        // 플레이어 위치를 머즐 기준 로컬 좌표로 변환
         Vector3 local = t.InverseTransformPoint(point);
 
-        float z = local.z; // 축 방향(앞/뒤)
+        float z = local.z;
         if (z <= 0f || z > length)
-            return false;  // 뒤쪽이거나, 길이 밖이면 탈락
+            return false;
 
-        // 현재 z에서의 최대 반지름 = 밑면 반지름 * (z / 전체 길이)  (선형으로 넓어지는 원뿔)
         float maxRadius = _coneRadius * (z / length);
-
-        // 축에서 떨어진 거리 (x, y 둘 다 포함 → 진짜 3D 원뿔)
         float radialSqr = local.x * local.x + local.y * local.y;
 
         return radialSqr <= maxRadius * maxRadius;
     }
 
-
-
     // ===== 유틸 =====
     private bool HasLineOfSight()
     {
-        if (_player == null) return false;
-        Vector3 origin = transform.position + Vector3.up * 1.2f;
-        Vector3 target = _player.transform.position + Vector3.up * 1.0f;
+        if (_playerTr == null)
+            return false;
 
-        Vector3 dir = (target - origin);
+        Vector3 origin = _tr.position + Vector3.up * 1.2f;
+        Vector3 target = _playerTr.position + Vector3.up * 1.0f;
+
+        Vector3 dir = target - origin;
         float dist = dir.magnitude;
-        if (dist <= 0.001f) return true;
+        if (dist <= 0.001f)
+            return true;
+
         dir /= dist;
 
         if (Physics.Raycast(origin, dir, out RaycastHit hit, dist, ~0, QueryTriggerInteraction.Ignore))
         {
-            if (hit.collider.transform.IsChildOf(transform))
+            // 자기 자신의 콜라이더 먼저 맞았을 때 처리
+            if (hit.collider.transform.IsChildOf(_tr))
             {
                 var hits = Physics.RaycastAll(origin, dir, dist, ~0, QueryTriggerInteraction.Ignore);
                 System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
                 foreach (var h in hits)
                 {
-                    if (h.collider.transform.IsChildOf(transform)) continue;
+                    if (h.collider.transform.IsChildOf(_tr))
+                        continue;
+
                     return h.collider.GetComponentInParent<Player>() != null;
                 }
+
                 return true;
             }
+
             return hit.collider.GetComponentInParent<Player>() != null;
         }
+
+        // 아무것도 안 맞으면 시야 확보된 것으로 처리
         return true;
     }
 
     public void TakeDamage(float dmg)
     {
         _curHp -= dmg;
-        if (_curHp <= 0f) Die();
+        if (_curHp <= 0f)
+            Die();
     }
 
     private void Die()
@@ -387,9 +436,8 @@ public class BulletRobot : MonoBehaviour, IEnemy
     {
         Transform t = _muzzleDetect != null ? _muzzleDetect : transform;
 
-        // 에디터에서도 항상 밑면/길이로 각도 다시 계산
-        float ang = (_coneLength > 0f) 
-            ? Mathf.Atan(_coneRadius / _coneLength) * Mathf.Rad2Deg 
+        float ang = (_coneLength > 0f)
+            ? Mathf.Atan(_coneRadius / _coneLength) * Mathf.Rad2Deg
             : 0f;
         float len = _coneLength;
 
@@ -401,20 +449,33 @@ public class BulletRobot : MonoBehaviour, IEnemy
         {
             float z = len * i / rings;
             float radius = Mathf.Tan(ang * Mathf.Deg2Rad) * z;
-            DrawCircle(t.position + t.forward * z, t.up, t.forward, radius,
-                Color.Lerp(Color.red, Color.red, i / (float)rings));
+            DrawCircle(
+                t.position + t.forward * z,
+                t.up,
+                t.forward,
+                radius,
+                Color.red
+            );
         }
     }
 
-
-    private void DrawCircle(Vector3 center, Vector3 up, Vector3 forward, float radius, Color color, int segments = 28)
+    private void DrawCircle(
+        Vector3 center,
+        Vector3 up,
+        Vector3 forward,
+        float radius,
+        Color color,
+        int segments = 28)
     {
         Gizmos.color = color;
+
         Vector3 right = Vector3.Cross(up, forward).normalized;
-        if (right.sqrMagnitude < 1e-6f) right = Vector3.right;
+        if (right.sqrMagnitude < 1e-6f)
+            right = Vector3.right;
 
         Vector3 prev = center + right * radius;
         float step = 360f / segments;
+
         for (int i = 1; i <= segments; i++)
         {
             Quaternion q = Quaternion.AngleAxis(step * i, forward);
