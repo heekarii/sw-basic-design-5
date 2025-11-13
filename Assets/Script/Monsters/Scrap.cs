@@ -11,7 +11,7 @@ public class Scrap : MonoBehaviour
     void Start()
     {
         _player = GameObject.FindWithTag("Player").transform;
-        _gm = GameMangaer.Instance;
+        _gm = GameManager.Instance;
     }
     
     void Update()
@@ -24,11 +24,6 @@ public class Scrap : MonoBehaviour
             _isPicked = true;
             // 스크랩 획득 처리
             _gm.AddScrap(_amount);
-            if (playerInventory != null)
-            {
-                playerInventory.AddScrap(_amount);
-                Debug.Log($"[Scrap] 스크랩 {_amount} 획득");
-            }
             Destroy(gameObject);
         }
     }
