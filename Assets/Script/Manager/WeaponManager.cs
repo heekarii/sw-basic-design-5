@@ -37,4 +37,9 @@ public class WeaponManager : Singleton<WeaponManager>
         
         Debug.Log($"[WeaponManager] 공격력 +{powerDelta} 강화됨");
     }
+
+    public int GetWeaponLevel()
+    {
+        return _curWeaponIndex;
+    }
 }

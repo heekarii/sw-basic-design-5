@@ -54,8 +54,10 @@ public class Player : MonoBehaviour
     [Header("Camera")]
     [SerializeField] private Transform _camera;
     [SerializeField] private float _mouseSensitivity = 2f;
+    [SerializeField] private Transform _cameraPitchTarget;
     private float _cameraPitch = 0f;
     
+    [Header("Weapon")]
     [SerializeField]
     private WeaponData _currentWeaponData;
     private GameObject _currentWeaponModel;
@@ -65,7 +67,7 @@ public class Player : MonoBehaviour
     private WeaponManager _wm;
     private GameManager _gm;
     
-        
+    [SerializeField]
     private Transform _weaponSocket;
     
     private Vector3 _moveDirection;
@@ -81,7 +83,8 @@ public class Player : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
-        _weaponSocket = transform.Find("WeaponSocket");
+        if (_weaponSocket == null)
+            _weaponSocket = transform.Find("WeaponSocket");
         _currentHealth = _maxHealth;
         _curPlayerStatus = 0;
         Cursor.visible = false;
@@ -152,7 +155,7 @@ public class Player : MonoBehaviour
         _cameraPitch -= mouseY;
         _cameraPitch = Mathf.Clamp(_cameraPitch, -60f, 60f);
 
-        _camera.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
+        _cameraPitchTarget.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
     }
     private void HandleInput()
@@ -191,6 +194,21 @@ public class Player : MonoBehaviour
             Vector3 nextPos = Vector3.Lerp(_rb.position, targetPos, 0.8f);
             nextPos.y = _rb.position.y; // 🧩 점프 시 Y축은 물리에 맡김
             _rb.MovePosition(nextPos);
+            if (_isShifting)
+            {
+                _animator.SetBool("isRunning", true);
+                _animator.SetBool("isWalking", false);
+            }
+            else
+            {
+                _animator.SetBool("isWalking", true);
+                _animator.SetBool("isRunning", false);
+            }
+        }
+        else
+        {
+            _animator.SetBool("isWalking", false);
+            _animator.SetBool("isRunning", false);
         }
     }
 
@@ -246,9 +264,6 @@ public class Player : MonoBehaviour
             return;
         }
 
-        
-        _animator?.SetTrigger("attack");
-
         string weaponName = _currentWeaponData.WeaponName;
 
 
@@ -259,6 +274,17 @@ public class Player : MonoBehaviour
             
             Collider[] hits = Physics.OverlapSphere(transform.position, range);
             Vector3 forward = transform.forward;
+            if (_wm.GetWeaponLevel() == 0)
+            {
+                _animator.SetTrigger("isPunching");
+                Debug.Log("punch");
+            }
+            
+            else
+            {
+                _animator.SetTrigger("isSwing");
+            }
+            
 
             foreach (Collider col in hits)
             {
