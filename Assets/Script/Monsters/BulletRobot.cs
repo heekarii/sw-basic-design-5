@@ -151,12 +151,10 @@ public class BulletRobot : MonoBehaviour, IEnemy
 
         while (elapsed < _attackingTime)
         {
-            if (_player == null) break;
-
-            // 👉 공격 중에도 계속 수평 회전해서 플레이어를 바라보게
+            if (_player == null || !HasLineOfSight()) break;
+            
             LookAtPlayer();
-
-            // 시각용 볼트 스폰
+            
             spawnTimer += Time.deltaTime;
             while (spawnTimer >= spawnInterval)
             {
@@ -189,33 +187,46 @@ public class BulletRobot : MonoBehaviour, IEnemy
     {
         if (_boltPrefab == null || muzzle == null) return;
 
-        // 원뿔 내부 방향
+        // 원뿔 내부에서 임의 방향 뽑기 (네가 이미 가지고 있는 함수)
         Vector3 dir = RandomDirectionInCone(muzzle.forward, _coneAngleDeg, muzzle);
 
         GameObject go = Instantiate(_boltPrefab, muzzle.position, Quaternion.LookRotation(dir));
 
+        // 그냥 지금처럼 날아가게 그대로 두고
         if (go.TryGetComponent<Rigidbody>(out var rb))
         {
-            // Unity 6000 이후엔 linearVelocity, 구버전이면 velocity 쓰면 됨
             rb.linearVelocity = dir * _boltSpeed;
         }
 
-        // 볼트가 공격 범위를 딱 도달할 정도의 시간 후 자동 삭제
-        float life = (_coneLength / _boltSpeed) + 0.05f;
-        Destroy(go, life);
+        // 👉 여기서 Raycast로 "앞에 뭐 있나" 한 번만 체크해서
+        //    부딪히는 지점까지 날아갈 시간 계산
+        float maxDistance = _coneLength;   // 이 볼트가 최대 날아갈 거리
+        float lifeTime;
+
+        if (Physics.Raycast(
+                muzzle.position,         // 시작 위치
+                dir,                     // 방향
+                out RaycastHit hit,
+                maxDistance,
+                ~0,                      // 모든 레이어 대상
+                QueryTriggerInteraction.Ignore))
+        {
+            // 장애물까지 거리 / 속도 = 실제 생존 시간
+            lifeTime = hit.distance / _boltSpeed;
+        }
+        else
+        {
+            // 아무것도 안 맞으면 최대 사거리까지
+            lifeTime = maxDistance / _boltSpeed;
+        }
+
+        // 살짝 여유
+        lifeTime += 0.02f;
+
+        Destroy(go, lifeTime);
     }
 
-    // 원뿔 내부에서 임의 방향 벡터 생성
-    private Vector3 RandomDirectionInCone(Vector3 forward, float coneAngleDeg, Transform basis)
-    {
-        float yaw = Random.Range(-coneAngleDeg, coneAngleDeg);
-        float pitch = Random.Range(-coneAngleDeg, coneAngleDeg);
 
-        Quaternion rotYaw = Quaternion.AngleAxis(yaw, basis.up);
-        Vector3 yRot = rotYaw * forward;
-        Quaternion rotPitch = Quaternion.AngleAxis(pitch, Vector3.Cross(basis.up, yRot).normalized);
-        return (rotPitch * yRot).normalized;
-    }
     
     // ===== 판정 틱(거리 1당 5% 데미지 감소, 콜라이더가 원뿔에 "조금이라도" 걸리면 히트) =====
     private void ConeDamageTick(Transform t)
@@ -283,6 +294,21 @@ public class BulletRobot : MonoBehaviour, IEnemy
         // Debug.Log($"[BulletRobot] Hit cone (flatDist={distFlat2:F2}, dmg={dmg2:F2})");
     }
 
+    private Vector3 RandomDirectionInCone(Vector3 forward, float coneAngleDeg, Transform basis)
+    {
+        float yaw = Random.Range(-coneAngleDeg, coneAngleDeg);
+        float pitch = Random.Range(-coneAngleDeg, coneAngleDeg);
+
+        Quaternion rotYaw = Quaternion.AngleAxis(yaw, basis.up);
+        Vector3 yRot = rotYaw * forward;
+
+        Quaternion rotPitch = Quaternion.AngleAxis(
+            pitch,
+            Vector3.Cross(basis.up, yRot).normalized
+        );
+
+        return (rotPitch * yRot).normalized;
+    }
     
     private bool IsPointInsideCone(Vector3 point, Transform t, float angleDeg, float length)
     {

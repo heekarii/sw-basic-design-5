@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/BulletRobot/controller.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/BulletRobot/controller.controller" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MonsterTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MonsterTestScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/BulletRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/BulletRobot.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -141,6 +139,7 @@
       <workItem from="1763027335246" duration="17000" />
       <workItem from="1763048640273" duration="4643000" />
       <workItem from="1763055364002" duration="2348000" />
+      <workItem from="1763060033014" duration="644000" />
     </task>
     <servers />
   </component>
