@@ -9,7 +9,7 @@ public class BulletRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _attackCooldown = 5.0f;
     [SerializeField] private float _aggravationRange = 15.1f;
     [SerializeField] private float _attackRange = 12.1f;      // 사거리(= 원뿔 길이와 같게 맞춰도 OK)
-    [SerializeField] private float _moveSpeed = 5.0f;
+    [SerializeField] private float _moveSpeed = 3.5f;
     [SerializeField] private float _lookAtTurnSpeed = 8f;
     [SerializeField] private Player _player;
 
@@ -24,8 +24,8 @@ public class BulletRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _boltSpeed = 20f;
     [SerializeField] private GameObject _boltPrefab;
     [SerializeField] private int _boltsPerSecond = 24;       // 초당 생성 개수
-
-    // coneAngleDeg는 코드에서 계산해서 씀 (인스펙터에 안 보이게 private만)
+    
+    private Collider _playerCol;   // ★ 플레이어 콜라이더
     private float _coneAngleDeg = 0.0f;
 
     private bool _isAttacking = false;
@@ -40,10 +40,13 @@ public class BulletRobot : MonoBehaviour, IEnemy
 
         if (_agent == null || _player == null)
         {
-            Debug.LogError("[BulletRobot] 필수 컴포넌트 누락");
             enabled = false; 
             return;
         }
+        
+        _playerCol = _player.GetComponentInChildren<Collider>();
+        if (_playerCol == null)
+            Debug.LogWarning("[BulletRobot] Player에 Collider가 없습니다.");
 
         // Agent 기본
         _agent.speed = _moveSpeed;
@@ -213,39 +216,96 @@ public class BulletRobot : MonoBehaviour, IEnemy
         Quaternion rotPitch = Quaternion.AngleAxis(pitch, Vector3.Cross(basis.up, yRot).normalized);
         return (rotPitch * yRot).normalized;
     }
-
-    // ===== 판정 틱(거리 1당 5% 데미지 감소) =====
+    
+    // ===== 판정 틱(거리 1당 5% 데미지 감소, 콜라이더가 원뿔에 "조금이라도" 걸리면 히트) =====
     private void ConeDamageTick(Transform t)
     {
-        if (_player == null) return;
+        if (_player == null || t == null) return;
 
-        Vector3 pos = _player.transform.position;
-
-        if (IsPointInsideCone(pos, t, _coneAngleDeg, _coneLength))
+        // 콜라이더가 없으면 예전처럼 "센터 포인트"만 검사
+        if (_playerCol == null)
         {
-            float dist = Vector3.Distance(t.position, pos);
-            float falloff = Mathf.Max(0f, 1f - 0.05f * dist); // 거리 1m당 5% 감소
-            float dmg = _tickDamage * falloff;
+            Vector3 center = _player.transform.position;
+            if (!IsPointInsideCone(center, t, _coneAngleDeg, _coneLength))
+                return;
 
+            // 데미지 감소는 평면(XZ) 거리 기준
+            Vector3 flat = center - t.position;
+            flat.y = 0f;
+            float distFlat = flat.magnitude;
+
+            float falloff = Mathf.Max(0f, 1f - 0.05f * distFlat);
+            float dmg = _tickDamage * falloff;
             _player.TakeDamage(dmg);
+            return;
         }
+
+        // ★ 콜라이더의 여러 샘플 포인트를 검사해서
+        //    하나라도 원뿔 안에 들어오면 "맞은 것"으로 처리
+        Bounds b = _playerCol.bounds;
+        Vector3 c = b.center;
+        Vector3 e = b.extents;
+
+        // 샘플 포인트들 (센터 + 6방향)
+        Vector3[] samples =
+        {
+            c,
+            c + new Vector3( e.x, 0f, 0f),
+            c + new Vector3(-e.x, 0f, 0f),
+            c + new Vector3(0f, 0f,  e.z),
+            c + new Vector3(0f, 0f, -e.z),
+            c + new Vector3(0f,  e.y, 0f),
+            c + new Vector3(0f, -e.y, 0f),
+        };
+
+        bool anyInside = false;
+        for (int i = 0; i < samples.Length; i++)
+        {
+            if (IsPointInsideCone(samples[i], t, _coneAngleDeg, _coneLength))
+            {
+                anyInside = true;
+                break;
+            }
+        }
+
+        if (!anyInside) return;   // 콜라이더 전체가 원뿔 밖
+
+        // ★ 데미지 감소용 거리는 "머즐 기준 XZ 평면"에서 가장 가까운 지점 사용
+        Vector3 closest = _playerCol.ClosestPoint(t.position); // 머즐에서 가장 가까운 콜라이더 표면
+        Vector3 flatFromMuzzle = closest - t.position;
+        flatFromMuzzle.y = 0f;
+        float distFlat2 = flatFromMuzzle.magnitude;
+
+        float falloff2 = Mathf.Max(0f, 1f - 0.05f * distFlat2);
+        float dmg2 = _tickDamage * falloff2;
+
+        _player.TakeDamage(dmg2);
+        // Debug.Log($"[BulletRobot] Hit cone (flatDist={distFlat2:F2}, dmg={dmg2:F2})");
     }
 
+    
     private bool IsPointInsideCone(Vector3 point, Transform t, float angleDeg, float length)
     {
-        Vector3 apex = t.position;
-        Vector3 axis = t.forward.normalized;
+        if (t == null) return false;
+        if (length <= 0f) return false;
 
-        Vector3 v = point - apex;
-        float z = Vector3.Dot(v, axis);
-        if (z <= 0f || z > length) return false;
+        // 플레이어 위치를 머즐 기준 로컬 좌표로 변환
+        Vector3 local = t.InverseTransformPoint(point);
 
-        float radiusAtZ = Mathf.Tan(angleDeg * Mathf.Deg2Rad) * z;
-        Vector3 radial = v - axis * z;
-        float r = radial.magnitude;
+        float z = local.z; // 축 방향(앞/뒤)
+        if (z <= 0f || z > length)
+            return false;  // 뒤쪽이거나, 길이 밖이면 탈락
 
-        return r <= radiusAtZ;
+        // 현재 z에서의 최대 반지름 = 밑면 반지름 * (z / 전체 길이)  (선형으로 넓어지는 원뿔)
+        float maxRadius = _coneRadius * (z / length);
+
+        // 축에서 떨어진 거리 (x, y 둘 다 포함 → 진짜 3D 원뿔)
+        float radialSqr = local.x * local.x + local.y * local.y;
+
+        return radialSqr <= maxRadius * maxRadius;
     }
+
+
 
     // ===== 유틸 =====
     private bool HasLineOfSight()
@@ -292,7 +352,11 @@ public class BulletRobot : MonoBehaviour, IEnemy
     private void OnDrawGizmosSelected()
     {
         Transform t = _muzzleDetect != null ? _muzzleDetect : transform;
-        float ang = _coneAngleDeg;
+
+        // 에디터에서도 항상 밑면/길이로 각도 다시 계산
+        float ang = (_coneLength > 0f) 
+            ? Mathf.Atan(_coneRadius / _coneLength) * Mathf.Rad2Deg 
+            : 0f;
         float len = _coneLength;
 
         Gizmos.color = Color.red;
@@ -303,9 +367,11 @@ public class BulletRobot : MonoBehaviour, IEnemy
         {
             float z = len * i / rings;
             float radius = Mathf.Tan(ang * Mathf.Deg2Rad) * z;
-            DrawCircle(t.position + t.forward * z, t.up, t.forward, radius, Color.Lerp(Color.red, Color.red, i / (float)rings));
+            DrawCircle(t.position + t.forward * z, t.up, t.forward, radius,
+                Color.Lerp(Color.red, Color.red, i / (float)rings));
         }
     }
+
 
     private void DrawCircle(Vector3 center, Vector3 up, Vector3 forward, float radius, Color color, int segments = 28)
     {

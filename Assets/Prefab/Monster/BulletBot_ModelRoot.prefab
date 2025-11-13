@@ -155,20 +155,19 @@ MonoBehaviour:
   _attackCooldown: 5
   _aggravationRange: 15.1
   _attackRange: 12.1
-  _moveSpeed: 5
+  _moveSpeed: 3.5
   _lookAtTurnSpeed: 8
   _player: {fileID: 5894040061406813158, guid: a37229b336ba2c346bef853d60ec9ae2, type: 3}
   _muzzleVisual: {fileID: 6080260490002558727}
   _muzzleDetect: {fileID: 6080260490002558727}
-  _coneAngleDeg: 12
-  _coneLength: 12
+  _coneLength: 12.1
+  _coneRadius: 5
   _tickDamage: 1.2
   _damageInterval: 0.1
   _attackingTime: 5
-  _boltSpeed: 28
+  _boltSpeed: 20
   _boltPrefab: {fileID: 196959461620281205, guid: 3ac0d432659b0bb4899067d3c103eeac, type: 3}
   _boltsPerSecond: 24
-  _boltLifetime: 2
 --- !u!1 &5065180194215341210
 GameObject:
   m_ObjectHideFlags: 0
