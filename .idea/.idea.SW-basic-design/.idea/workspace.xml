@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="" />
+    <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/WeaponManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/WeaponManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/AirRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/AirRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/ChainsawRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/ChainsawRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/LaserDrone.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/LaserDrone.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/LaserRobot/LaserRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/LaserRobot/LaserRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/PunchRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/PunchRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/Rat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/Rat.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/SpearRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/SpearRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/dummyMonster.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/dummyMonster.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/interface/IEnemy.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/interface/IEnemy.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

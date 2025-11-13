@@ -14,6 +14,7 @@ public class AirRobot : MonoBehaviour, IEnemy
     [FormerlySerializedAs("windEffectPrefab")] 
     [SerializeField] private GameObject _windEffectPrefab;
     [SerializeField] private Transform _windOrigin;
+    [SerializeField] private int _scrapAmount = 2;
 
     [SerializeField] private Transform _zeron;
     [SerializeField] private Player _player;
@@ -144,8 +145,6 @@ public class AirRobot : MonoBehaviour, IEnemy
         }
     }
 
-    
-
     public void TakeDamage(float dmg)
     {
         _currentHealth -= dmg;
@@ -155,6 +154,7 @@ public class AirRobot : MonoBehaviour, IEnemy
 
     private void Die()
     {
+        DropScrap(_scrapAmount);
         Destroy(gameObject);
         Debug.Log("[AirRobot] 파괴됨");
     }
@@ -163,8 +163,9 @@ public class AirRobot : MonoBehaviour, IEnemy
     {
         if (!_scrapData) return;
         
-        //Scrap scrpaComponet = scrapComponent.AddComponent<Scrap>();
-        //scrpaComponet.InitScrap(amount);
+        GameObject scrap = Instantiate(_scrapData.ScrapPrefab, transform.position, Quaternion.identity);
+        Scrap scrapComponent = scrap.AddComponent<Scrap>();
+        scrapComponent.InitScrap(amount);
         Debug.Log($"[AirRobot] 스크랩 {amount} 드랍");
     }
     
