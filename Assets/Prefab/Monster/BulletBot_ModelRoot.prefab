@@ -158,6 +158,7 @@ MonoBehaviour:
   _moveSpeed: 3.5
   _lookAtTurnSpeed: 8
   _player: {fileID: 5894040061406813158, guid: a37229b336ba2c346bef853d60ec9ae2, type: 3}
+  _anim: {fileID: 8960785266388870524}
   _muzzleVisual: {fileID: 6080260490002558727}
   _muzzleDetect: {fileID: 6080260490002558727}
   _coneLength: 12.1

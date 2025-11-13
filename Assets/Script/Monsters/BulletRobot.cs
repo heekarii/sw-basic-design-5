@@ -12,6 +12,8 @@ public class BulletRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _moveSpeed = 3.5f;
     [SerializeField] private float _lookAtTurnSpeed = 8f;
     [SerializeField] private Player _player;
+    [SerializeField] private Animator _anim;
+
 
     [Header("Bolt Setting")]
     [SerializeField] private Transform _muzzleVisual;
@@ -44,6 +46,9 @@ public class BulletRobot : MonoBehaviour, IEnemy
             return;
         }
         
+        if (_anim == null)
+            _anim = GetComponentInChildren<Animator>();
+        
         _playerCol = _player.GetComponentInChildren<Collider>();
         if (_playerCol == null)
             Debug.LogWarning("[BulletRobot] Player에 Collider가 없습니다.");
@@ -66,6 +71,9 @@ public class BulletRobot : MonoBehaviour, IEnemy
     {
         if (_player == null || _agent == null) return;
 
+        if (_anim != null)
+            _anim.SetFloat("Speed", _agent.velocity.magnitude);
+        
         // NavMesh 이탈 복구
         if (!_agent.isOnNavMesh)
         {
