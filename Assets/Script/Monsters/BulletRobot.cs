@@ -14,25 +14,23 @@ public class BulletRobot : MonoBehaviour, IEnemy
     [SerializeField] private Player _player;
 
     [Header("Bolt Setting")]
-    private float _coneAngleDeg = 12.0f;        // 원뿔 퍼지는 각도
-    private float _coneLength = 12.1f;          // 원뿔 높이
-    private Transform _muzzleVisual;
-    private Transform _muzzleDetect;
-    private float _tickDamage = 1.2f;
-    private float _damageInterval = 0.1f;
-    private float _attackingTime = 5.0f;
-    [SerializeField] private GameObject _boltPrefab;
+    [SerializeField] private Transform _muzzleVisual;
+    [SerializeField] private Transform _muzzleDetect;
+    [SerializeField] private float _coneLength = 12.1f;   // 원뿔 길이
+    [SerializeField] private float _coneRadius = 5.0f;    // 밑면 반지름
+    [SerializeField] private float _tickDamage = 1.2f;
+    [SerializeField] private float _damageInterval = 0.1f;
+    [SerializeField] private float _attackingTime = 5.0f;
     [SerializeField] private float _boltSpeed = 20f;
-    private int _boltsPerSecond = 24;       //초당 생성 개수
-    [SerializeField] private float _boltLifetime = 1.0f;
+    [SerializeField] private GameObject _boltPrefab;
+    [SerializeField] private int _boltsPerSecond = 24;       // 초당 생성 개수
+
+    // coneAngleDeg는 코드에서 계산해서 씀 (인스펙터에 안 보이게 private만)
+    private float _coneAngleDeg = 0.0f;
 
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
     private NavMeshAgent _agent;
-
-    // 성능용 버퍼(멀티타깃 대비)
-    private const int SCAN_MAX = 16;
-    private readonly Collider[] _scanBuf = new Collider[SCAN_MAX];
 
     private void Start()
     {
@@ -43,7 +41,8 @@ public class BulletRobot : MonoBehaviour, IEnemy
         if (_agent == null || _player == null)
         {
             Debug.LogError("[BulletRobot] 필수 컴포넌트 누락");
-            enabled = false; return;
+            enabled = false; 
+            return;
         }
 
         // Agent 기본
@@ -51,6 +50,9 @@ public class BulletRobot : MonoBehaviour, IEnemy
         _agent.stoppingDistance = _attackRange;
         _agent.updateRotation = true;
         _agent.autoBraking = true;
+
+        // 밑면 반지름 / 길이로 원뿔 각도 계산
+        _coneAngleDeg = Mathf.Atan(_coneRadius / _coneLength) * Mathf.Rad2Deg;
 
         // 시작 위치 NavMesh 보정
         if (!_agent.isOnNavMesh && NavMesh.SamplePosition(transform.position, out var hit, 2f, NavMesh.AllAreas))
@@ -75,6 +77,10 @@ public class BulletRobot : MonoBehaviour, IEnemy
 
         float worldDist = Vector3.Distance(transform.position, _player.transform.position);
         bool hasLOS = HasLineOfSight();
+
+        // 👉 인식 범위 안에 있으면 항상 플레이어를 수평으로 쳐다봄
+        if (worldDist <= _aggravationRange)
+            LookAtPlayer();
 
         // 공격 진입 조건
         if (!_isAttacking && !_isCoolingDown &&
@@ -104,6 +110,25 @@ public class BulletRobot : MonoBehaviour, IEnemy
         }
     }
 
+    // 🔁 항상 수평으로 플레이어 바라보는 함수 (네가 원래 쓰던 역할)
+    private void LookAtPlayer()
+    {
+        if (_player == null) return;
+
+        Vector3 dir = _player.transform.position - transform.position;
+        dir.y = 0f; // 수평만
+
+        if (dir.sqrMagnitude < 0.0001f)
+            return;
+
+        Quaternion targetRot = Quaternion.LookRotation(dir);
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRot,
+            _lookAtTurnSpeed * Time.deltaTime
+        );
+    }
+
     private System.Collections.IEnumerator AttackRoutine()
     {
         _isAttacking = true;
@@ -118,7 +143,6 @@ public class BulletRobot : MonoBehaviour, IEnemy
         float spawnTimer = 0f;
         float spawnInterval = (_boltsPerSecond > 0) ? (1f / _boltsPerSecond) : 999f;
 
-        // 공격 도중엔 항상 플레이어를 바라보게(옵션)
         Transform tDetect = _muzzleDetect != null ? _muzzleDetect : transform;
         Transform tVisual = _muzzleVisual != null ? _muzzleVisual : tDetect;
 
@@ -126,14 +150,8 @@ public class BulletRobot : MonoBehaviour, IEnemy
         {
             if (_player == null) break;
 
-            // 바라보기(수평만)
-            Vector3 lookDir = _player.transform.position - transform.position;
-            lookDir.y = 0f;
-            if (lookDir.sqrMagnitude > 0.001f)
-            {
-                Quaternion targetRot = Quaternion.LookRotation(lookDir);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRot, _lookAtTurnSpeed * Time.deltaTime);
-            }
+            // 👉 공격 중에도 계속 수평 회전해서 플레이어를 바라보게
+            LookAtPlayer();
 
             // 시각용 볼트 스폰
             spawnTimer += Time.deltaTime;
@@ -168,23 +186,25 @@ public class BulletRobot : MonoBehaviour, IEnemy
     {
         if (_boltPrefab == null || muzzle == null) return;
 
-        // 원뿔 내부 임의 방향(시각/판정과 같은 각도 사용)
+        // 원뿔 내부 방향
         Vector3 dir = RandomDirectionInCone(muzzle.forward, _coneAngleDeg, muzzle);
 
         GameObject go = Instantiate(_boltPrefab, muzzle.position, Quaternion.LookRotation(dir));
-        // Rigidbody가 있으면 속도 부여
+
         if (go.TryGetComponent<Rigidbody>(out var rb))
         {
+            // Unity 6000 이후엔 linearVelocity, 구버전이면 velocity 쓰면 됨
             rb.linearVelocity = dir * _boltSpeed;
         }
-        // 라이프타임 지나면 자동 파괴
-        Destroy(go, _boltLifetime);
+
+        // 볼트가 공격 범위를 딱 도달할 정도의 시간 후 자동 삭제
+        float life = (_coneLength / _boltSpeed) + 0.05f;
+        Destroy(go, life);
     }
 
-    // 원뿔 내부에서 임의 방향 벡터 생성(간단한 피치/요 임의 회전)
+    // 원뿔 내부에서 임의 방향 벡터 생성
     private Vector3 RandomDirectionInCone(Vector3 forward, float coneAngleDeg, Transform basis)
     {
-        // Y축만이 아니라, basis의 '위'를 기준으로 yaw/pitch 적용
         float yaw = Random.Range(-coneAngleDeg, coneAngleDeg);
         float pitch = Random.Range(-coneAngleDeg, coneAngleDeg);
 
@@ -197,32 +217,28 @@ public class BulletRobot : MonoBehaviour, IEnemy
     // ===== 판정 틱(거리 1당 5% 데미지 감소) =====
     private void ConeDamageTick(Transform t)
     {
-        // 단일 플레이어 기준(멀티타깃이면 OverlapSphereNonAlloc 후 필터링)
         if (_player == null) return;
 
         Vector3 pos = _player.transform.position;
 
         if (IsPointInsideCone(pos, t, _coneAngleDeg, _coneLength))
         {
-            // 실제 거리
             float dist = Vector3.Distance(t.position, pos);
-            // 거리 1m당 5% 감소
-            float falloff = Mathf.Max(0f, 1f - 0.05f * dist);
+            float falloff = Mathf.Max(0f, 1f - 0.05f * dist); // 거리 1m당 5% 감소
             float dmg = _tickDamage * falloff;
 
             _player.TakeDamage(dmg);
         }
     }
 
-    // 점이 원뿔 내부인지 검사(축: t.forward, 꼭짓점: t.position, 각/길이 사용)
     private bool IsPointInsideCone(Vector3 point, Transform t, float angleDeg, float length)
     {
         Vector3 apex = t.position;
         Vector3 axis = t.forward.normalized;
 
         Vector3 v = point - apex;
-        float z = Vector3.Dot(v, axis);          // 축 방향 거리(앞/뒤)
-        if (z <= 0f || z > length) return false; // 뒤쪽이거나 길이 초과
+        float z = Vector3.Dot(v, axis);
+        if (z <= 0f || z > length) return false;
 
         float radiusAtZ = Mathf.Tan(angleDeg * Mathf.Deg2Rad) * z;
         Vector3 radial = v - axis * z;
@@ -265,33 +281,29 @@ public class BulletRobot : MonoBehaviour, IEnemy
     {
         _curHp -= dmg;
         if (_curHp <= 0f) Die();
-        // Debug.Log($"[BulletRobot] Took {dmg}, HP: {_curHp}");
     }
 
     private void Die()
     {
         Destroy(gameObject);
-        // Debug.Log("[BulletRobot] Dead");
     }
 
-    // Scene 뷰에서 원뿔 시각화(시각/판정 동일 파라미터로)
+    // Scene 뷰에서 원뿔 시각화
     private void OnDrawGizmosSelected()
     {
         Transform t = _muzzleDetect != null ? _muzzleDetect : transform;
         float ang = _coneAngleDeg;
         float len = _coneLength;
 
-        // 축
-        Gizmos.color = Color.cyan;
+        Gizmos.color = Color.red;
         Gizmos.DrawLine(t.position, t.position + t.forward * len);
 
-        // 몇 개의 링(원)을 그려 대략적인 원뿔 형태 표시
         int rings = 4;
         for (int i = 1; i <= rings; i++)
         {
             float z = len * i / rings;
             float radius = Mathf.Tan(ang * Mathf.Deg2Rad) * z;
-            DrawCircle(t.position + t.forward * z, t.up, t.forward, radius, Color.Lerp(Color.cyan, Color.blue, i/(float)rings));
+            DrawCircle(t.position + t.forward * z, t.up, t.forward, radius, Color.Lerp(Color.red, Color.red, i / (float)rings));
         }
     }
 

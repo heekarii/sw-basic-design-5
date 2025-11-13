@@ -157,18 +157,49 @@ MonoBehaviour:
   _attackRange: 12.1
   _moveSpeed: 5
   _lookAtTurnSpeed: 8
-  _player: {fileID: 0}
+  _player: {fileID: 5894040061406813158, guid: a37229b336ba2c346bef853d60ec9ae2, type: 3}
+  _muzzleVisual: {fileID: 6080260490002558727}
+  _muzzleDetect: {fileID: 6080260490002558727}
   _coneAngleDeg: 12
   _coneLength: 12
-  _muzzleVisual: {fileID: 0}
-  _muzzleDetect: {fileID: 0}
   _tickDamage: 1.2
   _damageInterval: 0.1
   _attackingTime: 5
-  _boltPrefab: {fileID: 0}
   _boltSpeed: 28
+  _boltPrefab: {fileID: 196959461620281205, guid: 3ac0d432659b0bb4899067d3c103eeac, type: 3}
   _boltsPerSecond: 24
   _boltLifetime: 2
+--- !u!1 &5065180194215341210
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6080260490002558727}
+  m_Layer: 0
+  m_Name: Muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6080260490002558727
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5065180194215341210}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.00308, y: 0.01753, z: 0.00526}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6094690644412110500}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &5989235158231413071
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -305,6 +336,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: ca80d96314cf7c043a8bcaaae348da30, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6734464371262555372}
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: ca80d96314cf7c043a8bcaaae348da30, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6080260490002558727}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: ca80d96314cf7c043a8bcaaae348da30, type: 3}
       insertIndex: -1
