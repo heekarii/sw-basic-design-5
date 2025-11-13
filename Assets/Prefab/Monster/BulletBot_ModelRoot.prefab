@@ -65,6 +65,7 @@ GameObject:
   - component: {fileID: 3218484423467037728}
   - component: {fileID: 3445010253133928202}
   - component: {fileID: 5068892541019702056}
+  - component: {fileID: 4698933291627188585}
   m_Layer: 0
   m_Name: BulletBot_ModelRoot
   m_TagString: Untagged
@@ -137,6 +138,37 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &4698933291627188585
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4767300821926652044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed98dfebb2653e14abf052a645034fbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHp: 80
+  _curHp: 0
+  _attackCooldown: 5
+  _aggravationRange: 15.1
+  _attackRange: 12.1
+  _moveSpeed: 5
+  _lookAtTurnSpeed: 8
+  _player: {fileID: 0}
+  _coneAngleDeg: 12
+  _coneLength: 12
+  _muzzleVisual: {fileID: 0}
+  _muzzleDetect: {fileID: 0}
+  _tickDamage: 1.2
+  _damageInterval: 0.1
+  _attackingTime: 5
+  _boltPrefab: {fileID: 0}
+  _boltSpeed: 28
+  _boltsPerSecond: 24
+  _boltLifetime: 2
 --- !u!1001 &5989235158231413071
 PrefabInstance:
   m_ObjectHideFlags: 0
