@@ -12,6 +12,8 @@ public class PunchRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _aggravationRange = 5.5f;
     [SerializeField] private float _attackRange = 1.0f;
     [SerializeField] private float _moveSpeed = 1.0f;
+    [SerializeField] private ScrapData _scrapData;
+    [SerializeField] private int _scrapAmount = 3;
 
     [SerializeField] private Player _player;
     private bool _isAttacking = false;
@@ -236,5 +238,15 @@ public class PunchRobot : MonoBehaviour, IEnemy
     {
         Destroy(gameObject);
         Debug.Log("PunchRobot has died.");
+    }
+    
+    public void DropScrap(int amount)
+    {
+        if (!_scrapData) return;
+        
+        GameObject scrap = Instantiate(_scrapData.ScrapPrefab, transform.position, Quaternion.identity);
+        Scrap scrapComponent = scrap.AddComponent<Scrap>();
+        scrapComponent.InitScrap(amount);
+        Debug.Log($"[AirRobot] 스크랩 {amount} 드랍");
     }
 }

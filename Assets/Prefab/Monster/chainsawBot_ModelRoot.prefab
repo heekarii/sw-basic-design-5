@@ -592,6 +592,8 @@ MonoBehaviour:
   _moveSpeed: 4
   _lookAtTurnSpeed: 8
   _anim: {fileID: 0}
+  _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
+  _scrapAmount: 15
   _player: {fileID: 5894040061406813158, guid: a37229b336ba2c346bef853d60ec9ae2, type: 3}
 --- !u!95 &5315567320004527438
 Animator:

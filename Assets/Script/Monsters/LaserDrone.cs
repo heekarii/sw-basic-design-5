@@ -14,10 +14,13 @@ public class LaserDrone : MonoBehaviour, IEnemy
     [SerializeField] private float _attackCooldown = 10f;    // 재공격 시간
     [SerializeField] private int _dropScrap = 5;             // 처치 시 스크랩 수
     [SerializeField] private GameObject _flashEffectPrefab;  // 공격시 밝은 불빛 이펙트
-
+    [SerializeField] private int _scrapAmount = 3;            // 드랍 스크랩 양
+    
     [Header("참조 오브젝트")]
     [SerializeField] private Transform _player;              // ZERON
     [SerializeField] private Image _flashOverlay;            // 섬광 피격용 UI (Canvas Image)
+    [SerializeField] private ScrapData _scrapData;          // 스크랩 데이터
+    
 
     private bool _isActive = false;
     private bool _isAttacking = false;
@@ -155,14 +158,18 @@ public class LaserDrone : MonoBehaviour, IEnemy
         _currentHealth -= Mathf.RoundToInt(damage);
         if (_currentHealth <= 0)
         {
-            DropScrap();
+            DropScrap(_scrapAmount);
             Destroy(gameObject);
         }
     }
 
-    private void DropScrap()
+    public void DropScrap(int amount)
     {
-        Debug.Log($"섬광 로봇이 {_dropScrap}개의 스크랩을 떨어뜨림");
-        // GameManager.Instance.AddScrap(_dropScrap);
+        if (!_scrapData) return;
+        
+        GameObject scrap = Instantiate(_scrapData.ScrapPrefab, transform.position, Quaternion.identity);
+        Scrap scrapComponent = scrap.AddComponent<Scrap>();
+        scrapComponent.InitScrap(amount);
+        Debug.Log($"[AirRobot] 스크랩 {amount} 드랍");
     }
 }
