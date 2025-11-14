@@ -16,6 +16,8 @@ public class SpearRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _attackRange = 5.25f;
     [SerializeField] private float _moveSpeed = 5.0f;
     [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절
+    [SerializeField] private ScrapData _scrapData;
+    [SerializeField] private int _scrapAmount = 12;
 
     [SerializeField] private Player _player;
     private bool _isAttacking = false;
@@ -233,7 +235,18 @@ public class SpearRobot : MonoBehaviour, IEnemy
 
     private void Die()
     {
+        DropScrap(_scrapAmount);
         Destroy(gameObject);
         Debug.Log("SpearRobot has died.");
+    }
+    
+    public void DropScrap(int amount)
+    {
+        if (!_scrapData) return;
+        
+        GameObject scrap = Instantiate(_scrapData.ScrapPrefab, transform.position, Quaternion.identity);
+        Scrap scrapComponent = scrap.AddComponent<Scrap>();
+        scrapComponent.InitScrap(amount);
+        Debug.Log($"[AirRobot] 스크랩 {amount} 드랍");
     }
 }

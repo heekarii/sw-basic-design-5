@@ -54,8 +54,10 @@ public class Player : MonoBehaviour
     [Header("Camera")]
     [SerializeField] private Transform _camera;
     [SerializeField] private float _mouseSensitivity = 2f;
+    [SerializeField] private Transform _cameraPitchTarget;
     private float _cameraPitch = 0f;
     
+    [Header("Weapon")]
     [SerializeField]
     private WeaponData _currentWeaponData;
     private GameObject _currentWeaponModel;
@@ -65,7 +67,7 @@ public class Player : MonoBehaviour
     private WeaponManager _wm;
     private GameManager _gm;
     
-        
+    [SerializeField]
     private Transform _weaponSocket;
     
     private Vector3 _moveDirection;
@@ -81,7 +83,8 @@ public class Player : MonoBehaviour
     {
         _rb = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
-        _weaponSocket = transform.Find("WeaponSocket");
+        if (_weaponSocket == null)
+            _weaponSocket = transform.Find("WeaponSocket");
         _currentHealth = _maxHealth;
         _curPlayerStatus = 0;
         Cursor.visible = false;
@@ -152,7 +155,7 @@ public class Player : MonoBehaviour
         _cameraPitch -= mouseY;
         _cameraPitch = Mathf.Clamp(_cameraPitch, -60f, 60f);
 
-        _camera.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
+        _cameraPitchTarget.localRotation = Quaternion.Euler(_cameraPitch, 0f, 0f);
         transform.Rotate(Vector3.up * mouseX);
     }
     private void HandleInput()
@@ -191,6 +194,21 @@ public class Player : MonoBehaviour
             Vector3 nextPos = Vector3.Lerp(_rb.position, targetPos, 0.8f);
             nextPos.y = _rb.position.y; // 🧩 점프 시 Y축은 물리에 맡김
             _rb.MovePosition(nextPos);
+            if (_isShifting)
+            {
+                _animator.SetBool("isRunning", true);
+                _animator.SetBool("isWalking", false);
+            }
+            else
+            {
+                _animator.SetBool("isWalking", true);
+                _animator.SetBool("isRunning", false);
+            }
+        }
+        else
+        {
+            _animator.SetBool("isWalking", false);
+            _animator.SetBool("isRunning", false);
         }
     }
 
@@ -246,37 +264,51 @@ public class Player : MonoBehaviour
             return;
         }
 
-        
-        _animator?.SetTrigger("attack");
-
         string weaponName = _currentWeaponData.WeaponName;
 
 
         if (weaponName.Contains("Close"))
         {
-            float range = _currentWeaponData.range;
-            float angle = 90f;
-            
-            Collider[] hits = Physics.OverlapSphere(transform.position, range);
-            Vector3 forward = transform.forward;
 
-            foreach (Collider col in hits)
+            if (_wm.GetWeaponLevel() == 0)
             {
-                IEnemy enemy = col.GetComponentInParent<IEnemy>();
-                if (enemy != null)
+                _animator.SetTrigger("isPunching");
+                Debug.Log("punch");
+            }
+            else
+            {
+                _animator.SetTrigger("isSwing");
+            }
+            
+
+            float range = _currentWeaponData.range;
+            float halfAngle = 45f;
+
+            // 공격 중심 = 카메라 위치
+            Vector3 center = _camera.position;
+
+            // 공격 방향 = 카메라 forward
+            Vector3 forward = _camera.forward;
+
+            // 주변 적 스캔
+            HashSet<IEnemy> hitEnemies = new HashSet<IEnemy>();
+            Collider[] hits = Physics.OverlapSphere(center, range, _attackRaycastMask);
+
+            foreach (Collider target in hits)
+            {
+                IEnemy enemy = target.GetComponentInParent<IEnemy>();
+                if (enemy == null) continue;
+
+                // "카메라 위치 → 적" 방향
+                Vector3 dir = (target.transform.position - center).normalized;
+
+                // 각도 판정
+                if (Vector3.Angle(forward, dir) <= halfAngle)
                 {
-                    Vector3 direction = (col.transform.position - transform.position).normalized;
-                    
-                    if (Vector3.Angle(forward, direction) < angle)
-                    {
-                        enemy.TakeDamage(_attackPower);
-
-                        Vector3 hitPos = col.ClosestPoint(transform.position);
-                        // TODO:
-                        //Instantiate(_currentWeaponData.HitEffectPrefab, hitPos, Quaternion.identity);
-                    }
-
-                    Debug.Log($"hit {col.name}");
+                    if (hitEnemies.Contains(enemy)) continue; // 중복 데미지 방지
+                    hitEnemies.Add(enemy);
+                    enemy.TakeDamage(_attackPower);
+                    Debug.Log($"근거리 hit: {target.name}");
                 }
             }
         }
@@ -437,7 +469,6 @@ public class Player : MonoBehaviour
             if (_isShifting) reductionAmount *= 2f;
             //Debug.Log("[Player] 배터리 감소: " + reductionAmount);
             _curBattery -= reductionAmount;
-             gm.SetGameScore();
         }
     }
     
@@ -452,7 +483,6 @@ public class Player : MonoBehaviour
         _curBattery = Mathf.Max(0f, _curBattery - reduction);
 
         // Debug.Log($"[Player] 배터리 {reduction:F3}감소  현재 → {_curBattery:F2}");
-        GameManager.Instance?.SetGameScore();
     }
 }
 
