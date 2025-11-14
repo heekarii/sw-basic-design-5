@@ -269,40 +269,46 @@ public class Player : MonoBehaviour
 
         if (weaponName.Contains("Close"))
         {
-            float range = _currentWeaponData.range;
-            float angle = 90f;
-            
-            Collider[] hits = Physics.OverlapSphere(transform.position, range);
-            Vector3 forward = transform.forward;
+
             if (_wm.GetWeaponLevel() == 0)
             {
                 _animator.SetTrigger("isPunching");
                 Debug.Log("punch");
             }
-            
             else
             {
                 _animator.SetTrigger("isSwing");
             }
             
 
-            foreach (Collider col in hits)
+            float range = _currentWeaponData.range;
+            float halfAngle = 45f;
+
+            // 공격 중심 = 카메라 위치
+            Vector3 center = _camera.position;
+
+            // 공격 방향 = 카메라 forward
+            Vector3 forward = _camera.forward;
+
+            // 주변 적 스캔
+            HashSet<IEnemy> hitEnemies = new HashSet<IEnemy>();
+            Collider[] hits = Physics.OverlapSphere(center, range, _attackRaycastMask);
+
+            foreach (Collider target in hits)
             {
-                IEnemy enemy = col.GetComponentInParent<IEnemy>();
-                if (enemy != null)
+                IEnemy enemy = target.GetComponentInParent<IEnemy>();
+                if (enemy == null) continue;
+
+                // "카메라 위치 → 적" 방향
+                Vector3 dir = (target.transform.position - center).normalized;
+
+                // 각도 판정
+                if (Vector3.Angle(forward, dir) <= halfAngle)
                 {
-                    Vector3 direction = (col.transform.position - transform.position).normalized;
-                    
-                    if (Vector3.Angle(forward, direction) < angle)
-                    {
-                        enemy.TakeDamage(_attackPower);
-
-                        Vector3 hitPos = col.ClosestPoint(transform.position);
-                        // TODO:
-                        //Instantiate(_currentWeaponData.HitEffectPrefab, hitPos, Quaternion.identity);
-                    }
-
-                    Debug.Log($"hit {col.name}");
+                    if (hitEnemies.Contains(enemy)) continue; // 중복 데미지 방지
+                    hitEnemies.Add(enemy);
+                    enemy.TakeDamage(_attackPower);
+                    Debug.Log($"근거리 hit: {target.name}");
                 }
             }
         }

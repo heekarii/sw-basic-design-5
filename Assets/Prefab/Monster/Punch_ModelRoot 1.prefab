@@ -105,6 +105,8 @@ MonoBehaviour:
   _aggravationRange: 5.5
   _attackRange: 1
   _moveSpeed: 1
+  _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
+  _scrapAmount: 3
   _player: {fileID: 0}
 --- !u!1 &7428825564831164419
 GameObject:

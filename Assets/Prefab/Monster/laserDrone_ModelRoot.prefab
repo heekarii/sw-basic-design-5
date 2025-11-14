@@ -331,13 +331,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _detectDistance: 13.9
   _attackDistance: 8.9
-  _attackCooldown: 10
-  _moveSpeed: 6
   _hoverHeight: 4.4
+  _moveSpeed: 6
   _maxHealth: 50
-  _attackDuration: 1
-  _target: {fileID: 0}
+  _currentHealth: 0
+  _attackCooldown: 10
+  _dropScrap: 5
   _flashEffectPrefab: {fileID: 0}
+  _scrapAmount: 3
+  _player: {fileID: 0}
+  _flashOverlay: {fileID: 0}
+  _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
 --- !u!1001 &4690360200954086332
 PrefabInstance:
   m_ObjectHideFlags: 0

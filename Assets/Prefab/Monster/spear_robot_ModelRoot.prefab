@@ -1550,6 +1550,8 @@ MonoBehaviour:
   _attackRange: 5.25
   _moveSpeed: 5
   _lookAtTurnSpeed: 8
+  _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
+  _scrapAmount: 15
   _player: {fileID: 0}
 --- !u!1 &4418701953407567433
 GameObject:
