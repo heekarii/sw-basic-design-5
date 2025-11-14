@@ -166,10 +166,9 @@ public class AIRobot : MonoBehaviour, IEnemy
             }
 
             // 2) 파란 이펙트 오디오 재생 (이때 이미 Update에서 파란 FX는 ON 상태)
-            if (_blueAudio != null)
+            if (_blueAudio != null && _blueAudio.clip != null)
             {
-                _blueAudio.Stop();
-                _blueAudio.Play();
+                _blueAudio.PlayOneShot(_blueAudio.clip);
             }
 
             // 3) 이 시점에 데미지 판정

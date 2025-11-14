@@ -4,14 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Audio/AIRobotSFX.mp3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Audio/AIRobotSFX.mp3.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/electricBot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/electricBot_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MonsterTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MonsterTestScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/AIRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/AIRobot.cs" afterDir="false" />
-    </list>
+    <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -149,7 +142,7 @@
       <workItem from="1763115086676" duration="1121000" />
       <workItem from="1763117851089" duration="320000" />
       <workItem from="1763129383952" duration="7804000" />
-      <workItem from="1763137378813" duration="2697000" />
+      <workItem from="1763137378813" duration="3142000" />
     </task>
     <servers />
   </component>
