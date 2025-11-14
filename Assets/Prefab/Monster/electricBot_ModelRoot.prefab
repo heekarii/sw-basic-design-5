@@ -6145,8 +6145,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2893781032954326831}
-  - component: {fileID: -1506428972124410046}
   - component: {fileID: 8894549472392140793}
+  - component: {fileID: -1506428972124410046}
   m_Layer: 0
   m_Name: electricBot_ModelRoot
   m_TagString: Untagged
@@ -6170,6 +6170,32 @@ Transform:
   - {fileID: 881959239758723070}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8894549472392140793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6956518803865012669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 677b8946db025cb45b97e2df97f4c9a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHp: 100
+  _damage: 30
+  _damageInterval: 1
+  _attackCooldown: 5
+  _attackingTime: 10
+  _attackRange: 15.1
+  _strikeSize: 2
+  _lightningPrefab: {fileID: 5459249452796344631, guid: 90df6ce853ca7364aafe73cd34e86ccc, type: 3}
+  _redFx: {fileID: 6828618842765179134}
+  _blueFx: {fileID: 7170266953801713549}
+  _attackStartSource: {fileID: 9106380550535796039}
+  _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
+  _scrapAmount: 10
+  _player: {fileID: 1165592682695907715, guid: df33ba8c26bbf884fb64ed3b3554a6ad, type: 3}
 --- !u!54 &-1506428972124410046
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -6197,33 +6223,6 @@ Rigidbody:
   m_Interpolate: 1
   m_Constraints: 90
   m_CollisionDetection: 1
---- !u!114 &8894549472392140793
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6956518803865012669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 677b8946db025cb45b97e2df97f4c9a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHp: 100
-  _curHp: 0
-  _damage: 30
-  _damageInterval: 1
-  _attackCooldown: 5
-  _attackingTime: 10
-  _attackRange: 15.1
-  _strikeSize: 2
-  _lightningPrefab: {fileID: 5459249452796344631, guid: 90df6ce853ca7364aafe73cd34e86ccc, type: 3}
-  _redFx: {fileID: 6828618842765179134}
-  _blueFx: {fileID: 7170266953801713549}
-  _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
-  _scrapAmount: 10
-  _player: {fileID: 1165592682695907715, guid: df33ba8c26bbf884fb64ed3b3554a6ad, type: 3}
-  _attackStartSource: {fileID: 9106380550535796039}
 --- !u!1 &6975056350261466705
 GameObject:
   m_ObjectHideFlags: 0
