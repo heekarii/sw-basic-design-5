@@ -246,6 +246,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
 
     private void Die()
     {
+        DropScrap(_scrapAmount);
         Destroy(gameObject);
         Debug.Log("PunchRobot has died.");
     }
