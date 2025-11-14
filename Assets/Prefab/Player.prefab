@@ -581,7 +581,7 @@ MonoBehaviour:
   - 0.5
   _camera: {fileID: 973242834122530442}
   _mouseSensitivity: 2
-  _cameraPitchTarget: {fileID: 4821710169026957305}
+  _cameraPitchTarget: {fileID: 5462974152216465657}
   _currentWeaponData: {fileID: 0}
   _weaponSocket: {fileID: 8286933817016139198}
 --- !u!54 &8667542401998431201

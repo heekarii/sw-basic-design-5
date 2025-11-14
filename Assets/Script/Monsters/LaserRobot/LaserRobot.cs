@@ -144,9 +144,22 @@ public class LaserRobot : MonoBehaviour, IEnemy
         Vector3 dir = muzzle.forward;
 
         var go = Instantiate(_laserProjectilePrefab, muzzle.position, muzzle.rotation);
+
+        // 투사체 초기화
         if (go.TryGetComponent(out LaserProjectile proj))
             proj.Init(dir, _player);
+
+        // 🔊 발사 시점에 투사체에 달린 AudioSource 재생
+        if (go.TryGetComponent(out AudioSource audio))
+        {
+            // PlayOnAwake 꺼둔 상태라면 여기서 수동으로 재생
+            audio.Stop();
+            audio.Play();
+            // 또는 특정 클립만 쏘고 싶으면:
+            // audio.PlayOneShot(audio.clip);
+        }
     }
+
 
     private bool HasLineOfSight()
     {
