@@ -10,21 +10,24 @@ public class PunchRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _attackCastingTime = 0.5f;
     [SerializeField] private float _attackCooldown = 1.0f;
     [SerializeField] private float _aggravationRange = 5.5f;
-    [SerializeField] private float _attackRange = 1.0f;
+    [SerializeField] private float _attackRange = 1.8f;
     [SerializeField] private float _moveSpeed = 1.0f;
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 3;
-
+    
     [SerializeField] private Player _player;
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
     private NavMeshAgent _agent;
+
+    private Animator _animator;
 
     void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
         _player = FindObjectOfType<Player>();
         _curHp = _maxHp;
+        _animator = GetComponent<Animator>();
 
         if (_agent == null)
         {
@@ -82,7 +85,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
         // ---------------------------------
 
         // 인식범위 밖의 플레이어가 아니라면 계속 쳐다보게
-        if (worldDist <= _aggravationRange)   
+        if (!_isAttacking && worldDist <= _aggravationRange)   
             LookAtPlayer();
         
         // ✅ 공격 조건: 실제 거리 기반 + 정지 상태 확인
@@ -98,6 +101,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
         if (worldDist <= _aggravationRange && HasLineOfSight())
         {
             _agent.isStopped = false;
+            _animator.SetBool("isWalking", true);
             Vector3 targetPos = _player.transform.position;
             if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 3.0f, NavMesh.AllAreas))
                 _agent.SetDestination(hit.position);
@@ -105,6 +109,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
         else
         {
             _agent.isStopped = true;
+            _animator.SetBool("isWalking", false);
             _agent.ResetPath();
         }
 
@@ -193,6 +198,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
 
     private System.Collections.IEnumerator AttackRoutine()
     {
+        _animator.SetBool("isAttacking", true);
         _isAttacking = true;
         _agent.isStopped = true;
         
@@ -208,7 +214,8 @@ public class PunchRobot : MonoBehaviour, IEnemy
         
         _player.TakeDamage(_damage);
         // Debug.Log($"PunchRobot attacked player for {_damage} damage!");
-
+        
+        _animator.SetBool("isAttacking", false);
         _isAttacking = false;
         _isCoolingDown = true;
         _agent.isStopped = false;
@@ -225,6 +232,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
         Debug.Log($"PunchRobot Fail Attack");
         _isAttacking = false;
         _agent.isStopped = false;
+        _animator.SetBool("isAttacking", false);
     }
     
     public void TakeDamage(float dmg)
