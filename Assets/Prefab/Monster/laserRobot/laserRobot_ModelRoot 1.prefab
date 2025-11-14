@@ -148,9 +148,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7043410518613834911}
+  - component: {fileID: 4005285950996158393}
   - component: {fileID: -2426646934839334387}
   - component: {fileID: 4283550189106082157}
-  - component: {fileID: 4005285950996158393}
   m_Layer: 0
   m_Name: laserRobot_ModelRoot 1
   m_TagString: Untagged
@@ -177,6 +177,34 @@ Transform:
   - {fileID: 3373203426922255009}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4005285950996158393
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7255525455285140572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef515b65dbb9def4f9ea1ccdf3f5351e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHp: 30
+  _curHp: 0
+  _damage: 10
+  _attackCastingTime: 0
+  _attackCooldown: 2.5
+  _aggravationRange: 15.9
+  _attackRange: 12.9
+  _lookAtTurnSpeed: 8
+  _moveSpeed: 1.3
+  _player: {fileID: 1165592682695907715, guid: df33ba8c26bbf884fb64ed3b3554a6ad, type: 3}
+  _eyeMuzzle: {fileID: 3373203426922255009}
+  _laserProjectilePrefab: {fileID: 6720638304031163954, guid: d9eef5436b534704996238e9e669bed1, type: 3}
+  _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
+  _scrapAmount: 3
+  _burstCount: 2
+  _betweenShotDelay: 0.3
 --- !u!54 &-2426646934839334387
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -226,34 +254,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &4005285950996158393
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7255525455285140572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef515b65dbb9def4f9ea1ccdf3f5351e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHp: 30
-  _curHp: 0
-  _damage: 10
-  _attackCastingTime: 0
-  _attackCooldown: 2.5
-  _aggravationRange: 15.9
-  _attackRange: 12.9
-  _lookAtTurnSpeed: 8
-  _moveSpeed: 1.3
-  _player: {fileID: 5894040061406813158, guid: a37229b336ba2c346bef853d60ec9ae2, type: 3}
-  _eyeMuzzle: {fileID: 3373203426922255009}
-  _laserProjectilePrefab: {fileID: 6720638304031163954, guid: d9eef5436b534704996238e9e669bed1, type: 3}
-  _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
-  _scrapAmount: 3
-  _burstCount: 2
-  _betweenShotDelay: 0.3
 --- !u!1001 &1605218623082426193
 PrefabInstance:
   m_ObjectHideFlags: 0
