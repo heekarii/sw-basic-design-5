@@ -27,7 +27,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
         _agent = GetComponent<NavMeshAgent>();
         _player = FindObjectOfType<Player>();
         _curHp = _maxHp;
-        _animator = GetComponent<Animator>();
+        _animator = GetComponentInChildren<Animator>();
 
         if (_agent == null)
         {
@@ -63,7 +63,11 @@ public class PunchRobot : MonoBehaviour, IEnemy
     void Update()
     {
         if (_player == null || _agent == null) return;
-
+        if (_isAttacking)
+        {
+            _agent.isStopped = true;
+            return;
+        }
         // NavMesh 이탈 복구
         if (!_agent.isOnNavMesh)
         {
@@ -89,8 +93,9 @@ public class PunchRobot : MonoBehaviour, IEnemy
             LookAtPlayer();
         
         // ✅ 공격 조건: 실제 거리 기반 + 정지 상태 확인
-        if (worldDist <= _attackRange && HasLineOfSight() && _agent.velocity.sqrMagnitude < 0.1f)
-        {
+        if (worldDist <= _attackRange * 2&& HasLineOfSight() && _agent.velocity.sqrMagnitude < 0.1f)
+        {   
+            _animator.SetBool("isWalking", false);
             _agent.isStopped = true;
             AttackPlayer();
             return;
@@ -193,12 +198,12 @@ public class PunchRobot : MonoBehaviour, IEnemy
     private void AttackPlayer()
     {
         if (_isAttacking || _isCoolingDown) return;
+        _animator.SetTrigger("isAttacking");
         StartCoroutine(AttackRoutine());
     }
 
     private System.Collections.IEnumerator AttackRoutine()
     {
-        _animator.SetBool("isAttacking", true);
         _isAttacking = true;
         _agent.isStopped = true;
         
@@ -215,13 +220,11 @@ public class PunchRobot : MonoBehaviour, IEnemy
         _player.TakeDamage(_damage);
         // Debug.Log($"PunchRobot attacked player for {_damage} damage!");
         
-        _animator.SetBool("isAttacking", false);
         _isAttacking = false;
         _isCoolingDown = true;
         _agent.isStopped = false;
         // Debug.Log($"PunchRobot Start Cooldown");
         yield return new WaitForSeconds(_attackCooldown);
-
         // Debug.Log($"PunchRobot End Cooldown");
         _isCoolingDown = false;
 
@@ -232,7 +235,6 @@ public class PunchRobot : MonoBehaviour, IEnemy
         Debug.Log($"PunchRobot Fail Attack");
         _isAttacking = false;
         _agent.isStopped = false;
-        _animator.SetBool("isAttacking", false);
     }
     
     public void TakeDamage(float dmg)

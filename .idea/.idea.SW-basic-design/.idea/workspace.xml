@@ -6,29 +6,24 @@
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/Player/Player.controller" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Animation/Player/Player.controller.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/PunchRobot/PunchRobot.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/PunchRobot/PunchRobot.fbx.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Animation/PunchRobot/PunchUpper.mask" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/PunchRobot/PunchUpper.mask" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Animation/PunchRobot/Punch_Idle.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/PunchRobot/Punch_Idle.fbx.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Animation/PunchRobot/punch robot Animator Controller.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/PunchRobot/punch robot Animator Controller.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/PunchRobot/punch_Attack_motion.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/PunchRobot/punch_Attack_motion.fbx.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Animation/PunchRobot/punch_Walking_motion.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/PunchRobot/punch_Walking_motion.fbx.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin/PunchRobot.fbx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin/PunchRobot.fbx.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin/punch robot Animator Controller.controller" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin/punch robot Animator Controller.controller.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin/punch_Attack_motion.fbx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin/punch_Attack_motion.fbx.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin/punch_Walking_motion.fbx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin/punch_Walking_motion.fbx.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/punch_robot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/punch_robot_ModelRoot.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/PunchRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/PunchRobot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion/Zeron_ModelRoot.prefab" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion/Zeron_ModelRoot.prefab.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion/zeron controler.controller" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion/zeron controler.controller.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion/zeron_Motion_Walking.fbx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion/zeron_Motion_Walking.fbx.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion/zeron_Motion_idle_.fbx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion/zeron_Motion_idle_.fbx.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion/zeron_Motion_punch.fbx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion/zeron_Motion_punch.fbx.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion/zeron_Motion_rifleWalk.fbx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion/zeron_Motion_rifleWalk.fbx.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion/zeron_Motion_swing.fbx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Zeron/motion/zeron_Motion_swing.fbx.meta" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -297,7 +297,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6317835824050506078}
   - component: {fileID: 7667892272016407809}
-  - component: {fileID: 2074306436679369746}
   - component: {fileID: 5283858588543057049}
   - component: {fileID: -6449940375766318193}
   m_Layer: 0
@@ -346,28 +345,6 @@ MonoBehaviour:
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
   _scrapAmount: 3
   _player: {fileID: 0}
---- !u!95 &2074306436679369746
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2057395427441709129}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 802d764482940564fb142a7a0a9f844c, type: 3}
-  m_Controller: {fileID: 9100000, guid: 80f81aa03201b4044ab752c1a05829f2, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!54 &5283858588543057049
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -426,7 +403,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6086102472864419933}
-  - component: {fileID: 8530737573851223731}
+  - component: {fileID: 5989836203919484965}
   m_Layer: 0
   m_Name: PunchRobot_offset
   m_TagString: Untagged
@@ -452,7 +429,7 @@ Transform:
   - {fileID: 8968508236874967932}
   m_Father: {fileID: 6317835824050506078}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &8530737573851223731
+--- !u!95 &5989836203919484965
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
@@ -461,7 +438,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2273762446392357381}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 802d764482940564fb142a7a0a9f844c, type: 3}
+  m_Avatar: {fileID: 9000000, guid: beddbf98b0db81e40aa471628ee86bf1, type: 3}
   m_Controller: {fileID: 9100000, guid: 80f81aa03201b4044ab752c1a05829f2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -784,8 +761,8 @@ Transform:
   m_GameObject: {fileID: 5514173844698845456}
   serializedVersion: 2
   m_LocalRotation: {x: 0.08872512, y: 0.105083, z: -0.028475858, w: 0.99008816}
-  m_LocalPosition: {x: 0.33347937, y: 2.3831913, z: -0.18786916}
-  m_LocalScale: {x: 0.38, y: 0.38, z: 0.38}
+  m_LocalPosition: {x: 0.33347937, y: 2.3831913, z: -0.18786907}
+  m_LocalScale: {x: 0.37999994, y: 0.37999994, z: 0.37999994}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3035838002469219555}
