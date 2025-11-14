@@ -10,6 +10,7 @@ public class FireRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _aggravationRange = 9.1f;
     [SerializeField] private float _attackRange = 3.6f;
     [SerializeField] private float _moveSpeed = 5.0f;
+    [SerializeField] private ScrapData _scrapData;
     [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절
     [SerializeField] private Player _player;
     
@@ -350,6 +351,16 @@ public class FireRobot : MonoBehaviour, IEnemy
     {
         Destroy(gameObject);
         Debug.Log("FireRobot has died.");
+    }
+    
+    public void DropScrap(int amount)
+    {
+        if (!_scrapData) return;
+        
+        GameObject scrap = Instantiate(_scrapData.ScrapPrefab, transform.position, Quaternion.identity);
+        Scrap scrapComponent = scrap.AddComponent<Scrap>();
+        scrapComponent.InitScrap(amount);
+        Debug.Log($"[AirRobot] 스크랩 {amount} 드랍");
     }
 }
 
