@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4db5a93f36b755844ace0f8bf64a05d9
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 266226
+  packageName: Free Fire VFX - URP
+  packageVersion: 1.0.2023.1
+  assetPath: Assets/Vefects/Free Fire VFX URP/Scene/Settings/UniversalRenderPipelineGlobalSettings.asset
+  uploadId: 732705

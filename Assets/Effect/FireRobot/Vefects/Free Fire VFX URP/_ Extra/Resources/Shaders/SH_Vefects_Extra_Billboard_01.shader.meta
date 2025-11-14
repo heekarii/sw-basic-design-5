@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: c6b9b2c37b49b9c418544eb051dfbdc5
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 266226
+  packageName: Free Fire VFX - URP
+  packageVersion: 1.0.2023.1
+  assetPath: Assets/Vefects/Free Fire VFX URP/_ Extra/Resources/Shaders/SH_Vefects_Extra_Billboard_01.shader
+  uploadId: 732705
