@@ -13,6 +13,7 @@ public class FireRobot : MonoBehaviour, IEnemy
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절
     [SerializeField] private Player _player;
+    [SerializeField] private int _scrapAmount = 8;
     
     [Header("Fire")]
     [SerializeField] private Transform _muzzle;      // 중앙 머즐(불 기준)
@@ -349,6 +350,7 @@ public class FireRobot : MonoBehaviour, IEnemy
 
     private void Die()
     {
+        DropScrap(_scrapAmount);
         Destroy(gameObject);
         Debug.Log("FireRobot has died.");
     }

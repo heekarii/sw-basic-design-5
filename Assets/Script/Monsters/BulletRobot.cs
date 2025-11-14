@@ -14,6 +14,7 @@ public class BulletRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _lookAtTurnSpeed = 8f;
     [SerializeField] private Player _player;
     [SerializeField] private Animator _anim;
+    [SerializeField] private int _scarpAmount = 7;
 
     [Header("Bolt Setting")]
     [SerializeField] private Transform _muzzleVisual;
@@ -438,6 +439,7 @@ public class BulletRobot : MonoBehaviour, IEnemy
 
     private void Die()
     {
+        DropScrap(_scarpAmount);
         Destroy(gameObject);
     }
     

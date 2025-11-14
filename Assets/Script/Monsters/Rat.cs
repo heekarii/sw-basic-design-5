@@ -9,6 +9,7 @@ public class Rat : MonoBehaviour, IEnemy
     [SerializeField] private float _damage = 30f;
     [SerializeField] private float _aggravationRange = 12.75f;
     [SerializeField] private float _attackRange = 1.05f;
+    [SerializeField] private float _explosionRadius = 2.0f;
     [SerializeField] private float _moveSpeed = 10f;
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 2;
@@ -56,7 +57,7 @@ public class Rat : MonoBehaviour, IEnemy
     void Update()
     {
         if (_player == null || _agent == null) return;
-
+        
         // NavMesh 이탈 복구
         if (!_agent.isOnNavMesh)
         {
@@ -78,7 +79,7 @@ public class Rat : MonoBehaviour, IEnemy
         // ---------------------------------
 
     // ✅ 공격 조건: 실제 거리 기반 + 정지 상태 확인
-        if (worldDist <= _attackRange && _agent.velocity.sqrMagnitude < 0.1f)
+        if (worldDist <= _attackRange && (!_agent.hasPath || _agent.remainingDistance <= _attackRange + 0.1f))
         {
             _agent.isStopped = true;
             AttackPlayer();
@@ -129,8 +130,12 @@ public class Rat : MonoBehaviour, IEnemy
     private void AttackPlayer()
     {
         _agent.isStopped = true;
-        _player?.TakeDamage(_damage);
-        Debug.Log($"Rat attacked player for {_damage} damage!");
+        float dist = Vector3.Distance(transform.position, _player.transform.position);
+        if (dist <= _explosionRadius)
+        {
+            _player?.TakeDamage(_damage);
+            Debug.Log($"Rat attacked player for {_damage} damage!");
+        }
         Destroy(gameObject);
     }
 
