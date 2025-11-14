@@ -6,8 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/BulletBot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/BulletBot_ModelRoot.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/spear_robot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/spear_robot_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/SpearRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/SpearRobot.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

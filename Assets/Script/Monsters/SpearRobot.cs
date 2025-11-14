@@ -19,7 +19,15 @@ public class SpearRobot : MonoBehaviour, IEnemy
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 12;
 
+    [Header("others")]
     [SerializeField] private Player _player;
+
+    [SerializeField] private AudioClip _attackSound;
+    [SerializeField] private AudioClip _electricSound;
+    
+    private AudioSource _electricAudioSource;
+    private AudioSource _attackAudioSource;
+    
     private Animator _animator;
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
@@ -31,7 +39,20 @@ public class SpearRobot : MonoBehaviour, IEnemy
         _player = FindObjectOfType<Player>();
         _animator = GetComponent<Animator>();
         _curHp = _maxHp;
-
+        
+        _electricAudioSource = gameObject.AddComponent<AudioSource>();
+        _electricAudioSource.clip = _electricSound;
+        _electricAudioSource.loop = true;
+        _electricAudioSource.playOnAwake = false;
+        _electricAudioSource.spatialBlend = 1.0f; // 3D
+        
+        _attackAudioSource = gameObject.AddComponent<AudioSource>();
+        _attackAudioSource.clip = _attackSound;
+        _attackAudioSource.loop = false;
+        _attackAudioSource.playOnAwake = false;
+        _attackAudioSource.spatialBlend = 1.0f; // 3D
+        
+        
         if (_agent == null)
         {
             Debug.LogError("[SpearRobot] NavMeshAgent가 없습니다.");
@@ -104,6 +125,8 @@ public class SpearRobot : MonoBehaviour, IEnemy
         // ✅ 추적 조건
         if (worldDist <= _aggravationRange && HasLineOfSight())
         {
+            if (!_electricAudioSource.isPlaying)
+                _electricAudioSource.Play();
             _agent.isStopped = false;
                 _animator.SetBool("isWalking", true);
             Vector3 targetPos = _player.transform.position;
@@ -112,6 +135,8 @@ public class SpearRobot : MonoBehaviour, IEnemy
         }
         else
         {
+            if (_electricAudioSource.isPlaying)
+                _electricAudioSource.Stop();
             _agent.isStopped = true;
             _animator.SetBool("isWalking", false);
             _agent.ResetPath();
@@ -204,11 +229,18 @@ public class SpearRobot : MonoBehaviour, IEnemy
 
     private System.Collections.IEnumerator AttackRoutine()
     {
+        
+        
         _isAttacking = true;
         _agent.isStopped = true;
+        if (_attackAudioSource != null)
+            _attackAudioSource.Play();
+
+        yield return new WaitForSeconds(0.5f);
         
         Debug.Log($"[SpearRobot] Start AttackCasting");
         yield return new WaitForSeconds(_attackCastingTime);
+        
 
         // 공격 시점에 다시 조건 검사 (거리 + 시야 + 존재)
         float dist = Vector3.Distance(transform.position, _player.transform.position);

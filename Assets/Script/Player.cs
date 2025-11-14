@@ -69,6 +69,11 @@ public class Player : MonoBehaviour
     
     [SerializeField]
     private Transform _weaponSocket;
+
+    [Header("Effects")] 
+    [SerializeField] private AudioClip _stunSound;
+    private AudioSource _stunAudioSource;
+    
     
     private Vector3 _moveDirection;
     
@@ -87,6 +92,11 @@ public class Player : MonoBehaviour
             _weaponSocket = transform.Find("WeaponSocket");
         _currentHealth = _maxHealth;
         _curPlayerStatus = 0;
+        _stunAudioSource = gameObject.AddComponent<AudioSource>();
+        _stunAudioSource.clip = _stunSound;
+        _stunAudioSource.loop = true;
+        _stunAudioSource.playOnAwake = false;
+        
         Cursor.visible = false;
     }
 
@@ -378,7 +388,9 @@ public class Player : MonoBehaviour
         _isStunned = true;
         _rb.linearVelocity = Vector3.zero;   // 관성 즉시 제거
         _moveDirection = Vector3.zero; // 입력 방향 초기화
-
+        
+        _stunAudioSource.Play();
+        
         Debug.Log($"[Player] isStunned");
         yield return new WaitForSeconds(seconds);
         Debug.Log($"[Player] release Stun");
