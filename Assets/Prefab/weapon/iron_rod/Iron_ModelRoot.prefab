@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3074594486973511293}
   m_Layer: 0
-  m_Name: Iron_ModelRoof
+  m_Name: Iron_ModelRoot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
