@@ -127,6 +127,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6372397294622426361, guid: 0314d5cd21a3fbc4b90c211f4edb45d9, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: a64adcbcca2d7be478e4d70d7635b72e, type: 3}
+    - target: {fileID: 6732963791954523186, guid: 0314d5cd21a3fbc4b90c211f4edb45d9, type: 3}
+      propertyPath: m_Resource
+      value: 
+      objectReference: {fileID: 8300000, guid: a64adcbcca2d7be478e4d70d7635b72e, type: 3}
     - target: {fileID: 8695232056903681085, guid: 0314d5cd21a3fbc4b90c211f4edb45d9, type: 3}
       propertyPath: m_Name
       value: FireBot_ModelRoot
