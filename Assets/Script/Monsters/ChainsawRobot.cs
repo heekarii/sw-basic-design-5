@@ -15,6 +15,8 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _moveSpeed = 4.0f;
     [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절
     [SerializeField] private Animator _anim;   // 인스펙터 비워두면 Start에서 찾아줌
+    [SerializeField] private ScrapData _scrapData;
+    [SerializeField] private int _scrapAmount = 12;
 
 // Animator Parameters (Animator 창에 동일한 이름으로 만들어야 함)
     private static readonly int HashIsMoving = Animator.StringToHash("IsMoving"); // bool
@@ -263,7 +265,18 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
 
     private void Die()
     {
+        DropScrap(_scrapAmount);
         Destroy(gameObject);
         Debug.Log("ChainsawRobot has died.");
+    }
+    
+    public void DropScrap(int amount)
+    {
+        if (!_scrapData) return;
+        
+        GameObject scrap = Instantiate(_scrapData.ScrapPrefab, transform.position, Quaternion.identity);
+        Scrap scrapComponent = scrap.AddComponent<Scrap>();
+        scrapComponent.InitScrap(amount);
+        Debug.Log($"[AirRobot] 스크랩 {amount} 드랍");
     }
 }

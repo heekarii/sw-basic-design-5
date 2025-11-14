@@ -53,6 +53,8 @@ MonoBehaviour:
   _aggravationRange: 12.75
   _attackRange: 1.05
   _moveSpeed: 10
+  _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
+  _scrapAmount: 2
   _player: {fileID: 0}
 --- !u!195 &4749888145082481451
 NavMeshAgent:

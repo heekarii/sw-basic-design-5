@@ -437,6 +437,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -2878386761329227183, guid: fcb443fdfd11fdc4ba29bd9c3057761b, type: 3}
+      propertyPath: _scrapData
+      value: 
+      objectReference: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
+    - target: {fileID: -2878386761329227183, guid: fcb443fdfd11fdc4ba29bd9c3057761b, type: 3}
       propertyPath: _flashOverlay
       value: 
       objectReference: {fileID: 152707274}
@@ -450,7 +454,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5059881888258034985, guid: fcb443fdfd11fdc4ba29bd9c3057761b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -10.66
+      value: 6.093
       objectReference: {fileID: 0}
     - target: {fileID: 5059881888258034985, guid: fcb443fdfd11fdc4ba29bd9c3057761b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -486,7 +490,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7678678510068941244, guid: fcb443fdfd11fdc4ba29bd9c3057761b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -647,14 +651,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8bab88c3349c7640a911edc86c2aa21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _curScore: 0
   _curScrap: 0
   _curBattery: 0
-  _isTreasureFound: 0
   Player: {fileID: 0}
   WeaponType: 0
-  _fScrapWeight: 0
-  _fBatteryWeight: 0
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0

@@ -42,4 +42,9 @@ public class WeaponManager : Singleton<WeaponManager>
     {
         return _curWeaponIndex;
     }
+    
+    public void DropScrap(int amount)
+    {
+        
+    }
 }

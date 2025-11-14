@@ -19,6 +19,8 @@ public class LaserRobot : MonoBehaviour, IEnemy
     [SerializeField] private Player _player;
     [SerializeField] private Transform _eyeMuzzle;
     [SerializeField] private GameObject _laserProjectilePrefab;
+    [SerializeField] private ScrapData _scrapData;
+    [SerializeField] private int _scrapAmount = 3;
     
     [Header("Burst Settings")]
     [SerializeField] private int _burstCount = 2;
@@ -245,7 +247,18 @@ public class LaserRobot : MonoBehaviour, IEnemy
 
     private void Die()
     {
+        DropScrap(_scrapAmount);
         Destroy(gameObject);
         Debug.Log("LaserRobot has died.");
+    }
+    
+    public void DropScrap(int amount)
+    {
+        if (!_scrapData) return;
+        
+        GameObject scrap = Instantiate(_scrapData.ScrapPrefab, transform.position, Quaternion.identity);
+        Scrap scrapComponent = scrap.AddComponent<Scrap>();
+        scrapComponent.InitScrap(amount);
+        Debug.Log($"[AirRobot] 스크랩 {amount} 드랍");
     }
 }

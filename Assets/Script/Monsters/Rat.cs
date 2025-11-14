@@ -10,6 +10,8 @@ public class Rat : MonoBehaviour, IEnemy
     [SerializeField] private float _aggravationRange = 12.75f;
     [SerializeField] private float _attackRange = 1.05f;
     [SerializeField] private float _moveSpeed = 10f;
+    [SerializeField] private ScrapData _scrapData;
+    [SerializeField] private int _scrapAmount = 2;
 
     [SerializeField] private Player _player;
     private NavMeshAgent _agent;
@@ -141,7 +143,18 @@ public class Rat : MonoBehaviour, IEnemy
 
     private void Die()
     {
+        DropScrap(_scrapAmount);
         Destroy(gameObject);
         Debug.Log("Rat has died.");
+    }
+
+    public void DropScrap(int amount)
+    {
+        if (!_scrapData) return;
+        
+        GameObject scrap = Instantiate(_scrapData.ScrapPrefab, transform.position, Quaternion.identity);
+        Scrap scrapComponent = scrap.AddComponent<Scrap>();
+        scrapComponent.InitScrap(amount);
+        Debug.Log($"[AirRobot] 스크랩 {amount} 드랍");
     }
 }
