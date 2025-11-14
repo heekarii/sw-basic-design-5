@@ -5,17 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/AirRobot/air_robot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/AirRobot/air_robot_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/ModelRoot_RatRobot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/ModelRoot_RatRobot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/Punch_ModelRoot 1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/Punch_ModelRoot 1.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/chainsawBot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/chainsawBot_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/laserDrone_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/laserDrone_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/laserRobot/laserRobot_ModelRoot 1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/laserRobot/laserRobot_ModelRoot 1.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/spear_robot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/spear_robot_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/Scrap/PunchRobot.asset" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/Scrap/PunchRobot.asset.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/Scrap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/Scrap.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -137,7 +127,7 @@
       <workItem from="1762704245001" duration="415000" />
       <workItem from="1762786738894" duration="1893000" />
       <workItem from="1762961866522" duration="5908000" />
-      <workItem from="1763115781606" duration="961000" />
+      <workItem from="1763115781606" duration="1365000" />
     </task>
     <servers />
   </component>

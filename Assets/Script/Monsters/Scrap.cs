@@ -4,7 +4,6 @@ using UnityEngine.Serialization;
 public class Scrap : MonoBehaviour
 {
     [SerializeField] private int _amount;
-    [SerializeField] private float _pickupRange;
     [SerializeField] private Transform _player;
     [SerializeField] private bool _isPicked = false;
     private GameManager _gm;
@@ -17,17 +16,19 @@ public class Scrap : MonoBehaviour
     void Update()
     {
         if (_isPicked || _player == null) return;
-        
-        float distance = Vector3.Distance(transform.position, _player.position);
-        if (distance <= _pickupRange)
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
         {
+            if (_isPicked) return;
             _isPicked = true;
             // 스크랩 획득 처리
             _gm.AddScrap(_amount);
             Destroy(gameObject);
         }
     }
-
     public void InitScrap(int amount)
     {
         _amount = amount;

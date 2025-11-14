@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2162310348696595212}
   - component: {fileID: 8131028106185404413}
   - component: {fileID: 8214195650807984842}
-  - component: {fileID: 81072407873971188}
   m_Layer: 0
   m_Name: Scrap_ModelRoot
   m_TagString: Untagged
@@ -83,22 +82,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &81072407873971188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6067849202594266652}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67144bd253ed09f4fb27d46836991237, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _amount: 0
-  _pickupRange: 1
-  _player: {fileID: 0}
-  _isPicked: 0
 --- !u!1001 &450398601962194892
 PrefabInstance:
   m_ObjectHideFlags: 0
