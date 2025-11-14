@@ -10,6 +10,7 @@ public class BulletRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _aggravationRange = 15.1f;
     [SerializeField] private float _attackRange = 12.1f;      // 사거리(= 원뿔 길이와 같게 맞춰도 OK)
     [SerializeField] private float _moveSpeed = 3.5f;
+    [SerializeField] private ScrapData _scrapData;
     [SerializeField] private float _lookAtTurnSpeed = 8f;
     [SerializeField] private Player _player;
     [SerializeField] private Animator _anim;
@@ -438,6 +439,16 @@ public class BulletRobot : MonoBehaviour, IEnemy
     private void Die()
     {
         Destroy(gameObject);
+    }
+    
+    public void DropScrap(int amount)
+    {
+        if (!_scrapData) return;
+        
+        GameObject scrap = Instantiate(_scrapData.ScrapPrefab, transform.position, Quaternion.identity);
+        Scrap scrapComponent = scrap.AddComponent<Scrap>();
+        scrapComponent.InitScrap(amount);
+        Debug.Log($"[AirRobot] 스크랩 {amount} 드랍");
     }
 
     // Scene 뷰에서 원뿔 시각화
