@@ -17,7 +17,7 @@ public class AIRobot : MonoBehaviour, IEnemy
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 10;
     [SerializeField] private Player _player;
-
+    [SerializeField] private AudioSource _attackStartSource;
     private AudioSource _blueAudio;
     private Collider _playerCol;
     private Transform _tr;
@@ -130,9 +130,10 @@ public class AIRobot : MonoBehaviour, IEnemy
     private System.Collections.IEnumerator AttackRoutine()
     {
         _isAttacking = true;
+        if (_attackStartSource != null)
+            _attackStartSource.Play();
+        
         float elapsed = 0f;
-
-        // 번개는 damageInterval 주기로 떨어짐
         float tickDuration = _damageInterval;
 
         while (elapsed < _attackingTime)
@@ -140,6 +141,8 @@ public class AIRobot : MonoBehaviour, IEnemy
             if (_playerTr == null)
                 break;
 
+            yield return new WaitForSeconds(_damageInterval);
+            
             float dist   = GetFlatDistanceToPlayer();
             bool inRange = dist <= _attackRange;
             bool hasLOS  = HasLineOfSight();
@@ -175,9 +178,7 @@ public class AIRobot : MonoBehaviour, IEnemy
                 _player.TakeDamage(_damage);
                 Debug.Log($"[AIRobot] lightning hit player for {_damage} dmg!");
             }
-
-            // 4) 다음 번개까지 damageInterval 만큼 대기
-            yield return new WaitForSeconds(_damageInterval);
+            
             elapsed += tickDuration;
         }
 
