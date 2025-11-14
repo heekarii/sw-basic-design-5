@@ -4,20 +4,29 @@ public class AIRobot : MonoBehaviour, IEnemy
 {
     [Header("Monster Status")]
     [SerializeField] private float _maxHp = 100.0f;
-    [SerializeField] private float _curHp;
     [SerializeField] private float _damage = 30.0f;
     [SerializeField] private float _damageInterval = 1.0f;   // 번개 떨어지는 간격
     [SerializeField] private float _attackCooldown = 5.0f;   // 공격 한 사이클 끝난 후 쿨다운
     [SerializeField] private float _attackingTime = 10.0f;   // 공격 유지 시간
     [SerializeField] private float _attackRange = 15.1f;
     [SerializeField] private float _strikeSize = 2f;
+
+    [Header("VFX & SFX")]
     [SerializeField] private GameObject _lightningPrefab;    // 떨어지는 번개
     [SerializeField] private GameObject _redFx;              // vfx_Lightning_red (몸에 붙은 경고 이펙트)
     [SerializeField] private GameObject _blueFx;             // vfx_Lightning_blue (공격 중 이펙트)
+    [SerializeField] private AudioSource _attackStartSource; // 공격 시작 사운드 (별도 AudioSource)
+    
+    [Header("Drop")]
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 10;
+
+    [Header("Ref")]
     [SerializeField] private Player _player;
-    [SerializeField] private AudioSource _attackStartSource;
+
+    private float _curHp;
+    private float _attackRangeSqr;
+
     private AudioSource _blueAudio;
     private Collider _playerCol;
     private Transform _tr;
@@ -26,6 +35,8 @@ public class AIRobot : MonoBehaviour, IEnemy
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
 
+
+    //===== Unity LifeCycle =====
     private void Awake()
     {
         _tr = transform;
@@ -46,6 +57,8 @@ public class AIRobot : MonoBehaviour, IEnemy
         _playerTr  = _player.transform;
         _playerCol = _player.GetComponentInChildren<Collider>();
         _curHp     = _maxHp;
+
+        _attackRangeSqr = _attackRange * _attackRange;
 
         // 파티클 초기 상태 꺼두기
         if (_redFx != null)  _redFx.SetActive(false);
@@ -68,12 +81,10 @@ public class AIRobot : MonoBehaviour, IEnemy
             return;
         }
 
-        float dist   = GetFlatDistanceToPlayer();
-        bool inRange = dist <= _attackRange;
-        bool hasLOS  = HasLineOfSight();
+        bool canAttack = IsPlayerInRangeAndVisible();
 
         // 사거리 밖이거나 시야 없으면 → 이펙트 모두 OFF, 새로운 공격도 시작 X
-        if (!inRange || !hasLOS)
+        if (!canAttack)
         {
             SetRed(false);
             SetBlue(false);
@@ -109,17 +120,8 @@ public class AIRobot : MonoBehaviour, IEnemy
         }
     }
 
-    // 수평 거리(XZ)만 사용해서 공격 범위 판단
-    private float GetFlatDistanceToPlayer()
-    {
-        if (_playerTr == null) return float.MaxValue;
 
-        Vector3 a = _tr.position;
-        Vector3 b = _playerTr.position;
-        a.y = 0f;
-        b.y = 0f;
-        return Vector3.Distance(a, b);
-    }
+    //===== Attack Logic =====
 
     private void AttackPlayer()
     {
@@ -130,10 +132,12 @@ public class AIRobot : MonoBehaviour, IEnemy
     private System.Collections.IEnumerator AttackRoutine()
     {
         _isAttacking = true;
+
+        // 공격 시작 사운드 1회 재생
         if (_attackStartSource != null)
             _attackStartSource.Play();
         
-        float elapsed = 0f;
+        float elapsed      = 0f;
         float tickDuration = _damageInterval;
 
         while (elapsed < _attackingTime)
@@ -141,17 +145,12 @@ public class AIRobot : MonoBehaviour, IEnemy
             if (_playerTr == null)
                 break;
 
+            // 다음 공격까지 대기 (→ 1초,2초,3초,... 타이밍 유지)
             yield return new WaitForSeconds(_damageInterval);
             
-            float dist   = GetFlatDistanceToPlayer();
-            bool inRange = dist <= _attackRange;
-            bool hasLOS  = HasLineOfSight();
-
-            // 공격 도중에라도 범위/시야 끊기면 종료
-            if (!inRange || !hasLOS)
-            {
+            // 대기 후에도 여전히 공격 가능 상태인지 확인
+            if (!IsPlayerInRangeAndVisible())
                 break;
-            }
 
             // 1) 번개 떨어질 위치 계산 + 실제 번개 프리팹 생성
             Vector3 strikePos = GetRandomStrikePosition();
@@ -161,11 +160,11 @@ public class AIRobot : MonoBehaviour, IEnemy
                 GameObject bolt = Instantiate(_lightningPrefab, strikePos, Quaternion.identity);
                 Vector3 s = bolt.transform.localScale;
                 bolt.transform.localScale = new Vector3(_strikeSize, s.y, _strikeSize);
-                // damageInterval 동안만 보이게 (조금 여유 줄려면 *0.9f 정도로)
+                // damageInterval 동안만 보이게 (조금 여유 줄려면 *0.9f 정도로 조절 가능)
                 Destroy(bolt, _damageInterval);
             }
 
-            // 2) 파란 이펙트 오디오 재생 (이때 이미 Update에서 파란 FX는 ON 상태)
+            // 2) 파란 이펙트 오디오 재생
             if (_blueAudio != null && _blueAudio.clip != null)
             {
                 _blueAudio.PlayOneShot(_blueAudio.clip);
@@ -185,7 +184,7 @@ public class AIRobot : MonoBehaviour, IEnemy
         _isAttacking = false;
 
         // 아직 사거리 안 + 시야 OK라면 쿨다운 진입
-        if (GetFlatDistanceToPlayer() <= _attackRange && HasLineOfSight())
+        if (IsPlayerInRangeAndVisible())
         {
             _isCoolingDown = true;
             yield return new WaitForSeconds(_attackCooldown);
@@ -197,6 +196,26 @@ public class AIRobot : MonoBehaviour, IEnemy
             SetRed(false);
             SetBlue(false);
         }
+    }
+
+
+    //===== Helper: Range / Position / Hit Check =====
+
+    // 수평 거리(XZ) 기반으로 범위 + 시야까지 한 번에 체크
+    private bool IsPlayerInRangeAndVisible()
+    {
+        if (_playerTr == null) return false;
+
+        Vector3 a = _tr.position;
+        Vector3 b = _playerTr.position;
+        a.y = 0f;
+        b.y = 0f;
+
+        // 제곱 거리로 비교 (sqrt 피함)
+        if ((a - b).sqrMagnitude > _attackRangeSqr)
+            return false;
+
+        return HasLineOfSight();
     }
 
     // 로봇 위치를 중심으로 반지름 _attackRange인 원 안의 랜덤 지점 (판정용)
@@ -219,7 +238,7 @@ public class AIRobot : MonoBehaviour, IEnemy
         if (_playerCol == null)
             return false;
 
-        Bounds b  = _playerCol.bounds;
+        Bounds b   = _playerCol.bounds;
         float half = _strikeSize * 0.5f;
 
         float minX = strikePos.x - half;
@@ -277,7 +296,8 @@ public class AIRobot : MonoBehaviour, IEnemy
         return true;
     }
 
-    // 파티클 토글 헬퍼
+
+    //===== FX Toggle =====
     private void SetRed(bool on)
     {
         if (_redFx == null) return;
@@ -292,6 +312,8 @@ public class AIRobot : MonoBehaviour, IEnemy
         _blueFx.SetActive(on);
     }
 
+
+    //===== HP & Die & Drop =====
     public void TakeDamage(float dmg)
     {
         _curHp -= dmg;
