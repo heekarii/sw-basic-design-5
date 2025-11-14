@@ -14,7 +14,7 @@ public class LaserDrone : MonoBehaviour, IEnemy
     [SerializeField] private float _attackCooldown = 10f;    // 재공격 시간
     [SerializeField] private int _dropScrap = 5;             // 처치 시 스크랩 수
     [SerializeField] private GameObject _flashEffectPrefab;  // 공격시 밝은 불빛 이펙트
-    [SerializeField] private int _scrapAmount = 3;            // 드랍 스크랩 양
+    [SerializeField] private int _scrapAmount = 5;            // 드랍 스크랩 양
     
     [Header("참조 오브젝트")]
     [SerializeField] private Transform _player;              // ZERON
@@ -170,6 +170,6 @@ public class LaserDrone : MonoBehaviour, IEnemy
         GameObject scrap = Instantiate(_scrapData.ScrapPrefab, transform.position, Quaternion.identity);
         Scrap scrapComponent = scrap.AddComponent<Scrap>();
         scrapComponent.InitScrap(amount);
-        Debug.Log($"[AirRobot] 스크랩 {amount} 드랍");
+        Debug.Log($"[LaserDrone] 스크랩 {amount} 드랍");
     }
 }
