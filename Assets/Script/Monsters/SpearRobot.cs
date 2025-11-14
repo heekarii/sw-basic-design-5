@@ -20,6 +20,7 @@ public class SpearRobot : MonoBehaviour, IEnemy
     [SerializeField] private int _scrapAmount = 12;
 
     [SerializeField] private Player _player;
+    private Animator _animator;
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
     private NavMeshAgent _agent;
@@ -28,6 +29,7 @@ public class SpearRobot : MonoBehaviour, IEnemy
     {
         _agent = GetComponent<NavMeshAgent>();
         _player = FindObjectOfType<Player>();
+        _animator = GetComponent<Animator>();
         _curHp = _maxHp;
 
         if (_agent == null)
@@ -92,6 +94,7 @@ public class SpearRobot : MonoBehaviour, IEnemy
     // ✅ 공격 조건: 실제 거리 기반 + 정지 상태 확인
         if (worldDist <= _attackRange && HasLineOfSight() && _agent.velocity.sqrMagnitude < 0.1f)
         {
+            _animator.SetBool("isWalking", false);
             _agent.isStopped = true;
             AttackPlayer();
             return;
@@ -102,6 +105,7 @@ public class SpearRobot : MonoBehaviour, IEnemy
         if (worldDist <= _aggravationRange && HasLineOfSight())
         {
             _agent.isStopped = false;
+                _animator.SetBool("isWalking", true);
             Vector3 targetPos = _player.transform.position;
             if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 3.0f, NavMesh.AllAreas))
                 _agent.SetDestination(hit.position);
@@ -109,6 +113,7 @@ public class SpearRobot : MonoBehaviour, IEnemy
         else
         {
             _agent.isStopped = true;
+            _animator.SetBool("isWalking", false);
             _agent.ResetPath();
         }
 
@@ -193,6 +198,7 @@ public class SpearRobot : MonoBehaviour, IEnemy
     private void AttackPlayer()
     {
         if (_isAttacking || _isCoolingDown) return;
+        _animator.SetTrigger("isAttacking");
         StartCoroutine(AttackRoutine());
     }
 
