@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/AIRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/AIRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MonsterTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MonsterTestScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/LaserRobot/LaserRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/LaserRobot/LaserRobot.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +41,7 @@
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feat/AIRobot&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;art/LaserRobot&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -146,6 +147,8 @@
       <workItem from="1763117851089" duration="320000" />
       <workItem from="1763129383952" duration="7804000" />
       <workItem from="1763137378813" duration="3732000" />
+      <workItem from="1763142869782" duration="429000" />
+      <workItem from="1763143616592" duration="37000" />
     </task>
     <servers />
   </component>

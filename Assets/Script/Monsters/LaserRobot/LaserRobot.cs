@@ -1,8 +1,5 @@
-using System.Numerics;
 using UnityEngine;
 using UnityEngine.AI;
-using Quaternion = UnityEngine.Quaternion;
-using Vector3 = UnityEngine.Vector3;
 
 public class LaserRobot : MonoBehaviour, IEnemy
 {
@@ -14,120 +11,145 @@ public class LaserRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _attackCooldown = 2.5f;
     [SerializeField] private float _aggravationRange = 15.9f;
     [SerializeField] private float _attackRange = 12.9f;
-    [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절
+    [SerializeField] private float _lookAtTurnSpeed = 8f;
     [SerializeField] private float _moveSpeed = 1.3f;
+
+    [Header("Refs")]
     [SerializeField] private Player _player;
     [SerializeField] private Transform _eyeMuzzle;
     [SerializeField] private GameObject _laserProjectilePrefab;
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 3;
-    
+
     [Header("Burst Settings")]
     [SerializeField] private int _burstCount = 2;
     [SerializeField] private float _betweenShotDelay = 0.3f;
-    
-    
+
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
     private NavMeshAgent _agent;
+    private Transform _tr;
+    private Transform _playerTr;
 
-    void Start()
+    // ---------------------------------------------
+    //  LifeCycle
+    // ---------------------------------------------
+    private void Awake()
+    {
+        _tr = transform;
+    }
+
+    private void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
-        _player = FindObjectOfType<Player>();
-        _curHp = _maxHp;
+        if (_player == null)
+            _player = FindObjectOfType<Player>();
 
         if (_agent == null)
         {
             Debug.LogError("[LaserRobot] NavMeshAgent가 없습니다.");
-            enabled = false; return;
+            enabled = false;
+            return;
         }
         if (_player == null)
         {
             Debug.LogError("[LaserRobot] Player를 찾지 못했습니다.");
-            enabled = false; return;
+            enabled = false;
+            return;
         }
 
-        // 기본 파라미터
+        _playerTr = _player.transform;
+        _curHp = _maxHp;
+
+        // NavMesh 기본 설정
         _agent.speed = _moveSpeed;
         _agent.stoppingDistance = _attackRange;
         _agent.updateRotation = true;
         _agent.autoBraking = true;
 
-        // 시작 위치가 NavMesh 위가 아니면 가장 가까운 NavMesh 위치로 워프
-        if (!TrySnapToNavMesh(transform.position, out var snapped))
+        // 시작 위치 NavMesh 보정
+        if (!TrySnapToNavMesh(_tr.position, out var snapped))
         {
-            Debug.LogError("[LaserRobot] 시작 위치 근처에 NavMesh가 없습니다. Bake/레이어/높이 확인 필요.");
-            enabled = false; return;
+            Debug.LogError("[LaserRobot] 시작 위치 근처에 NavMesh가 없습니다.");
+            enabled = false;
+            return;
         }
-        if ((snapped - transform.position).sqrMagnitude > 0.0001f)
-        {
+
+        if ((_tr.position - snapped).sqrMagnitude > 0.0001f)
             _agent.Warp(snapped);
-            //Debug.Log($"[LaserRobot] NavMesh에 워프: {snapped}");
-        }
-        //Debug.Log("[LaserRobot] Start OK: OnNavMesh=" + _agent.isOnNavMesh);
     }
 
-    void Update()
+    private void Update()
     {
-        if (_player == null || _agent == null) return;
+        if (_playerTr == null || _agent == null)
+            return;
 
         // NavMesh 이탈 복구
         if (!_agent.isOnNavMesh)
         {
-            if (TrySnapToNavMesh(transform.position, out var snapped))
-            {
+            if (TrySnapToNavMesh(_tr.position, out var snapped))
                 _agent.Warp(snapped);
-                // Debug.LogWarning("[LaserRobot] NavMesh 이탈 감지 → 재워프");
-            }
             else
-            {
-                // Debug.LogError("[LaserRobot] 재워프 실패: 주변에 NavMesh 없음");
                 return;
-            }
         }
 
-        // --- ✅ NavMesh 기반 거리 판정 ---
-        float navDist = _agent.remainingDistance;
-        float worldDist = Vector3.Distance(transform.position, _player.transform.position);
-        // ---------------------------------
+        // 사망 체크
+        if (_curHp <= 0f)
+        {
+            Die();
+            return;
+        }
 
-        // 인식범위 밖의 플레이어가 아니라면 계속 쳐다보게
-        if (worldDist <= _aggravationRange)   
+        // 기본 거리/시야 체크
+        float worldDist = Vector3.Distance(_tr.position, _playerTr.position);
+        bool hasLOS = HasLineOfSight();
+
+        // 인식 범위 안이면 항상 플레이어 바라보기
+        if (worldDist <= _aggravationRange)
             LookAtPlayer();
-        
-        // ✅ 공격 조건: 실제 거리 기반 + 정지 상태 확인
-        if (worldDist <= _attackRange && HasLineOfSight() && _agent.velocity.sqrMagnitude < 0.1f)
+
+        // 이미 공격 중 / 쿨다운 중이면 이동/공격 로직 건너뜀
+        if (_isAttacking || _isCoolingDown)
+            return;
+
+        // 공격 진입 조건: 사거리 내 + 시야 확보 + 거의 정지 상태
+        if (worldDist <= _attackRange &&
+            hasLOS &&
+            _agent.velocity.sqrMagnitude < 0.01f)
         {
             _agent.isStopped = true;
             AttackPlayer();
             return;
         }
 
-
-        // ✅ 추적 조건
-        if (worldDist <= _aggravationRange && HasLineOfSight())
+        // 추적 조건: 인식 범위 내 + 시야 확보
+        if (worldDist <= _aggravationRange && hasLOS)
         {
             _agent.isStopped = false;
-            Vector3 targetPos = _player.transform.position;
+
+            Vector3 targetPos = _playerTr.position;
             if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 3.0f, NavMesh.AllAreas))
-                _agent.SetDestination(hit.position);
+            {
+                if (!_agent.hasPath ||
+                    (_agent.destination - hit.position).sqrMagnitude > 0.25f)
+                {
+                    _agent.SetDestination(hit.position);
+                }
+            }
         }
         else
         {
             _agent.isStopped = true;
-            _agent.ResetPath();
+            if (_agent.hasPath)
+                _agent.ResetPath();
         }
-
-        //  Debug.Log($"[LaserRobot] remainingDist={navDist:F2}, worldDist={worldDist:F2}, pathStatus={_agent.pathStatus}, hasPath={_agent.hasPath}");
-
-        if (_curHp <= 0f) Die();
     }
 
-
+    // ---------------------------------------------
+    //  NavMesh / 이동 관련
+    // ---------------------------------------------
     private bool TrySnapToNavMesh(Vector3 origin, out Vector3 snapped)
     {
-        // 높이 오차/피벗 문제를 감안해 반경을 충분히 준다
         if (NavMesh.SamplePosition(origin, out var hit, 2.0f, NavMesh.AllAreas))
         {
             snapped = hit.position;
@@ -137,77 +159,27 @@ public class LaserRobot : MonoBehaviour, IEnemy
         return false;
     }
 
-    private void FireLaser(Transform muzzle, Vector3 targetPoint)
-    {
-        if (!muzzle || !_laserProjectilePrefab) return;
-
-        Vector3 dir = muzzle.forward;
-
-        var go = Instantiate(_laserProjectilePrefab, muzzle.position, muzzle.rotation);
-        if (go.TryGetComponent(out LaserProjectile proj))
-            proj.Init(dir, _player);
-    }
-
-    private bool HasLineOfSight()
-    {
-        if (_player == null) return false;
-
-        Vector3 origin = transform.position + Vector3.up * 1.2f;
-        Vector3 target = _player.transform.position + Vector3.up * 1.0f;
-
-        Vector3 dir = target - origin;
-        float dist = dir.magnitude;
-        if (dist <= 0.001f) return true;
-
-        dir.Normalize();
-
-        // 첫 번째로 맞은 것이 플레이어면 "시야 있음"
-        if (Physics.Raycast(origin, dir, out RaycastHit hit, dist, ~0, QueryTriggerInteraction.Ignore))
-        {
-            // 자기 자신 콜라이더는 무시
-            if (hit.collider.transform.IsChildOf(transform))
-            {
-                // 자기 자신을 맞았으면 그 다음 것을 보기 위해 RaycastAll 사용
-                var hits = Physics.RaycastAll(origin, dir, dist, ~0, QueryTriggerInteraction.Ignore);
-                System.Array.Sort(hits, (a,b) => a.distance.CompareTo(b.distance));
-                foreach (var h in hits)
-                {
-                    if (h.collider.transform.IsChildOf(transform)) continue; // 내 콜라이더 스킵
-                    // 첫 번째 유효한 히트가 플레이어면 LOS 있음
-                    if (h.collider.GetComponentInParent<Player>() != null) return true;
-                    // 아니면 가려짐
-                    return false;
-                }
-                return true; // 유효 히트가 없으면 가려진 게 없음
-            }
-
-            // 첫 히트가 플레이어면 시야 OK
-            if (hit.collider.GetComponentInParent<Player>() != null) return true;
-
-            // 그 외(벽/지형/기타)가 먼저 맞으면 가려짐
-            return false;
-        }
-
-        // 아무것도 안 맞았으면 가려진 게 없는 것으로 간주
-        return true;
-    }
-    
     private void LookAtPlayer()
     {
-        if (_player == null || !HasLineOfSight()) return;
+        if (_playerTr == null) return;
 
-        Vector3 lockedDir = (_player != null)
-            ? (_player.transform.position - transform.position)
-            : transform.forward;
-        lockedDir.y = 0f;
-        lockedDir.Normalize();
-        
-        // 몸을 스냅샷 방향으로 즉시 정렬
-        if (lockedDir.sqrMagnitude > 0.001f)
-            transform.rotation = Quaternion.LookRotation(lockedDir);
+        Vector3 dir = _playerTr.position - _tr.position;
+        dir.y = 0f;
+
+        if (dir.sqrMagnitude < 0.0001f)
+            return;
+
+        Quaternion targetRot = Quaternion.LookRotation(dir);
+        _tr.rotation = Quaternion.Slerp(
+            _tr.rotation,
+            targetRot,
+            _lookAtTurnSpeed * Time.deltaTime
+        );
     }
 
-    
+    // ---------------------------------------------
+    //  공격 관련
+    // ---------------------------------------------
     private void AttackPlayer()
     {
         if (_isAttacking || _isCoolingDown) return;
@@ -218,47 +190,118 @@ public class LaserRobot : MonoBehaviour, IEnemy
     {
         _isAttacking = true;
         _agent.isStopped = true;
-        
-        LookAtPlayer();
-        
+
+        // 캐스팅 타임이 있으면 잠깐 멈췄다가 발사
+        if (_attackCastingTime > 0f)
+            yield return new WaitForSeconds(_attackCastingTime);
+
         for (int i = 0; i < _burstCount; i++)
         {
+            if (_playerTr == null)
+                break;
+
+            // 공격 도중에도 플레이어 쪽을 한 번 정렬
             LookAtPlayer();
-            FireLaser(_eyeMuzzle, Vector3.zero);
-            if (i < _burstCount - 1 && i + 1 != _burstCount)   
+
+            // 실제 발사
+            FireLaser(_eyeMuzzle);
+
+            // 마지막 발사 전까지만 딜레이
+            if (i < _burstCount - 1 && _betweenShotDelay > 0f)
                 yield return new WaitForSeconds(_betweenShotDelay);
         }
-        
+
         _agent.isStopped = false;
         _isAttacking = false;
         _isCoolingDown = true;
+
         yield return new WaitForSeconds(_attackCooldown);
         _isCoolingDown = false;
     }
 
+    private void FireLaser(Transform muzzle)
+    {
+        if (muzzle == null || _laserProjectilePrefab == null) return;
 
-    
+        Vector3 dir = muzzle.forward;
+        GameObject go = Instantiate(_laserProjectilePrefab, muzzle.position, muzzle.rotation);
+
+        // 투사체 초기화
+        if (go.TryGetComponent(out LaserProjectile proj))
+            proj.Init(dir, _player);
+
+        // 발사 시점에 투사체에 달린 오디오 재생
+        if (go.TryGetComponent(out AudioSource audio))
+        {
+            audio.Stop();
+            audio.Play();
+        }
+    }
+
+    private bool HasLineOfSight()
+    {
+        if (_playerTr == null) return false;
+
+        Vector3 origin = _tr.position + Vector3.up * 1.2f;
+        Vector3 target = _playerTr.position + Vector3.up * 1.0f;
+
+        Vector3 dir = target - origin;
+        float dist = dir.magnitude;
+        if (dist <= 0.001f) return true;
+
+        dir /= dist;
+
+        // 자기 콜라이더 스킵 + 가장 가까운 유효 히트만 사용
+        RaycastHit[] hits = Physics.RaycastAll(
+            origin, dir, dist, ~0, QueryTriggerInteraction.Ignore);
+
+        if (hits.Length == 0)
+            return true;
+
+        System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+        foreach (var h in hits)
+        {
+            if (h.collider.transform.IsChildOf(_tr))
+                continue; // 내 몸은 무시
+
+            return h.collider.GetComponentInParent<Player>() != null;
+        }
+
+        // 자기 몸 말고 아무것도 안 맞았으면 막힌 게 없는 것으로 처리
+        return true;
+    }
+
+    // ---------------------------------------------
+    //  대미지 / 사망 / 스크랩
+    // ---------------------------------------------
     public void TakeDamage(float dmg)
     {
         _curHp -= dmg;
-        if (_curHp <= 0f) Die();
-        Debug.Log($"LaserRobot took {dmg} damage, current HP: {_curHp}");
+        Debug.Log($"[LaserRobot] took {dmg} damage, current HP: {_curHp}");
+
+        if (_curHp <= 0f)
+            Die();
     }
 
     private void Die()
     {
         DropScrap(_scrapAmount);
         Destroy(gameObject);
-        Debug.Log("LaserRobot has died.");
+        Debug.Log("[LaserRobot] has died.");
     }
-    
+
     public void DropScrap(int amount)
     {
         if (!_scrapData) return;
-        
-        GameObject scrap = Instantiate(_scrapData.ScrapPrefab, transform.position, Quaternion.identity);
+
+        GameObject scrap = Instantiate(
+            _scrapData.ScrapPrefab,
+            _tr.position,
+            Quaternion.identity);
+
         Scrap scrapComponent = scrap.AddComponent<Scrap>();
         scrapComponent.InitScrap(amount);
-        Debug.Log($"[AirRobot] 스크랩 {amount} 드랍");
+        Debug.Log($"[LaserRobot] 스크랩 {amount} 드랍");
     }
 }
