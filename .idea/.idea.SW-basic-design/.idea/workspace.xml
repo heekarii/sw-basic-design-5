@@ -6,9 +6,14 @@
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/BulletBot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/BulletBot_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/spear_robot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/spear_robot_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/SpearRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/SpearRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/ChainsawRobot/Walking.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/ChainsawRobot/Walking.fbx.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/ChainsawRobot/controller.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/ChainsawRobot/controller.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/ChainsawRobot/chainsaw latest.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/ChainsawRobot/chainsaw latest.obj.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/chainsawBot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/chainsawBot_ModelRoot.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/ChainsawRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/ChainsawRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/animo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/animo.cs.meta" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +46,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "art/spearAnim",
+    "git-widget-placeholder": "art/chainsawAnim",
     "junie.onboarding.icon.badge.shown": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",

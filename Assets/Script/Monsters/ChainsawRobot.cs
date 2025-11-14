@@ -18,6 +18,14 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 15;
 
+    [Header("Effects")] 
+    [SerializeField] private AudioClip _sawSound;
+
+    [SerializeField] private AudioClip _attackSound;
+    
+    private AudioSource _sawAudioSource;
+    private AudioSource _attackAudioSource;
+    
 // Animator Parameters (Animator 창에 동일한 이름으로 만들어야 함)
     private static readonly int HashIsMoving = Animator.StringToHash("IsMoving"); // bool
     private static readonly int HashAttack   = Animator.StringToHash("Attack");   // trigger
@@ -34,6 +42,20 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
         _agent = GetComponent<NavMeshAgent>();
         _player = FindObjectOfType<Player>();
         _curHp = _maxHp;
+        
+        // 사운드 소스 설정
+        _sawAudioSource = gameObject.AddComponent<AudioSource>();
+        _sawAudioSource.clip = _sawSound;
+        _sawAudioSource.loop = true;
+        _sawAudioSource.playOnAwake = false;
+        _sawAudioSource.spatialBlend = 1.0f; // 3D
+        _sawAudioSource.volume = 0.5f;
+        
+        _attackAudioSource = gameObject.AddComponent<AudioSource>();
+        _attackAudioSource.clip = _attackSound;
+        _attackAudioSource.loop = false;
+        _attackAudioSource.playOnAwake = false;
+        _attackAudioSource.spatialBlend = 1.0f; // 3D
 
         //애니메이션 효과 적용을 위한 애니메이터 찾기
         if (_anim == null)
@@ -120,6 +142,8 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
         // ✅ 추적 조건
         if (worldDist <= _aggravationRange && HasLineOfSight())
         {
+            if (!_sawAudioSource.isPlaying)
+                _sawAudioSource.Play();
             _agent.isStopped = false;
             Vector3 targetPos = _player.transform.position;
             if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 3.0f, NavMesh.AllAreas))
@@ -127,6 +151,8 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
         }
         else
         {
+            if (_sawAudioSource.isPlaying)
+                _sawAudioSource.Stop();
             _agent.isStopped = true;
             _agent.ResetPath();
             if (_anim != null) _anim.SetBool(HashIsMoving, false);
@@ -221,6 +247,13 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     {
         _isAttacking = true;
 
+        if (_anim != null)
+        {
+            _anim.SetBool(HashIsMoving, false); // 걷기 OFF
+            _anim.SetTrigger(HashAttack);
+        }
+
+        
         // 이동 정지(관성 제거)
         _agent.isStopped = true;
         _agent.velocity = Vector3.zero;
@@ -236,6 +269,11 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
         }
 
         Debug.Log("ChainsawRobot start attack casting!");
+        // 공격 사운드 대기 시간
+        yield return new WaitForSeconds(0.5f);
+        // 공격 사운드 재생
+        if (_attackAudioSource != null && _attackSound != null)
+            _attackAudioSource.Play();
         yield return new WaitForSeconds(_attackCastingTime);
 
         // 유효성 재확인 후 대미지
