@@ -25,6 +25,8 @@ public class BulletRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _boltSpeed = 20f;
     [SerializeField] private GameObject _boltPrefab;
     [SerializeField] private int _boltsPerSecond = 24;       // 초당 생성 개수
+    [SerializeField] private AudioSource _attackAudio;
+
 
     // ===== 내부 캐시 =====
     private Collider _playerCol;    // 플레이어 콜라이더
@@ -193,6 +195,9 @@ public class BulletRobot : MonoBehaviour, IEnemy
 
         Transform tDetect = _muzzleDetect != null ? _muzzleDetect : _tr;
         Transform tVisual = _muzzleVisual != null ? _muzzleVisual : tDetect;
+        
+        if (_attackAudio != null && !_attackAudio.isPlaying)
+            _attackAudio.Play();
 
         while (elapsed < _attackingTime)
         {
@@ -222,6 +227,10 @@ public class BulletRobot : MonoBehaviour, IEnemy
             yield return null;
         }
 
+        // ★ 공격 종료 시 사운드 정지
+        if (_attackAudio != null && _attackAudio.isPlaying)
+            _attackAudio.Stop();
+        
         // 쿨다운
         _isAttacking = false;
         _isCoolingDown = true;
