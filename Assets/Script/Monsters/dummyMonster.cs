@@ -19,4 +19,9 @@ public class dummyMonster : MonoBehaviour, IEnemy
     {
         _curHp -= damage;
     }
+    
+    public void DropScrap(int amount)
+    {
+        
+    }
 }

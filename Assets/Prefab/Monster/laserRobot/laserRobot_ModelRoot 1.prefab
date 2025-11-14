@@ -245,10 +245,13 @@ MonoBehaviour:
   _attackCooldown: 2.5
   _aggravationRange: 15.9
   _attackRange: 12.9
+  _lookAtTurnSpeed: 8
   _moveSpeed: 1.3
   _player: {fileID: 5894040061406813158, guid: a37229b336ba2c346bef853d60ec9ae2, type: 3}
   _eyeMuzzle: {fileID: 3373203426922255009}
   _laserProjectilePrefab: {fileID: 6720638304031163954, guid: d9eef5436b534704996238e9e669bed1, type: 3}
+  _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
+  _scrapAmount: 3
   _burstCount: 2
   _betweenShotDelay: 0.3
 --- !u!1001 &1605218623082426193
