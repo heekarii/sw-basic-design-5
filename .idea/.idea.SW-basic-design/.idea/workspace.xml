@@ -5,7 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/Scrap.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/Scrap.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/PunchRobot/PunchRobot.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/PunchRobot/PunchRobot.fbx.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/PunchRobot/PunchUpper.mask" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/PunchRobot/PunchUpper.mask" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/PunchRobot/Punch_Idle.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/PunchRobot/Punch_Idle.fbx.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/PunchRobot/punch robot Animator Controller.controller" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/PunchRobot/punch robot Animator Controller.controller" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/PunchRobot/punch_Attack_motion.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/PunchRobot/punch_Attack_motion.fbx.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Animation/PunchRobot/punch_Walking_motion.fbx.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Animation/PunchRobot/punch_Walking_motion.fbx.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin/PunchRobot.fbx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin/PunchRobot.fbx.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin/punch robot Animator Controller.controller" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin/punch robot Animator Controller.controller.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin/punch_Attack_motion.fbx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin/punch_Attack_motion.fbx.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin/punch_Walking_motion.fbx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/OriginalModels/Model_Origin/punch_Walking_motion.fbx.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/punch_robot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/punch_robot_ModelRoot.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/PunchRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/PunchRobot.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +56,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1&quot;: &quot;true&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;feat/scrap&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;art/anim&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -127,7 +145,7 @@
       <workItem from="1762704245001" duration="415000" />
       <workItem from="1762786738894" duration="1893000" />
       <workItem from="1762961866522" duration="5908000" />
-      <workItem from="1763115781606" duration="1365000" />
+      <workItem from="1763115781606" duration="4273000" />
     </task>
     <servers />
   </component>
