@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/PunchRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/PunchRobot.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -154,6 +155,7 @@
       <workItem from="1763208521311" duration="579000" />
       <workItem from="1763215145263" duration="1020000" />
       <workItem from="1763224834743" duration="45000" />
+      <workItem from="1763225411194" duration="1255000" />
     </task>
     <servers />
   </component>

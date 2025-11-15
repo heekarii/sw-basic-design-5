@@ -16,10 +16,10 @@ public class PunchRobot : MonoBehaviour, IEnemy
     [SerializeField] private int _scrapAmount = 3;
     [SerializeField] private AudioSource _attackAudio;
     [SerializeField] private Player _player;
+    
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
     private NavMeshAgent _agent;
-
     private Animator _animator;
 
     void Start()
@@ -55,52 +55,54 @@ public class PunchRobot : MonoBehaviour, IEnemy
         if ((snapped - transform.position).sqrMagnitude > 0.0001f)
         {
             _agent.Warp(snapped);
-            //Debug.Log($"[PunchRobot] NavMesh에 워프: {snapped}");
         }
-        //Debug.Log("[PunchRobot] Start OK: OnNavMesh=" + _agent.isOnNavMesh);
     }
 
     void Update()
     {
         if (_player == null || _agent == null) return;
+
         if (_isAttacking)
         {
             _agent.isStopped = true;
             return;
         }
+
         // NavMesh 이탈 복구
         if (!_agent.isOnNavMesh)
         {
             if (TrySnapToNavMesh(transform.position, out var snapped))
             {
                 _agent.Warp(snapped);
-                // Debug.LogWarning("[SpearRobot] NavMesh 이탈 감지 → 재워프");
             }
             else
             {
-                // Debug.LogError("[SpearRobot] 재워프 실패: 주변에 NavMesh 없음");
                 return;
             }
         }
 
-        // --- ✅ NavMesh 기반 거리 판정 ---
-        float navDist = _agent.remainingDistance;
+        // --- 거리 판정 ---
         float worldDist = Vector3.Distance(transform.position, _player.transform.position);
-        // ---------------------------------
+        // ------------------
 
-        // 인식범위 밖의 플레이어가 아니라면 계속 쳐다보게
-        if (!_isAttacking && worldDist <= _aggravationRange)   
+        // 인식범위 안이면 계속 쳐다보기
+        if (!_isAttacking && worldDist <= _aggravationRange)
             LookAtPlayer();
+
+        // ✅ 공격 조건: 실제 거리 기반 + 정지 상태 + 쿨타임 아님
+        //    ➜ 공격 시작 거리와 히트 거리 계수를 "같은 기준"으로 맞춘다.
+        float attackStartRange = _attackRange * 1.2f;        // ★ 여기 계수 조절 가능 (1.1~1.3 사이 감으로)
         
-        // ✅ 공격 조건: 실제 거리 기반 + 정지 상태 확인
-        if (worldDist <= _attackRange * 2&& HasLineOfSight() && _agent.velocity.sqrMagnitude < 0.1f)
-        {   
+        if (!_isCoolingDown &&                         // 쿨타임 중엔 공격 X
+            worldDist <= attackStartRange &&           // ★ 공격 시작 가능한 최대 거리
+            HasLineOfSight() && 
+            _agent.velocity.sqrMagnitude < 0.1f)
+        {
             _animator.SetBool("isWalking", false);
             _agent.isStopped = true;
             AttackPlayer();
             return;
         }
-
 
         // ✅ 추적 조건
         if (worldDist <= _aggravationRange && HasLineOfSight())
@@ -118,15 +120,12 @@ public class PunchRobot : MonoBehaviour, IEnemy
             _agent.ResetPath();
         }
 
-        //  Debug.Log($"[SpearRobot] remainingDist={navDist:F2}, worldDist={worldDist:F2}, pathStatus={_agent.pathStatus}, hasPath={_agent.hasPath}");
-
         if (_curHp <= 0f) Die();
     }
 
 
     private bool TrySnapToNavMesh(Vector3 origin, out Vector3 snapped)
     {
-        // 높이 오차/피벗 문제를 감안해 반경을 충분히 준다
         if (NavMesh.SamplePosition(origin, out var hit, 2.0f, NavMesh.AllAreas))
         {
             snapped = hit.position;
@@ -149,34 +148,25 @@ public class PunchRobot : MonoBehaviour, IEnemy
 
         dir.Normalize();
 
-        // 첫 번째로 맞은 것이 플레이어면 "시야 있음"
         if (Physics.Raycast(origin, dir, out RaycastHit hit, dist, ~0, QueryTriggerInteraction.Ignore))
         {
-            // 자기 자신 콜라이더는 무시
             if (hit.collider.transform.IsChildOf(transform))
             {
-                // 자기 자신을 맞았으면 그 다음 것을 보기 위해 RaycastAll 사용
                 var hits = Physics.RaycastAll(origin, dir, dist, ~0, QueryTriggerInteraction.Ignore);
                 System.Array.Sort(hits, (a,b) => a.distance.CompareTo(b.distance));
                 foreach (var h in hits)
                 {
-                    if (h.collider.transform.IsChildOf(transform)) continue; // 내 콜라이더 스킵
-                    // 첫 번째 유효한 히트가 플레이어면 LOS 있음
+                    if (h.collider.transform.IsChildOf(transform)) continue;
                     if (h.collider.GetComponentInParent<Player>() != null) return true;
-                    // 아니면 가려짐
                     return false;
                 }
-                return true; // 유효 히트가 없으면 가려진 게 없음
+                return true;
             }
 
-            // 첫 히트가 플레이어면 시야 OK
             if (hit.collider.GetComponentInParent<Player>() != null) return true;
-
-            // 그 외(벽/지형/기타)가 먼저 맞으면 가려짐
             return false;
         }
 
-        // 아무것도 안 맞았으면 가려진 게 없는 것으로 간주
         return true;
     }
     
@@ -184,13 +174,10 @@ public class PunchRobot : MonoBehaviour, IEnemy
     {
         if (_player == null || !HasLineOfSight()) return;
 
-        Vector3 lockedDir = (_player != null)
-            ? (_player.transform.position - transform.position)
-            : transform.forward;
+        Vector3 lockedDir = _player.transform.position - transform.position;
         lockedDir.y = 0f;
         lockedDir.Normalize();
         
-        // 몸을 스냅샷 방향으로 즉시 정렬
         if (lockedDir.sqrMagnitude > 0.001f)
             transform.rotation = Quaternion.LookRotation(lockedDir);
     }
@@ -198,42 +185,59 @@ public class PunchRobot : MonoBehaviour, IEnemy
     private void AttackPlayer()
     {
         if (_isAttacking || _isCoolingDown) return;
+        _isAttacking = true;                        // ★ 여기서 바로 설정
+        _agent.isStopped = true;
         _animator.SetTrigger("isAttacking");
         StartCoroutine(AttackRoutine());
     }
 
     private System.Collections.IEnumerator AttackRoutine()
     {
-        _isAttacking = true;
-        _agent.isStopped = true;
         Debug.Log($"[PunchRobot] Start AttackCasting");
+
+        // 캐스팅 전반부
         yield return new WaitForSeconds(_attackCastingTime * 0.7f);
-        _attackAudio.Play();
+
+        if (_attackAudio != null)
+            _attackAudio.Play();
+
+        // 캐스팅 후반부
         yield return new WaitForSeconds(_attackCastingTime * 0.3f);
 
-        float dist = Vector3.Distance(transform.position, _player.transform.position);
-        if (_player == null || dist > _attackRange * 1.05f || !HasLineOfSight())  
+        if (_player == null)
         {
-            CancelAttack();
+            _isAttacking = false;
+            _agent.isStopped = false;
             yield break;
         }
-        
-        _player.TakeDamage(_damage);
-        // Debug.Log($"PunchRobot attacked player for {_damage} damage!");
-        
-        _isAttacking = false;
-        _isCoolingDown = true;
-        _agent.isStopped = false;
-        // Debug.Log($"PunchRobot Start Cooldown");
-        yield return new WaitForSeconds(_attackCooldown);
-        // Debug.Log($"PunchRobot End Cooldown");
-        _isCoolingDown = false;
 
+        // ✅ 히트 거리도 "공격 시작 거리"와 같은 기준으로 체크
+        float dist = Vector3.Distance(transform.position, _player.transform.position);
+        float hitRange = _attackRange * 1.2f;       // ★ 위의 attackStartRange와 같은 값 사용
+
+        if (dist > hitRange || !HasLineOfSight())   // ★ 이 거리 밖이면 → 회피 성공
+        {
+            Debug.Log($"[PunchRobot] Attack missed (dist={dist:F2})");
+            _isAttacking = false;
+            _agent.isStopped = false;               // 다시 이동 가능하게
+            yield break;                            // 쿨다운 없음 (플레이어 회피 성공)
+        }
+        
+        // ✅ 여기까지 왔으면 실제 히트
+        _player.TakeDamage(_damage);
+        Debug.Log($"PunchRobot attacked player for {_damage} damage!");
+
+        _isAttacking = false;
+        _isCoolingDown = true;                      // ★ 맞췄을 때만 쿨다운
+        _agent.isStopped = false;
+
+        yield return new WaitForSeconds(_attackCooldown);
+        _isCoolingDown = false;
     }
     
     public void CancelAttack()
     {
-        Debug.Log($"PunchRobot Fail Attack");
+        Debug.Log($"PunchRobot Fail Attack (Cancel)");
         _isAttacking = false;
         _agent.isStopped = false;
     }
