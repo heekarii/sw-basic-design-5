@@ -129,8 +129,8 @@ public class AirRobot : MonoBehaviour, IEnemy
         {
             if (_windEffectPrefab && _windOrigin && _activeWindFX == null)
             {
+                _attackAudio.Play();
                 _activeWindFX = Instantiate(_windEffectPrefab, _windOrigin.position, _windOrigin.rotation);
-                
                 _activeWindFX.transform.localPosition += -Vector3.forward * 3f;
                 _activeWindFX.transform.localRotation = _windEffectPrefab.transform.localRotation;
             }
@@ -140,6 +140,7 @@ public class AirRobot : MonoBehaviour, IEnemy
             if (_activeWindFX)
             {
                 Debug.Log("[AirRobot] WindEffect 해제 (플레이어 이탈)");
+                _attackAudio.Stop();
                 Destroy(_activeWindFX);
                 _activeWindFX = null;
             }
