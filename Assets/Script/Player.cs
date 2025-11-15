@@ -43,11 +43,14 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask _attackRaycastMask;
     [SerializeField] private float _attackRaycastDist;
 
-    [SerializeField] private float[] _attackSpeedRate =
+    [FormerlySerializedAs("_attackSpeedRate")] [SerializeField] private float[] _coolDownTime =
     {
         0.7f,
         0.5f
     };
+
+    [SerializeField] private float _castingTime = 0.7f;
+    [SerializeField] private bool _isMeleeCasting = false;
     private float _lastAttackTime = 0f;
     private bool _isReloading = false;
     
@@ -132,7 +135,7 @@ public class Player : MonoBehaviour
         
         if (Input.GetMouseButton(0) && !_isReloading)
         {
-            if (Time.time - _lastAttackTime >= _attackSpeedRate[_gm.WeaponType])
+            if (Time.time - _lastAttackTime >= _coolDownTime[_gm.WeaponType])
             {
                 _lastAttackTime = Time.time;
                 Camera cam = _camera.GetComponent<Camera>();
@@ -277,7 +280,7 @@ public class Player : MonoBehaviour
         string weaponName = _currentWeaponData.WeaponName;
 
 
-        if (weaponName.Contains("Close"))
+        if (weaponName.Contains("Close") && !_isMeleeCasting)
         {
 
             if (_wm.GetWeaponLevel() == 0)
@@ -289,40 +292,13 @@ public class Player : MonoBehaviour
             {
                 _animator.SetTrigger("isSwing");
             }
-            
 
-            float range = _currentWeaponData.range;
-            float halfAngle = 45f;
+            _isMeleeCasting = true;
+            StartCoroutine(MeleeAttackCoroutine());
 
-            // 공격 중심 = 카메라 위치
-            Vector3 center = _camera.position;
 
-            // 공격 방향 = 카메라 forward
-            Vector3 forward = _camera.forward;
-
-            // 주변 적 스캔
-            HashSet<IEnemy> hitEnemies = new HashSet<IEnemy>();
-            Collider[] hits = Physics.OverlapSphere(center, range, _attackRaycastMask);
-
-            foreach (Collider target in hits)
-            {
-                IEnemy enemy = target.GetComponentInParent<IEnemy>();
-                if (enemy == null) continue;
-
-                // "카메라 위치 → 적" 방향
-                Vector3 dir = (target.transform.position - center).normalized;
-
-                // 각도 판정
-                if (Vector3.Angle(forward, dir) <= halfAngle)
-                {
-                    if (hitEnemies.Contains(enemy)) continue; // 중복 데미지 방지
-                    hitEnemies.Add(enemy);
-                    enemy.TakeDamage(_attackPower);
-                    Debug.Log($"근거리 hit: {target.name}");
-                }
-            }
         }
-        else
+        else if(weaponName.Contains("Long"))
         {
             if (isHit)
             {
@@ -352,6 +328,42 @@ public class Player : MonoBehaviour
         }
 
         _curBattery -= _currentWeaponData.BatteryUsage;
+    }
+
+    private IEnumerator MeleeAttackCoroutine()
+    {
+        yield return new WaitForSeconds(_castingTime);
+        float range = _currentWeaponData.range;
+        float halfAngle = 45f;
+
+        // 공격 중심 = 카메라 위치
+        Vector3 center = _camera.position;
+
+        // 공격 방향 = 카메라 forward
+        Vector3 forward = _camera.forward;
+
+        // 주변 적 스캔
+        HashSet<IEnemy> hitEnemies = new HashSet<IEnemy>();
+        Collider[] hits = Physics.OverlapSphere(center, range, _attackRaycastMask);
+            
+        foreach (Collider target in hits)
+        {
+            IEnemy enemy = target.GetComponentInParent<IEnemy>();
+            if (enemy == null) continue;
+
+            // "카메라 위치 → 적" 방향
+            Vector3 dir = (target.transform.position - center).normalized;
+
+            // 각도 판정
+            if (Vector3.Angle(forward, dir) <= halfAngle)
+            {
+                if (hitEnemies.Contains(enemy)) continue; // 중복 데미지 방지
+                hitEnemies.Add(enemy);
+                enemy.TakeDamage(_attackPower);
+                Debug.Log($"근거리 hit: {target.name}");
+            }
+        }
+        _isMeleeCasting = false;
     }
 
     /// <summary>
