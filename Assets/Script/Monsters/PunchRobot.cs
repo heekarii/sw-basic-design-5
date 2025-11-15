@@ -14,7 +14,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _moveSpeed = 1.0f;
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 3;
-    
+    [SerializeField] private AudioSource _attackAudio;
     [SerializeField] private Player _player;
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
@@ -206,9 +206,10 @@ public class PunchRobot : MonoBehaviour, IEnemy
     {
         _isAttacking = true;
         _agent.isStopped = true;
-        
         Debug.Log($"[PunchRobot] Start AttackCasting");
-        yield return new WaitForSeconds(_attackCastingTime);
+        yield return new WaitForSeconds(_attackCastingTime * 0.7f);
+        _attackAudio.Play();
+        yield return new WaitForSeconds(_attackCastingTime * 0.3f);
 
         float dist = Vector3.Distance(transform.position, _player.transform.position);
         if (_player == null || dist > _attackRange * 1.05f || !HasLineOfSight())  
