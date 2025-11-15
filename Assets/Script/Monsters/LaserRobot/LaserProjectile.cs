@@ -9,11 +9,17 @@ public class LaserProjectile : MonoBehaviour
     private Vector3 _dir;
     private Player _target;   // LaserRobot에서 넘겨주는 Player
     private bool _hit;
+    
+    // 🔹 누가 쏜 탄인지(루트 Transform) 저장
+    private Transform _ownerRoot;
 
-    public void Init(Vector3 dir, Player target)
+    public void Init(Vector3 dir, Player target, Transform ownerRoot)
     {
-        _dir = dir.normalized;
+        _dir = dir.sqrMagnitude > 0.0001f ? dir.normalized : transform.forward;
         _target = target;
+        _ownerRoot = ownerRoot;
+
+        // 수명 타이머
         Destroy(gameObject, _lifeTime);
     }
 
@@ -26,6 +32,10 @@ public class LaserProjectile : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (_hit) return;
+
+        // 🔹 자기 발사자(로봇/총구)와의 충돌은 무시
+        if (_ownerRoot != null && other.transform.root == _ownerRoot)
+            return;
 
         // Player 본체든 자식 콜라이더든 다 잡기
         Player hitPlayer = other.GetComponentInParent<Player>();

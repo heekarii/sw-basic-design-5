@@ -228,7 +228,7 @@ public class LaserRobot : MonoBehaviour, IEnemy
 
         // 투사체 초기화
         if (go.TryGetComponent(out LaserProjectile proj))
-            proj.Init(dir, _player);
+            proj.Init(dir, _player, transform);
 
         // 발사 시점에 투사체에 달린 오디오 재생
         if (go.TryGetComponent(out AudioSource audio))

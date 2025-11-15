@@ -15,13 +15,22 @@ public class Rat : MonoBehaviour, IEnemy
     [SerializeField] private int _scrapAmount = 2;
 
     [SerializeField] private Player _player;
+    [SerializeField] private ParticleSystem _explosionEffect;
+    [SerializeField] private AudioSource _explosionAudio;
     private NavMeshAgent _agent;
+    
+    private Transform _tr;
+    private Transform _playerTr;
 
     void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
         _player = FindObjectOfType<Player>();
         _curHp = _maxHp;
+        
+        _tr = transform;                 // 🔹 자기 Transform 캐시
+        if (_player != null)
+            _playerTr = _player.transform;  // 🔹 플레이어 Transform 캐시
 
         if (_agent == null)
         {
@@ -79,7 +88,9 @@ public class Rat : MonoBehaviour, IEnemy
         // ---------------------------------
 
     // ✅ 공격 조건: 실제 거리 기반 + 정지 상태 확인
-        if (worldDist <= _attackRange && (!_agent.hasPath || _agent.remainingDistance <= _attackRange + 0.1f))
+    if (worldDist <= _attackRange
+        && (!_agent.hasPath || _agent.remainingDistance <= _attackRange + 0.1f)
+        && HasLineOfSight())  
         {
             _agent.isStopped = true;
             AttackPlayer();
@@ -88,7 +99,7 @@ public class Rat : MonoBehaviour, IEnemy
 
 
         // ✅ 추적 조건
-        if (worldDist <= _aggravationRange)
+        if (worldDist <= _aggravationRange && HasLineOfSight()) 
         {
             _agent.isStopped = false;
 
@@ -126,6 +137,76 @@ public class Rat : MonoBehaviour, IEnemy
         snapped = origin;
         return false;
     }
+    
+    private bool HasLineOfSight()
+    {
+        if (_playerTr == null)
+            return false;
+
+        // 쥐 눈 위치 / 플레이어 몸 정도 높이
+        Vector3 origin = _tr.position + Vector3.up * 1.2f;
+        Vector3 target = _playerTr.position + Vector3.up * 1.0f;
+
+        Vector3 dir = target - origin;
+        float dist = dir.magnitude;
+        if (dist <= 0.001f)
+            return true;
+
+        dir /= dist;
+
+        // 장애물 체크 (트리거는 무시)
+        if (Physics.Raycast(origin, dir, out RaycastHit hit, dist, ~0, QueryTriggerInteraction.Ignore))
+        {
+            // 자기 자신의 콜라이더 먼저 맞았을 때 처리
+            if (hit.collider.transform.IsChildOf(_tr))
+            {
+                var hits = Physics.RaycastAll(origin, dir, dist, ~0, QueryTriggerInteraction.Ignore);
+                System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+                foreach (var h in hits)
+                {
+                    if (h.collider.transform.IsChildOf(_tr))
+                        continue;
+
+                    return h.collider.GetComponentInParent<Player>() != null;
+                }
+
+                // 자기 자신 말고 아무도 안 맞았으면 시야 있음으로 간주
+                return true;
+            }
+
+            // 첫번째로 맞은 게 플레이어인지 여부
+            return hit.collider.GetComponentInParent<Player>() != null;
+        }
+
+        // 아무것도 안 맞으면 중간에 막는 게 없는 것 → 시야 있음
+        return true;
+    }
+    
+    private void PlayExplosion()
+    {
+        // 🔹 이펙트 실행
+        if (_explosionEffect != null)
+        {
+            _explosionEffect.transform.SetParent(null); // 부모 떼기
+            _explosionEffect.Play();
+
+            float effectDuration =
+                _explosionEffect.main.duration +
+                _explosionEffect.main.startLifetime.constantMax;
+
+            Destroy(_explosionEffect.gameObject, effectDuration + 0.1f);
+        }
+
+        // 🔹 사운드 실행
+        if (_explosionAudio != null && _explosionAudio.clip != null)
+        {
+            _explosionAudio.transform.SetParent(null); // 부모 떼기
+            _explosionAudio.Play();
+
+            Destroy(_explosionAudio.gameObject, _explosionAudio.clip.length + 0.1f);
+        }
+    }
 
     private void AttackPlayer()
     {
@@ -136,6 +217,7 @@ public class Rat : MonoBehaviour, IEnemy
             _player?.TakeDamage(_damage);
             Debug.Log($"Rat attacked player for {_damage} damage!");
         }
+        PlayExplosion();
         Destroy(gameObject);
     }
 
