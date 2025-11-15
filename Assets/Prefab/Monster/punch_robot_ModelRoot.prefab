@@ -467,11 +467,11 @@ MonoBehaviour:
   _maxHp: 50
   _curHp: 0
   _damage: 10
-  _attackCastingTime: 0.5
+  _attackCastingTime: 2
   _attackCooldown: 1
-  _aggravationRange: 5.5
-  _attackRange: 1.8
-  _moveSpeed: 1
+  _aggravationRange: 6.9
+  _attackRange: 2
+  _moveSpeed: 2
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
   _scrapAmount: 3
   _attackAudio: {fileID: 6054745271407629037}

@@ -7,11 +7,11 @@ public class PunchRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _maxHp = 50.0f;
     [SerializeField] private float _curHp;
     [SerializeField] private float _damage = 10.0f;
-    [SerializeField] private float _attackCastingTime = 0.5f;
+    [SerializeField] private float _attackCastingTime = 2.0f;
     [SerializeField] private float _attackCooldown = 1.0f;
-    [SerializeField] private float _aggravationRange = 5.5f;
-    [SerializeField] private float _attackRange = 1.8f;
-    [SerializeField] private float _moveSpeed = 1.0f;
+    [SerializeField] private float _aggravationRange = 6.9f;
+    [SerializeField] private float _attackRange = 2.0f;
+    [SerializeField] private float _moveSpeed = 2.0f;
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 3;
     [SerializeField] private AudioSource _attackAudio;
