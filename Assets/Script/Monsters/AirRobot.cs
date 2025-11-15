@@ -14,6 +14,7 @@ public class AirRobot : MonoBehaviour, IEnemy
     [FormerlySerializedAs("windEffectPrefab")] 
     [SerializeField] private GameObject _windEffectPrefab;
     [SerializeField] private Transform _windOrigin;
+    [SerializeField] private AudioSource _attackAudio;
     [SerializeField] private int _scrapAmount = 2;
 
     [SerializeField] private Transform _zeron;
