@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 {
     [Header("Player Status")]
     [SerializeField] private float _attackPower = 10f;   // 공격력
-    [SerializeField] private float _moveSpeed = 5f;      // 이동 속도
+    [SerializeField] private float _moveSpeed = 3f;      // 이동 속도
     [SerializeField] private float _maxHealth = 500f;    // 최대 체력
     [SerializeField] private float _currentHealth;       // 현재 체력
     [SerializeField] private bool _isGrounded = true;
@@ -35,9 +35,9 @@ public class Player : MonoBehaviour
     
     [FormerlySerializedAs("_speedPerLevel")] [SerializeField] private float[] _speedWithBoostPerLevel =
     {
-        7f,
-        8f,
-        9f
+        5f,
+        6f,
+        7f
     };
     
     [Header("Combat")] 
@@ -46,11 +46,11 @@ public class Player : MonoBehaviour
 
     [FormerlySerializedAs("_attackSpeedRate")] [SerializeField] private float[] _coolDownTime =
     {
-        0.7f,
+        1.5f,
         0.5f
     };
 
-    [SerializeField] private float _castingTime = 0.7f;
+    [SerializeField] private float _castingTime = 1f;
     [SerializeField] private bool _isMeleeCasting = false;
     private float _lastAttackTime = 0f;
     private bool _isReloading = false;
