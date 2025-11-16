@@ -4,6 +4,7 @@ public class AIRobot : MonoBehaviour, IEnemy
 {
     [Header("Monster Status")]
     [SerializeField] private float _maxHp = 100.0f;
+    [SerializeField] private float _curHp;
     [SerializeField] private float _damage = 50.0f;
     [SerializeField] private float _damageInterval = 1.0f;   // 번개 떨어지는 간격
     [SerializeField] private float _attackCooldown = 5.0f;   // 공격 한 사이클 끝난 후 쿨다운
@@ -24,8 +25,7 @@ public class AIRobot : MonoBehaviour, IEnemy
 
     [Header("Ref")]
     [SerializeField] private Player _player;
-
-    private float _curHp;
+    
     private float _attackRangeSqr;
     private float _aggravationRangeSqr;
 
@@ -46,6 +46,7 @@ public class AIRobot : MonoBehaviour, IEnemy
 
     private void Start()
     {
+        _curHp = _maxHp;
         if (_player == null)
             _player = FindObjectOfType<Player>();
 

@@ -267,7 +267,7 @@ MonoBehaviour:
   _curBoostText: {fileID: 0}
   _curScrapText: {fileID: 0}
   Player: {fileID: 0}
-  WeaponType: 1
+  WeaponType: 0
 --- !u!4 &845973697
 Transform:
   m_ObjectHideFlags: 0
