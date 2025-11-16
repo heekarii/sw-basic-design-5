@@ -28,7 +28,7 @@ public class StationManager : MonoBehaviour
     
     private PlayerStatus _playerStatus;
 
-    private void Start()
+    private void Awake()
     {
         _transitionManager = FindObjectOfType<TransitionManager>();
 
@@ -41,6 +41,8 @@ public class StationManager : MonoBehaviour
         AddClick(_upgradeHealth, OnUpgradeHealth);
         AddClick(_upgradeWeapon, OnUpgradeWeapon);
         AddClick(_upgradeMove, OnUpgradeMoveSpeed);
+        AddClick(_successImage, OnClickSuccessImage);
+        AddClick(_failureImage, OnClickFailureImage);
     }
 
     private void AddClick(Image img, Action callback)
@@ -56,6 +58,7 @@ public class StationManager : MonoBehaviour
         _bgon.gameObject.SetActive(true);
         _selectRunImage.gameObject.SetActive(false);
         _selectUpgradeImage.gameObject.SetActive(true);
+
     }
 
     private void OnExitStationClick()
@@ -115,5 +118,15 @@ public class StationManager : MonoBehaviour
         {
             _failureImage.gameObject.SetActive(true);
         }
+    }
+    
+    private void OnClickSuccessImage()
+    {
+        _transitionManager.ExitRepairStation();
+    }
+    
+    private void OnClickFailureImage()
+    {
+        _transitionManager.ExitRepairStation();
     }
 }

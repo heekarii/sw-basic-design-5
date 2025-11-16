@@ -29,6 +29,7 @@ public class TransitionManager : Singleton<TransitionManager>
     // ▣ Repair → 미니게임
     public void StartMiniGame(string gameSceneName)
     {
+        SetSceneActive("Repair_main", false);
         SceneManager.LoadScene(gameSceneName, LoadSceneMode.Additive);
     }
 
@@ -36,6 +37,7 @@ public class TransitionManager : Singleton<TransitionManager>
     public void EndMiniGame(string gameSceneName)
     {
         SceneManager.UnloadSceneAsync(gameSceneName);        
+        SetSceneActive("Repair_main", true);
         // Repair_main은 그대로 있음
     }
 
@@ -43,6 +45,7 @@ public class TransitionManager : Singleton<TransitionManager>
     public void ExitRepairStation()
     {
         SceneManager.UnloadSceneAsync("Repair_main");
+        Cursor.visible = false; 
         SetSceneActive("Map_SCENE", true);
     }
 

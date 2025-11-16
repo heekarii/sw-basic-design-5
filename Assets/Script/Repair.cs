@@ -7,6 +7,7 @@ using UnityEngine.Serialization;
 public class Repair : MonoBehaviour
 {
     private TransitionManager _transitionManager;
+    private bool _isEntered = false;
 
     private void Start()
     {
@@ -16,9 +17,10 @@ public class Repair : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         Debug.Log("Collision Detected");
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && !_isEntered)
         {
             _transitionManager.EnterRepairStation();
+            _isEntered = true;
         }
         
         
