@@ -8,7 +8,8 @@ public class AIRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _damageInterval = 1.0f;   // 번개 떨어지는 간격
     [SerializeField] private float _attackCooldown = 5.0f;   // 공격 한 사이클 끝난 후 쿨다운
     [SerializeField] private float _attackingTime = 10.0f;   // 공격 유지 시간
-    [SerializeField] private float _attackRange = 20.1f;
+    [SerializeField] private float _aggravationRange = 20.1f; // 인식 범위
+    [SerializeField] private float _attackRange = 15.1f;      // 공격 범위
     [SerializeField] private float _strikeSize = 4.0f;
 
     [Header("VFX & SFX")]
@@ -26,6 +27,7 @@ public class AIRobot : MonoBehaviour, IEnemy
 
     private float _curHp;
     private float _attackRangeSqr;
+    private float _aggravationRangeSqr;
 
     private AudioSource _blueAudio;
     private Collider _playerCol;
@@ -58,7 +60,8 @@ public class AIRobot : MonoBehaviour, IEnemy
         _playerCol = _player.GetComponentInChildren<Collider>();
         _curHp     = _maxHp;
 
-        _attackRangeSqr = _attackRange * _attackRange;
+        _attackRangeSqr      = _attackRange * _attackRange;
+        _aggravationRangeSqr = _aggravationRange * _aggravationRange;
 
         // 파티클 초기 상태 꺼두기
         if (_redFx != null)  _redFx.SetActive(false);
@@ -81,42 +84,73 @@ public class AIRobot : MonoBehaviour, IEnemy
             return;
         }
 
-        bool canAttack = IsPlayerInRangeAndVisible();
+        // 거리/시야 계산
+        bool inDetect = IsPlayerInDetectRangeAndVisible();   // 인식 범위 + 시야
+        bool inAttack = IsPlayerInAttackRangeAndVisible();   // 공격 범위 + 시야
 
-        // 사거리 밖이거나 시야 없으면 → 이펙트 모두 OFF, 새로운 공격도 시작 X
-        if (!canAttack)
+        // 인식 범위 바깥이고, 공격/쿨다운도 아니면 이펙트 전부 OFF
+        if (!inDetect && !_isAttacking && !_isCoolingDown)
         {
             SetRed(false);
             SetBlue(false);
             return;
         }
 
-        // 여기부터는: 사거리 안 + 시야 OK
-
-        // 공격/쿨다운 상태가 아니면 공격 시작
-        if (!_isAttacking && !_isCoolingDown)
+        // 공격/쿨다운이 아니고, 공격 범위 안이면 공격 시작
+        if (!_isAttacking && !_isCoolingDown && inAttack)
         {
             AttackPlayer();
         }
 
-        // 상태 플래그에 따라 이펙트 제어
+        // ===== 이펙트 제어 =====
         if (_isAttacking)
         {
-            // 공격 중 → 파랑 ON, 빨강 OFF
-            SetRed(false);
-            SetBlue(true);
+            if (inAttack)
+            {
+                // 공격 중 + 공격 범위 안 → 파랑 ON, 빨강 OFF
+                SetRed(false);
+                SetBlue(true);
+            }
+            else if (inDetect)
+            {
+                // 공격 중인데 공격 범위 밖 (하지만 인식 범위 안) → 빨강 ON, 파랑 OFF
+                SetBlue(false);
+                SetRed(true);
+            }
+            else
+            {
+                // 완전 범위 밖 → 모두 OFF
+                SetRed(false);
+                SetBlue(false);
+            }
         }
         else if (_isCoolingDown)
         {
-            // 쿨다운 중 → 빨강 ON, 파랑 OFF
-            SetBlue(false);
-            SetRed(true);
+            // 쿨다운 중이면 인식 범위 안에서 빨강, 아니면 OFF
+            if (inDetect)
+            {
+                SetBlue(false);
+                SetRed(true);
+            }
+            else
+            {
+                SetRed(false);
+                SetBlue(false);
+            }
         }
         else
         {
-            // 둘 다 아니면 → 모두 OFF
-            SetRed(false);
-            SetBlue(false);
+            // 대기 상태: 인식 범위 안이면 빨강, 아니면 OFF
+            if (inDetect)
+            {
+                SetBlue(false);
+                SetRed(true);
+            }
+            else
+            {
+                SetRed(false);
+                SetBlue(false);
+            }
         }
     }
 
@@ -148,8 +182,8 @@ public class AIRobot : MonoBehaviour, IEnemy
             // 다음 공격까지 대기 (→ 1초,2초,3초,... 타이밍 유지)
             yield return new WaitForSeconds(_damageInterval);
             
-            // 대기 후에도 여전히 공격 가능 상태인지 확인
-            if (!IsPlayerInRangeAndVisible())
+            // 대기 후에도 여전히 "공격 범위 + 시야" 안인지 확인
+            if (!IsPlayerInAttackRangeAndVisible())
                 break;
 
             // 1) 번개 떨어질 위치 계산 + 실제 번개 프리팹 생성
@@ -160,7 +194,6 @@ public class AIRobot : MonoBehaviour, IEnemy
                 GameObject bolt = Instantiate(_lightningPrefab, strikePos, Quaternion.identity);
                 Vector3 s = bolt.transform.localScale;
                 bolt.transform.localScale = new Vector3(_strikeSize, s.y, _strikeSize);
-                // damageInterval 동안만 보이게 (조금 여유 줄려면 *0.9f 정도로 조절 가능)
                 Destroy(bolt, _damageInterval);
             }
 
@@ -183,8 +216,8 @@ public class AIRobot : MonoBehaviour, IEnemy
         // 공격 종료
         _isAttacking = false;
 
-        // 아직 사거리 안 + 시야 OK라면 쿨다운 진입
-        if (IsPlayerInRangeAndVisible())
+        // 아직 "인식 범위 + 시야" 안이라면 쿨다운 진입
+        if (IsPlayerInDetectRangeAndVisible())
         {
             _isCoolingDown = true;
             yield return new WaitForSeconds(_attackCooldown);
@@ -201,8 +234,8 @@ public class AIRobot : MonoBehaviour, IEnemy
 
     //===== Helper: Range / Position / Hit Check =====
 
-    // 수평 거리(XZ) 기반으로 범위 + 시야까지 한 번에 체크
-    private bool IsPlayerInRangeAndVisible()
+    // 인식 범위(_aggravationRange) + 시야 체크
+    private bool IsPlayerInDetectRangeAndVisible()
     {
         if (_playerTr == null) return false;
 
@@ -211,7 +244,22 @@ public class AIRobot : MonoBehaviour, IEnemy
         a.y = 0f;
         b.y = 0f;
 
-        // 제곱 거리로 비교 (sqrt 피함)
+        if ((a - b).sqrMagnitude > _aggravationRangeSqr)
+            return false;
+
+        return HasLineOfSight();
+    }
+
+    // 공격 범위(_attackRange) + 시야 체크
+    private bool IsPlayerInAttackRangeAndVisible()
+    {
+        if (_playerTr == null) return false;
+
+        Vector3 a = _tr.position;
+        Vector3 b = _playerTr.position;
+        a.y = 0f;
+        b.y = 0f;
+
         if ((a - b).sqrMagnitude > _attackRangeSqr)
             return false;
 
@@ -267,7 +315,6 @@ public class AIRobot : MonoBehaviour, IEnemy
 
         dir /= dist;
 
-        // 모든 히트 가져오기
         RaycastHit[] hits = Physics.RaycastAll(
             origin,
             dir,
@@ -279,7 +326,6 @@ public class AIRobot : MonoBehaviour, IEnemy
         if (hits.Length == 0)
             return true; // 아무것도 안 맞으면 막힌 건 아니라고 봄
 
-        // 가까운 순으로 정렬
         System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
         foreach (var h in hits)
