@@ -247,7 +247,7 @@ public class SpearRobot : MonoBehaviour, IEnemy
         if (_player != null && dist < _attackRange * 1.05f && HasLineOfSight()) 
         {
             _player.TakeDamage(_damage);
-            _player.ConsumeBatteryPercentOfCurrent(_Batterydamage);
+            _player.ConsumeBatteryPercent(_Batterydamage);
             _player.Stun(_stunTime);
         }
         

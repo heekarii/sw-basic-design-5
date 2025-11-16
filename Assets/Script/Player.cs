@@ -508,7 +508,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 배터리의 percent%만큼 즉시 감소 (예: 1 -> 전체의 1%)
     /// </summary>
-    public void ConsumeBatteryPercentOfCurrent(float percent)
+    public void ConsumeBatteryPercent(float percent)
     {
         if (percent <= 0f) return;
         float reduction = percent * 0.01f;
