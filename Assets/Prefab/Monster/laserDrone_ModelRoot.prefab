@@ -468,7 +468,7 @@ MonoBehaviour:
   _attackCooldown: 10
   _dropScrap: 5
   _flashEffectPrefab: {fileID: 0}
-  _scrapAmount: 3
+  _scrapAmount: 5
   _player: {fileID: 0}
   _flashOverlay: {fileID: 0}
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}

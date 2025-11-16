@@ -6187,7 +6187,8 @@ MonoBehaviour:
   _damageInterval: 1
   _attackCooldown: 5
   _attackingTime: 10
-  _attackRange: 20.1
+  _aggravationRange: 20.1
+  _attackRange: 15.1
   _strikeSize: 4
   _lightningPrefab: {fileID: 5459249452796344631, guid: 90df6ce853ca7364aafe73cd34e86ccc, type: 3}
   _redFx: {fileID: 6828618842765179134}
