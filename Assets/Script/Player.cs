@@ -98,7 +98,7 @@ public class Player : MonoBehaviour
         _curPlayerStatus = 0;
         _stunAudioSource = gameObject.AddComponent<AudioSource>();
         _stunAudioSource.clip = _stunSound;
-        _stunAudioSource.loop = true;
+        _stunAudioSource.loop = false;
         _stunAudioSource.playOnAwake = false;
         
         Cursor.visible = false;
@@ -414,9 +414,15 @@ public class Player : MonoBehaviour
         _moveDirection = Vector3.zero; // 입력 방향 초기화
         
         _stunAudioSource.Play();
-        
+     
         Debug.Log($"[Player] isStunned");
+        _animator.SetBool("isStunning", true);
+        _animator.SetBool("isWalking", false);
+        _animator.SetBool("isRunning", false);
         yield return new WaitForSeconds(seconds);
+        _animator.SetBool("isStunning", false);
+        _animator.SetBool("isWalking", true);
+        _animator.SetBool("isRunning", true);
         Debug.Log($"[Player] release Stun");
         
         _isStunned = false;            // ▶ 자동 복귀 (속도값은 그대로)

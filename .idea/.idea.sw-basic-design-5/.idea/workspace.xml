@@ -6,17 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/AirRobot/air_robot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/AirRobot/air_robot_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/ModelRoot_RatRobot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/ModelRoot_RatRobot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/laserRobot/laserRobot_ModelRoot 1.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/laserRobot/laserRobot_ModelRoot 1.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/laserRobot/laserRobot_attack_effect.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/laserRobot/laserRobot_attack_effect.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/punch_robot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/punch_robot_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MonsterTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MonsterTestScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/AirRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/AirRobot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/LaserRobot/LaserProjectile.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/LaserRobot/LaserProjectile.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/LaserRobot/LaserRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/LaserRobot/LaserRobot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/PunchRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/PunchRobot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/Rat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/Rat.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/spear_robot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/spear_robot_ModelRoot.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/SpearRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/SpearRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -171,6 +163,8 @@
       <workItem from="1763281590758" duration="340000" />
       <workItem from="1763285670646" duration="139000" />
       <workItem from="1763285850196" duration="159000" />
+      <workItem from="1763286027512" duration="704000" />
+      <workItem from="1763286892987" duration="3890000" />
     </task>
     <servers />
   </component>

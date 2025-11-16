@@ -239,7 +239,7 @@ public class SpearRobot : MonoBehaviour, IEnemy
         yield return new WaitForSeconds(0.5f);
         
         Debug.Log($"[SpearRobot] Start AttackCasting");
-        yield return new WaitForSeconds(_attackCastingTime);
+        yield return new WaitForSeconds(_attackCastingTime-0.5f);
         
 
         // 공격 시점에 다시 조건 검사 (거리 + 시야 + 존재)
