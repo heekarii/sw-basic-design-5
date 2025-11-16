@@ -22,13 +22,17 @@ public class AirRobot : MonoBehaviour, IEnemy
     [SerializeField] bool _isActive = false;
     [SerializeField] private GameObject _activeWindFX;
     [SerializeField] private ScrapData _scrapData;
-
+    private Transform _playerTr;
+    private Transform _tr;
+    
     private void Start()
     { 
         _zeron = GameObject.FindWithTag("Player")?.transform;
         _player = FindObjectOfType<Player>();
         _currentHealth = _maxHealth;
-
+        _tr = transform;
+        _playerTr = _zeron;
+        
         // ✅ WindOrigin 자동 할당
         if (_windOrigin == null)
         {
@@ -52,7 +56,8 @@ public class AirRobot : MonoBehaviour, IEnemy
     private void Update()
     {
         if (_zeron == null || _player == null) return;
-
+        bool hasLOS = HasLineOfSight();
+        
         float distance = Vector3.Distance(transform.position, _zeron.position);
 
         // 🔹 감지 범위 진입 시 활성화
@@ -63,13 +68,13 @@ public class AirRobot : MonoBehaviour, IEnemy
         }
 
         // 🔹 감지 범위 내라면 계속 바람 판정
-        if (_isActive)
+        if (_isActive && hasLOS) 
         {
             CheckWindHit();
         }
 
         // 🔹 감지 범위 이탈 시 비활성화 처리 + 즉시 해제
-        if (_isActive && distance > _detectDistance)
+        if (_isActive && distance > _detectDistance || !hasLOS) 
         {
             _isActive = false;
             Debug.Log("[AirRobot] 비활성화됨");
@@ -84,6 +89,46 @@ public class AirRobot : MonoBehaviour, IEnemy
         }
     }
 
+    private bool HasLineOfSight()
+    {
+        if (_playerTr == null)
+            return false;
+
+        Vector3 origin = _tr.position + Vector3.up * 1.2f;
+        Vector3 target = _playerTr.position + Vector3.up * 1.0f;
+
+        Vector3 dir = target - origin;
+        float dist = dir.magnitude;
+        if (dist <= 0.001f)
+            return true;
+
+        dir /= dist;
+
+        if (Physics.Raycast(origin, dir, out RaycastHit hit, dist, ~0, QueryTriggerInteraction.Ignore))
+        {
+            // 자기 자신의 콜라이더 먼저 맞았을 때 처리
+            if (hit.collider.transform.IsChildOf(_tr))
+            {
+                var hits = Physics.RaycastAll(origin, dir, dist, ~0, QueryTriggerInteraction.Ignore);
+                System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+
+                foreach (var h in hits)
+                {
+                    if (h.collider.transform.IsChildOf(_tr))
+                        continue;
+
+                    return h.collider.GetComponentInParent<Player>() != null;
+                }
+
+                return true;
+            }
+
+            return hit.collider.GetComponentInParent<Player>() != null;
+        }
+
+        // 아무것도 안 맞으면 시야 확보된 것으로 처리
+        return true;
+    }
 
     private void CheckWindHit()
     {

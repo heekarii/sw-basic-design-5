@@ -21,7 +21,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
     private bool _isCoolingDown = false;
     private NavMeshAgent _agent;
     private Animator _animator;
-
+ 
     void Start()
     {
         _agent = GetComponent<NavMeshAgent>();

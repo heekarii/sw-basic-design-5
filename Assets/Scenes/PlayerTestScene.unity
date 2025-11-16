@@ -1430,7 +1430,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1406741127}
   m_CullTransparentMesh: 1
---- !u!1001 &1968132292
+--- !u!1001 &1987321875
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -1438,55 +1438,59 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1153351544232939528, guid: 368d7d0516aa8b74a97c10054718e164, type: 3}
-      propertyPath: m_Name
-      value: chainsawBot_ModelRoot
-      objectReference: {fileID: 0}
-    - target: {fileID: 6845645277784552689, guid: 368d7d0516aa8b74a97c10054718e164, type: 3}
+    - target: {fileID: 451864770990567057, guid: 461571f023f72e14ba6bc5fa2e410c47, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.9994268
+      value: 0.8711991
       objectReference: {fileID: 0}
-    - target: {fileID: 6845645277784552689, guid: 368d7d0516aa8b74a97c10054718e164, type: 3}
+    - target: {fileID: 451864770990567057, guid: 461571f023f72e14ba6bc5fa2e410c47, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00000047683716
+      value: 0.00000023841858
       objectReference: {fileID: 0}
-    - target: {fileID: 6845645277784552689, guid: 368d7d0516aa8b74a97c10054718e164, type: 3}
+    - target: {fileID: 451864770990567057, guid: 461571f023f72e14ba6bc5fa2e410c47, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.830496
+      value: 8.593512
       objectReference: {fileID: 0}
-    - target: {fileID: 6845645277784552689, guid: 368d7d0516aa8b74a97c10054718e164, type: 3}
+    - target: {fileID: 451864770990567057, guid: 461571f023f72e14ba6bc5fa2e410c47, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.046771843
       objectReference: {fileID: 0}
-    - target: {fileID: 6845645277784552689, guid: 368d7d0516aa8b74a97c10054718e164, type: 3}
+    - target: {fileID: 451864770990567057, guid: 461571f023f72e14ba6bc5fa2e410c47, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 6845645277784552689, guid: 368d7d0516aa8b74a97c10054718e164, type: 3}
+    - target: {fileID: 451864770990567057, guid: 461571f023f72e14ba6bc5fa2e410c47, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.99890566
       objectReference: {fileID: 0}
-    - target: {fileID: 6845645277784552689, guid: 368d7d0516aa8b74a97c10054718e164, type: 3}
+    - target: {fileID: 451864770990567057, guid: 461571f023f72e14ba6bc5fa2e410c47, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 6845645277784552689, guid: 368d7d0516aa8b74a97c10054718e164, type: 3}
+    - target: {fileID: 451864770990567057, guid: 461571f023f72e14ba6bc5fa2e410c47, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6845645277784552689, guid: 368d7d0516aa8b74a97c10054718e164, type: 3}
+    - target: {fileID: 451864770990567057, guid: 461571f023f72e14ba6bc5fa2e410c47, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: -174.638
       objectReference: {fileID: 0}
-    - target: {fileID: 6845645277784552689, guid: 368d7d0516aa8b74a97c10054718e164, type: 3}
+    - target: {fileID: 451864770990567057, guid: 461571f023f72e14ba6bc5fa2e410c47, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1061502697353505818, guid: 461571f023f72e14ba6bc5fa2e410c47, type: 3}
+      propertyPath: _windEffectPrefab
+      value: 
+      objectReference: {fileID: 3911287590610637130, guid: 3a62f4d5e1ecdbe4391dd59fe94eb957, type: 3}
+    - target: {fileID: 7601444662767756481, guid: 461571f023f72e14ba6bc5fa2e410c47, type: 3}
+      propertyPath: m_Name
+      value: air_robot_ModelRoot
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 368d7d0516aa8b74a97c10054718e164, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: 461571f023f72e14ba6bc5fa2e410c47, type: 3}
 --- !u!1001 &3055560142163153112
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1596,4 +1600,4 @@ SceneRoots:
   - {fileID: 1239720591}
   - {fileID: 1105445110}
   - {fileID: 1297080700}
-  - {fileID: 1968132292}
+  - {fileID: 1987321875}
