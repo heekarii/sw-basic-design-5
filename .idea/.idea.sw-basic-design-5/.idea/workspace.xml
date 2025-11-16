@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/punch_robot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/punch_robot_ModelRoot.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/PunchRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/PunchRobot.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +42,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "hotfix/PlayerAttackCheack",
+    "git-widget-placeholder": "hotfix/MosterMaster",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
