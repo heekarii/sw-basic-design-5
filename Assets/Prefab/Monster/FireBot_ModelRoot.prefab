@@ -40,9 +40,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2959130792768415847}
+  - component: {fileID: 5915915376100489890}
   - component: {fileID: 5495167407765934811}
   - component: {fileID: 2846579475666973428}
-  - component: {fileID: 5915915376100489890}
   m_Layer: 0
   m_Name: FireBot_ModelRoot
   m_TagString: Untagged
@@ -66,6 +66,41 @@ Transform:
   - {fileID: 661016631202853938}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5915915376100489890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 868165856890254555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2487865601e744b4a93b3837a6a3cdf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHp: 80
+  _curHp: 0
+  _attackCooldown: 3
+  _aggravationRange: 10
+  _attackRange: 4
+  _moveSpeed: 5
+  _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
+  _lookAtTurnSpeed: 8
+  _player: {fileID: 0}
+  _scrapAmount: 8
+  _muzzle: {fileID: 685230484235845056}
+  _damage: 15
+  _damageInterval: 1
+  _attackingTime: 3
+  _halfWidth: 3
+  _length: 3.6
+  _height: 3
+  _fireVFX:
+  - {fileID: 4827443533587157228}
+  - {fileID: 5665834673636972716}
+  _fireSfx:
+  - {fileID: 726718764276320226}
+  - {fileID: 453247354943573922}
 --- !u!54 &5495167407765934811
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -115,41 +150,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5915915376100489890
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 868165856890254555}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2487865601e744b4a93b3837a6a3cdf1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHp: 80
-  _curHp: 0
-  _attackCooldown: 3
-  _aggravationRange: 10
-  _attackRange: 4
-  _moveSpeed: 5
-  _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
-  _lookAtTurnSpeed: 8
-  _player: {fileID: 0}
-  _scrapAmount: 8
-  _muzzle: {fileID: 685230484235845056}
-  _damage: 15
-  _damageInterval: 1
-  _attackingTime: 3
-  _halfWidth: 3
-  _length: 3.6
-  _height: 3
-  _fireVFX:
-  - {fileID: 4827443533587157228}
-  - {fileID: 5665834673636972716}
-  _fireSfx:
-  - {fileID: 726718764276320226}
-  - {fileID: 453247354943573922}
 --- !u!1 &2926414700543778459
 GameObject:
   m_ObjectHideFlags: 0

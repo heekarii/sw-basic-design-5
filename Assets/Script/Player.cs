@@ -119,7 +119,7 @@ public class Player : MonoBehaviour
             _currentWeaponIdx = 4;
             _wm.EquipWeapon(_currentWeaponIdx); // 원거리 무기 장착
         }
-        
+        // Debug.Log(_currentWeaponIdx);
         StartCoroutine(BatteryReduction());
         
     }
@@ -406,7 +406,6 @@ public class Player : MonoBehaviour
     {
         if (seconds <= 0f) return;
         if (_stunCo != null) StopCoroutine(_stunCo);
-        Debug.Log($"[Player] isStunned");
         _stunCo = StartCoroutine(StunRoutine(seconds));
     }
 
@@ -418,6 +417,7 @@ public class Player : MonoBehaviour
         
         _stunAudioSource.Play();
      
+        // 스턴시 이동모션X, Idle 모션 적용
         Debug.Log($"[Player] isStunned");
         _animator.SetBool("isStunning", true);
         _animator.SetBool("isWalking", false);
@@ -428,7 +428,7 @@ public class Player : MonoBehaviour
         _animator.SetBool("isRunning", true);
         Debug.Log($"[Player] release Stun");
         
-        _isStunned = false;            // ▶ 자동 복귀 (속도값은 그대로)
+        _isStunned = false;
         _stunCo = null;
     }
 
@@ -506,15 +506,13 @@ public class Player : MonoBehaviour
     }
     
     /// <summary>
-    /// 현재 배터리의 percent%만큼 즉시 감소 (예: 1 -> 현재값의 1%)
+    /// 배터리의 percent%만큼 즉시 감소 (예: 1 -> 전체의 1%)
     /// </summary>
-    public void ConsumeBatteryPercentOfCurrent(float percent)
+    public void ConsumeBatteryPercent(float percent)
     {
         if (percent <= 0f) return;
-
-        float reduction = _curBattery * (percent * 0.01f);
-        _curBattery = Mathf.Max(0f, _curBattery - reduction);
-
+        float reduction = percent * 0.01f;
+        _curBattery -= reduction;
         // Debug.Log($"[Player] 배터리 {reduction:F3}감소  현재 → {_curBattery:F2}");
     }
     

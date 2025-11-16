@@ -12,6 +12,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _aggravationRange = 6.9f;
     [SerializeField] private float _attackRange = 2.0f;
     [SerializeField] private float _moveSpeed = 2.0f;
+    [SerializeField] private float _lookAtTurnSpeed = 8.0f;
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 3;
     [SerializeField] private AudioSource _attackAudio;
@@ -179,10 +180,22 @@ public class PunchRobot : MonoBehaviour, IEnemy
     {
         if (_player == null || !HasLineOfSight()) return;
 
-        Vector3 dir = _player.transform.position - transform.position;
-        dir.y = 0f;
-        if (dir.sqrMagnitude > 0.001f)
-            transform.rotation = Quaternion.LookRotation(dir);
+        Vector3 lockedDir = (_player != null)
+            ? (_player.transform.position - transform.position)
+            : transform.forward;
+        lockedDir.y = 0.0f;
+        lockedDir.Normalize();
+        
+        // 몸을 스냅샷 방향으로 즉시 정렬
+        if (lockedDir.sqrMagnitude > 0.001f)
+        {
+            float rotSpeed = _lookAtTurnSpeed;
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                Quaternion.LookRotation(lockedDir),
+                Time.deltaTime * rotSpeed
+            );
+        }
     }
 
     private void AttackPlayer()
