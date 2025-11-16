@@ -510,7 +510,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 7471235689853690865, guid: 6b92b67c049744447bca12e052b467cb, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1165592682695907715}
+      addedObject: {fileID: 7570958586614437879}
     - targetCorrespondingSourceObject: {fileID: 7471235689853690865, guid: 6b92b67c049744447bca12e052b467cb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8667542401998431201}
@@ -538,7 +538,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7471235689853690865, guid: 6b92b67c049744447bca12e052b467cb, type: 3}
   m_PrefabInstance: {fileID: 4319009084212549181}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1165592682695907715
+--- !u!114 &7570958586614437879
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -551,7 +551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackPower: 10
-  _moveSpeed: 1
+  _moveSpeed: 3
   _maxHealth: 500
   _currentHealth: 0
   _isGrounded: 1
@@ -559,6 +559,7 @@ MonoBehaviour:
   _curBattery: 100
   _curBullets: 0
   _isStunned: 0
+  _curSpeed: 0
   _isSlowed: 0
   _batteryReductionAmount:
   - 0.0002
@@ -569,20 +570,23 @@ MonoBehaviour:
   _curSpeedLevel: 1
   _isShifting: 0
   _speedWithBoostPerLevel:
-  - 1.3
-  - 1.5
-  - 1.7
+  - 5
+  - 6
+  - 7
   _attackRaycastMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 0
   _attackRaycastDist: 0
-  _attackSpeedRate:
-  - 0.7
+  _coolDownTime:
+  - 1.5
   - 0.5
+  _castingTime: 1
+  _isMeleeCasting: 0
   _camera: {fileID: 973242834122530442}
   _mouseSensitivity: 2
   _cameraPitchTarget: {fileID: 5462974152216465657}
   _currentWeaponData: {fileID: 0}
+  _currentWeaponIdx: 0
   _weaponSocket: {fileID: 8286933817016139198}
   _stunSound: {fileID: 8300000, guid: 30634e3dc33c1fd4eb1ca0e5cf0dec69, type: 3}
 --- !u!54 &8667542401998431201
