@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;      // HP바 Image용
+
 
 public class SpearRobot : MonoBehaviour, IEnemy
 {
@@ -24,9 +26,13 @@ public class SpearRobot : MonoBehaviour, IEnemy
 
     [SerializeField] private AudioClip _attackSound;
     [SerializeField] private AudioClip _electricSound;
-    
     private AudioSource _electricAudioSource;
     private AudioSource _attackAudioSource;
+    
+    // ================== HP BAR UI ==================
+    [Header("HP Bar UI")]
+    [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
+    [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
     
     private Animator _animator;
     private bool _isAttacking = false;
@@ -39,6 +45,14 @@ public class SpearRobot : MonoBehaviour, IEnemy
         _player = FindObjectOfType<Player>();
         _animator = GetComponent<Animator>();
         _curHp = _maxHp;
+        
+        if (_hpFillImage != null)
+        {
+            _hpFillImage.type = Image.Type.Filled;
+            _hpFillImage.fillMethod = Image.FillMethod.Horizontal;
+            _hpFillImage.fillOrigin = (int)Image.OriginHorizontal.Left; // 왼쪽 고정, 오른쪽이 줄어듦
+        }
+        UpdateHpUI();   // 데미지 받을 때마다 HP바 갱신
         
         _electricAudioSource = gameObject.AddComponent<AudioSource>();
         _electricAudioSource.clip = _electricSound;
@@ -267,10 +281,19 @@ public class SpearRobot : MonoBehaviour, IEnemy
     public void TakeDamage(float dmg)
     {
         _curHp -= dmg;
+        UpdateHpUI();   // 데미지 받을 때마다 HP바 갱신
         if (_curHp <= 0f) Die();
         Debug.Log($"SpearRobot took {dmg} damage, current HP: {_curHp}");
     }
 
+    private void UpdateHpUI()
+    {
+        if (_hpFillImage == null) return;
+
+        float ratio = (_maxHp > 0f) ? _curHp / _maxHp : 0f;
+        _hpFillImage.fillAmount = Mathf.Clamp01(ratio);
+    }
+    
     private void Die()
     {
         DropScrap(_scrapAmount);

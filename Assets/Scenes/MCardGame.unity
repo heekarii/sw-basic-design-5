@@ -940,7 +940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba1f5a7a880d4a341bcd7d6347b21f29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  memorizeTime: 20
+  memorizeTime: 15
   limitTime: 20
   totalCards: 8
   gridArea: {fileID: 857688769}

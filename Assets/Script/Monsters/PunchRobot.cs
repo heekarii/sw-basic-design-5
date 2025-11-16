@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;      // HP바 Image용
 
 public class PunchRobot : MonoBehaviour, IEnemy
 {
@@ -18,6 +19,13 @@ public class PunchRobot : MonoBehaviour, IEnemy
     [SerializeField] private AudioSource _attackAudio;
     [SerializeField] private Player _player;
     
+    // ================== HP BAR UI ==================
+    [Header("HP Bar UI")]
+    [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
+    [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
+    private Transform _camTr;                      // 카메라 Transform
+    // =================================================
+
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
     private NavMeshAgent _agent;
@@ -25,11 +33,22 @@ public class PunchRobot : MonoBehaviour, IEnemy
 
     void Start()
     {
-        _agent   = GetComponent<NavMeshAgent>();
-        _player  = FindObjectOfType<Player>();
+        _agent    = GetComponent<NavMeshAgent>();
+        _player   = FindObjectOfType<Player>();
         _animator = GetComponentInChildren<Animator>();
-        _curHp   = _maxHp;
+        _curHp    = _maxHp;
+        
 
+        // HP Image 기본 설정 강제 (실수 방지용)
+        if (_hpFillImage != null)
+        {
+            _hpFillImage.type = Image.Type.Filled;
+            _hpFillImage.fillMethod = Image.FillMethod.Horizontal;
+            _hpFillImage.fillOrigin = (int)Image.OriginHorizontal.Left; // 왼쪽 고정, 오른쪽이 줄어듦
+        }
+        UpdateHpUI();
+        
+        
         if (_agent == null)
         {
             Debug.LogError("[PunchRobot] NavMeshAgent가 없습니다.");
@@ -43,11 +62,10 @@ public class PunchRobot : MonoBehaviour, IEnemy
             return;
         }
 
-        // 기본 파라미터
-        _agent.speed           = _moveSpeed;
+        _agent.speed            = _moveSpeed;
         _agent.stoppingDistance = _attackRange;
-        _agent.updateRotation  = true;
-        _agent.autoBraking     = true;
+        _agent.updateRotation   = true;
+        _agent.autoBraking      = true;
 
         // 시작 위치 NavMesh에 스냅
         if (!TrySnapToNavMesh(transform.position, out var snapped))
@@ -82,7 +100,6 @@ public class PunchRobot : MonoBehaviour, IEnemy
 
         // --- 거리 판정 ---
         float worldDist = Vector3.Distance(transform.position, _player.transform.position);
-        // ------------------
 
         // 인식범위 안이면 계속 플레이어 바라보기
         if (worldDist <= _aggravationRange)
@@ -91,7 +108,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
         // 공격 시작 거리 (조금 여유)
         float attackStartRange = _attackRange * 1.2f;
 
-        // ✅ 공격 조건: 쿨다운 아님 + 사거리 안 + 정지 상태
+        // 공격 조건: 쿨다운 아님 + 사거리 안 + 정지 상태
         if (!_isCoolingDown &&
             worldDist <= attackStartRange &&
             HasLineOfSight() &&
@@ -103,7 +120,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
             return;
         }
 
-        // ✅ 추적 조건: 쿨다운이 아닐 때만
+        // 추적 조건: 쿨다운이 아닐 때만
         if (!_isCoolingDown &&
             worldDist <= _aggravationRange &&
             HasLineOfSight())
@@ -125,6 +142,8 @@ public class PunchRobot : MonoBehaviour, IEnemy
 
         if (_curHp <= 0f) Die();
     }
+
+    // HP바는 항상 카메라 바라보게 (빌보드)
 
     // NavMesh 근처 위치 찾는 헬퍼
     private bool TrySnapToNavMesh(Vector3 origin, out Vector3 snapped)
@@ -180,20 +199,16 @@ public class PunchRobot : MonoBehaviour, IEnemy
     {
         if (_player == null || !HasLineOfSight()) return;
 
-        Vector3 lockedDir = (_player != null)
-            ? (_player.transform.position - transform.position)
-            : transform.forward;
-        lockedDir.y = 0.0f;
+        Vector3 lockedDir = _player.transform.position - transform.position;
+        lockedDir.y = 0f;
         lockedDir.Normalize();
         
-        // 몸을 스냅샷 방향으로 즉시 정렬
         if (lockedDir.sqrMagnitude > 0.001f)
         {
-            float rotSpeed = _lookAtTurnSpeed;
             transform.rotation = Quaternion.Slerp(
                 transform.rotation,
                 Quaternion.LookRotation(lockedDir),
-                Time.deltaTime * rotSpeed
+                Time.deltaTime * _lookAtTurnSpeed
             );
         }
     }
@@ -235,14 +250,13 @@ public class PunchRobot : MonoBehaviour, IEnemy
 
         if (dist > hitRange || !HasLineOfSight())
         {
-            // ▶ 회피 성공: 쿨다운 없이 바로 추적 재개
             Debug.Log($"[PunchRobot] Attack missed (dist={dist:F2})");
             _isAttacking  = false;
             _agent.isStopped = false;
             yield break;
         }
 
-        // ▶ 실제 타격
+        // 실제 타격
         _player.TakeDamage(_damage);
         Debug.Log($"[PunchRobot] Hit player for {_damage} damage!");
 
@@ -267,14 +281,30 @@ public class PunchRobot : MonoBehaviour, IEnemy
     
     public void TakeDamage(float dmg)
     {
-        _curHp -= dmg;
-        if (_curHp <= 0f) Die();
+        _curHp = Mathf.Max(0f, _curHp - dmg);
+        UpdateHpUI();   // 데미지 받을 때마다 HP바 갱신
+
         Debug.Log($"PunchRobot took {dmg} damage, current HP: {_curHp}");
+
+        if (_curHp <= 0f) Die();
+    }
+
+    // 체력바 채우기 갱신
+    private void UpdateHpUI()
+    {
+        if (_hpFillImage == null) return;
+
+        float ratio = (_maxHp > 0f) ? _curHp / _maxHp : 0f;
+        _hpFillImage.fillAmount = Mathf.Clamp01(ratio);
     }
 
     private void Die()
     {
         DropScrap(_scrapAmount);
+
+        if (_hpCanvas != null)
+            _hpCanvas.gameObject.SetActive(false);
+
         Destroy(gameObject);
         Debug.Log("PunchRobot has died.");
     }
@@ -286,6 +316,6 @@ public class PunchRobot : MonoBehaviour, IEnemy
         GameObject scrap = Instantiate(_scrapData.ScrapPrefab, transform.position, Quaternion.identity);
         Scrap scrapComponent = scrap.AddComponent<Scrap>();
         scrapComponent.InitScrap(amount);
-        Debug.Log($"[AirRobot] 스크랩 {amount} 드랍");
+        Debug.Log($"[PunchRobot] 스크랩 {amount} 드랍");
     }
 }

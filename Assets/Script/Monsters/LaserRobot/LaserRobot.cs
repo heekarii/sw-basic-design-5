@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;      // HP바 Image용
 
 public class LaserRobot : MonoBehaviour, IEnemy
 {
@@ -30,10 +31,12 @@ public class LaserRobot : MonoBehaviour, IEnemy
     private NavMeshAgent _agent;
     private Transform _tr;
     private Transform _playerTr;
-
-    // ---------------------------------------------
-    //  LifeCycle
-    // ---------------------------------------------
+    
+    // ================== HP BAR UI ==================
+    [Header("HP Bar UI")]
+    [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
+    [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
+    
     private void Awake()
     {
         _tr = transform;
@@ -44,7 +47,7 @@ public class LaserRobot : MonoBehaviour, IEnemy
         _agent = GetComponent<NavMeshAgent>();
         if (_player == null)
             _player = FindObjectOfType<Player>();
-
+        
         if (_agent == null)
         {
             Debug.LogError("[LaserRobot] NavMeshAgent가 없습니다.");
@@ -57,7 +60,8 @@ public class LaserRobot : MonoBehaviour, IEnemy
             enabled = false;
             return;
         }
-
+        
+        
         _playerTr = _player.transform;
         _curHp = _maxHp;
 
@@ -67,6 +71,15 @@ public class LaserRobot : MonoBehaviour, IEnemy
         _agent.updateRotation = true;
         _agent.autoBraking = true;
 
+        if (_hpFillImage != null)
+        {
+            _hpFillImage.type = Image.Type.Filled;
+            _hpFillImage.fillMethod = Image.FillMethod.Horizontal;
+            _hpFillImage.fillOrigin = (int)Image.OriginHorizontal.Left; // 왼쪽 고정, 오른쪽이 줄어듦
+        }
+        UpdateHpUI();   // 데미지 받을 때마다 HP바 갱신
+        
+        
         // 시작 위치 NavMesh 보정
         if (!TrySnapToNavMesh(_tr.position, out var snapped))
         {
@@ -282,12 +295,20 @@ public class LaserRobot : MonoBehaviour, IEnemy
     public void TakeDamage(float dmg)
     {
         _curHp -= dmg;
+        UpdateHpUI();
         Debug.Log($"[LaserRobot] took {dmg} damage, current HP: {_curHp}");
-
         if (_curHp <= 0f)
             Die();
     }
 
+    private void UpdateHpUI()
+    {
+        if (_hpFillImage == null) return;
+
+        float ratio = (_maxHp > 0f) ? _curHp / _maxHp : 0f;
+        _hpFillImage.fillAmount = Mathf.Clamp01(ratio);
+    }
+    
     private void Die()
     {
         DropScrap(_scrapAmount);

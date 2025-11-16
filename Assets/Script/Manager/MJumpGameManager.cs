@@ -8,6 +8,8 @@ public class MJumpGameManager : MonoBehaviour
 
     [Header("Rule")]
     public float gameTime = 30f;
+    [SerializeField] private AudioSource _successAudio;
+    [SerializeField] private AudioSource _BGAudio;
 
     float timeLeft;
     bool playing = false;
@@ -22,7 +24,9 @@ public class MJumpGameManager : MonoBehaviour
         UpdateTimerUI();
 
         if (timeLeft <= 0f)
+        {
             EndGame(true);
+        }
     }
 
     void UpdateTimerUI()
