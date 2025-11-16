@@ -4,11 +4,11 @@ using UnityEngine.AI;
 public class FireRobot : MonoBehaviour, IEnemy
 {
     [Header("Monster Status")]
-    [SerializeField] private float _maxHp = 150.0f;
+    [SerializeField] private float _maxHp = 80.0f;
     [SerializeField] private float _curHp;
     [SerializeField] private float _attackCooldown = 3.0f;
-    [SerializeField] private float _aggravationRange = 9.1f;
-    [SerializeField] private float _attackRange = 3.6f;
+    [SerializeField] private float _aggravationRange = 10.0f;
+    [SerializeField] private float _attackRange = 4.0f;
     [SerializeField] private float _moveSpeed = 5.0f;
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절

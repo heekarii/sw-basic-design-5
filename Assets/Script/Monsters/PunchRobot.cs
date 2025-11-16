@@ -6,7 +6,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
     [Header("Monster Status")]
     [SerializeField] private float _maxHp = 50.0f;
     [SerializeField] private float _curHp;
-    [SerializeField] private float _damage = 10.0f;
+    [SerializeField] private float _damage = 15.0f;
     [SerializeField] private float _attackCastingTime = 2.0f;
     [SerializeField] private float _attackCooldown = 1.0f;
     [SerializeField] private float _aggravationRange = 6.9f;

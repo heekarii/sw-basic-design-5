@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LaserProjectile : MonoBehaviour
 {
-    [SerializeField] private float _speed = 6f;
+    [SerializeField] private float _speed = 25f;
     [SerializeField] private float _lifeTime = 5f;
     [SerializeField] private float _damage = 10f;
 

@@ -461,7 +461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _detectDistance: 13.9
   _attackDistance: 8.9
-  _hoverHeight: 4.4
+  _hoverHeight: 4
   _moveSpeed: 6
   _maxHealth: 50
   _currentHealth: 0

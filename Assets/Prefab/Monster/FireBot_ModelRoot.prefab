@@ -353,11 +353,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2487865601e744b4a93b3837a6a3cdf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHp: 150
+  _maxHp: 80
   _curHp: 0
   _attackCooldown: 3
-  _aggravationRange: 9.1
-  _attackRange: 5
+  _aggravationRange: 10
+  _attackRange: 4
   _moveSpeed: 5
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
   _lookAtTurnSpeed: 8

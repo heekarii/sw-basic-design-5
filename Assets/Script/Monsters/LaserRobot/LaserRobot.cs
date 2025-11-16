@@ -12,7 +12,7 @@ public class LaserRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _aggravationRange = 15.9f;
     [SerializeField] private float _attackRange = 12.9f;
     [SerializeField] private float _lookAtTurnSpeed = 8f;
-    [SerializeField] private float _moveSpeed = 1.3f;
+    [SerializeField] private float _moveSpeed = 4.0f;
 
     [Header("Refs")]
     [SerializeField] private Player _player;

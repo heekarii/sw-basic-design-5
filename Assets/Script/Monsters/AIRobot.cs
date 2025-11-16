@@ -4,12 +4,12 @@ public class AIRobot : MonoBehaviour, IEnemy
 {
     [Header("Monster Status")]
     [SerializeField] private float _maxHp = 100.0f;
-    [SerializeField] private float _damage = 30.0f;
+    [SerializeField] private float _damage = 50.0f;
     [SerializeField] private float _damageInterval = 1.0f;   // 번개 떨어지는 간격
     [SerializeField] private float _attackCooldown = 5.0f;   // 공격 한 사이클 끝난 후 쿨다운
     [SerializeField] private float _attackingTime = 10.0f;   // 공격 유지 시간
-    [SerializeField] private float _attackRange = 15.1f;
-    [SerializeField] private float _strikeSize = 2f;
+    [SerializeField] private float _attackRange = 20.1f;
+    [SerializeField] private float _strikeSize = 4.0f;
 
     [Header("VFX & SFX")]
     [SerializeField] private GameObject _lightningPrefab;    // 떨어지는 번개

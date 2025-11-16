@@ -4,7 +4,7 @@ using UnityEngine.AI;
 public class BulletRobot : MonoBehaviour, IEnemy
 {
     [Header("Monster Status")]
-    [SerializeField] private float _maxHp = 80f;
+    [SerializeField] private float _maxHp = 100f;
     [SerializeField] private float _curHp;
     [SerializeField] private float _attackCooldown = 5.0f;
     [SerializeField] private float _aggravationRange = 15.1f;

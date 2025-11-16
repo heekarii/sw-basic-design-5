@@ -4,7 +4,7 @@ using UnityEngine.AI;
 public class ChainsawRobot : MonoBehaviour, IEnemy
 {
     [Header("Monster Status")]
-    [SerializeField] private float _maxHp = 150.0f;
+    [SerializeField] private float _maxHp = 200.0f;
     [SerializeField] private float _curHp;
     [SerializeField] private float _damage = 70.0f;
     [SerializeField] private float _attackCastingTime = 0.5f;

@@ -651,8 +651,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxHealth: 40
   _currentHealth: 0
-  _detectDistance: 15.5
-  _windLength: 15.5
+  _detectDistance: 11.9
+  _windLength: 11.9
   _windRadius: 1.5
   _windEffectPrefab: {fileID: 0}
   _windOrigin: {fileID: 0}
