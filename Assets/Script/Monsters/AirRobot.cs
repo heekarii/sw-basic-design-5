@@ -176,8 +176,8 @@ public class AirRobot : MonoBehaviour, IEnemy
             {
                 _attackAudio.Play();
                 _activeWindFX = Instantiate(_windEffectPrefab, _windOrigin.position, _windOrigin.rotation);
-                _activeWindFX.transform.localPosition += -Vector3.forward * 3f;
-                _activeWindFX.transform.localRotation = _windEffectPrefab.transform.localRotation;
+                //_activeWindFX.transform.localPosition += -Vector3.forward * 3f;
+                //_activeWindFX.transform.localRotation = _windEffectPrefab.transform.localRotation;
             }
         }
         else
