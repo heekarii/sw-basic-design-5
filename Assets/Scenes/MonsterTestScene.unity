@@ -763,6 +763,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: electricBot_ModelRoot
       objectReference: {fileID: 0}
+    - target: {fileID: 8894549472392140793, guid: 38cf1e25d8d29a9448e31ddecd06724d, type: 3}
+      propertyPath: _damageInterval
+      value: 0.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

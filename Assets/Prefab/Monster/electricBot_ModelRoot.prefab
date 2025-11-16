@@ -6183,8 +6183,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHp: 100
-  _damage: 50
-  _damageInterval: 1
+  _curHp: 0
+  _damage: 30
+  _damageInterval: 0.5
   _attackCooldown: 5
   _attackingTime: 10
   _aggravationRange: 20.1
