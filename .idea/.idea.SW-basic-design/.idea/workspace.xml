@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/AirRobot/air_robot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/AirRobot/air_robot_ModelRoot.prefab" afterDir="false" />
-    </list>
+    <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,7 +36,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "art/air",
+    "git-widget-placeholder": "feat/ingameUI",
     "junie.onboarding.icon.badge.shown": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -130,6 +127,7 @@
       <workItem from="1762961866522" duration="5908000" />
       <workItem from="1763115781606" duration="4273000" />
       <workItem from="1763227021524" duration="1100000" />
+      <workItem from="1763273813134" duration="423000" />
     </task>
     <servers />
   </component>
