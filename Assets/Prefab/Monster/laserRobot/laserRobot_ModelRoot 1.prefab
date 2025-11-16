@@ -198,7 +198,7 @@ MonoBehaviour:
   _attackRange: 12.9
   _lookAtTurnSpeed: 8
   _moveSpeed: 1.3
-  _player: {fileID: 1165592682695907715, guid: df33ba8c26bbf884fb64ed3b3554a6ad, type: 3}
+  _player: {fileID: 0}
   _eyeMuzzle: {fileID: 3373203426922255009}
   _laserProjectilePrefab: {fileID: 1341592026625504943, guid: 02a8475a961987745bef11ddc9327deb, type: 3}
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}

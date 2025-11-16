@@ -6195,7 +6195,7 @@ MonoBehaviour:
   _attackStartSource: {fileID: 9106380550535796039}
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
   _scrapAmount: 10
-  _player: {fileID: 1165592682695907715, guid: df33ba8c26bbf884fb64ed3b3554a6ad, type: 3}
+  _player: {fileID: 0}
 --- !u!54 &-1506428972124410046
 Rigidbody:
   m_ObjectHideFlags: 0

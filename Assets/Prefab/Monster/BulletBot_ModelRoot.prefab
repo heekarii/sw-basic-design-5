@@ -109,7 +109,7 @@ MonoBehaviour:
   _moveSpeed: 3.5
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
   _lookAtTurnSpeed: 8
-  _player: {fileID: 1165592682695907715, guid: df33ba8c26bbf884fb64ed3b3554a6ad, type: 3}
+  _player: {fileID: 0}
   _anim: {fileID: 8960785266388870524}
   _scarpAmount: 7
   _muzzleVisual: {fileID: 6080260490002558727}
