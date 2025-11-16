@@ -13,7 +13,6 @@ public class LaserDrone : MonoBehaviour, IEnemy
     [SerializeField] private int _currentHealth;
     [SerializeField] private float _attackCooldown = 10f;    // 재공격 시간
     [SerializeField] private int _dropScrap = 5;             // 처치 시 스크랩 수
-    [SerializeField] private GameObject _flashEffectPrefab;  // 공격시 밝은 불빛 이펙트
     [SerializeField] private int _scrapAmount = 5;            // 드랍 스크랩 양
     
     [Header("참조 오브젝트")]
@@ -84,13 +83,7 @@ public class LaserDrone : MonoBehaviour, IEnemy
 
         if (_attackAudio != null && !_attackAudio.isPlaying)
             _attackAudio.Play();
-        // 공격 모션 (밝은 불빛 발사)
-        if (_flashEffectPrefab != null)
-        {
-            GameObject effect = Instantiate(_flashEffectPrefab, transform.position + transform.forward * 1.5f, Quaternion.identity);
-            Destroy(effect, 1.0f);
-        }
-
+        
         // 피해 즉시 적용 (내구도 영향 X, 섬광 효과만)
         if (_flashOverlay != null)
             StartCoroutine(ApplyFlashEffect());
