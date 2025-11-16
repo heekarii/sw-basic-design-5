@@ -119,7 +119,7 @@ public class Player : MonoBehaviour
             _currentWeaponIdx = 4;
             _wm.EquipWeapon(_currentWeaponIdx); // 원거리 무기 장착
         }
-        
+        // Debug.Log(_currentWeaponIdx);
         StartCoroutine(BatteryReduction());
         
     }
