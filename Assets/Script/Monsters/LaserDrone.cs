@@ -20,7 +20,7 @@ public class LaserDrone : MonoBehaviour, IEnemy
     [SerializeField] private Transform _player;              // ZERON
     [SerializeField] private Image _flashOverlay;            // 섬광 피격용 UI (Canvas Image)
     [SerializeField] private ScrapData _scrapData;          // 스크랩 데이터
-    
+    [SerializeField] private AudioSource _attackAudio;
 
     private bool _isActive = false;
     private bool _isAttacking = false;
@@ -82,6 +82,8 @@ public class LaserDrone : MonoBehaviour, IEnemy
         _isAttacking = true;
         _lastAttackTime = Time.time;
 
+        if (_attackAudio != null && !_attackAudio.isPlaying)
+            _attackAudio.Play();
         // 공격 모션 (밝은 불빛 발사)
         if (_flashEffectPrefab != null)
         {
