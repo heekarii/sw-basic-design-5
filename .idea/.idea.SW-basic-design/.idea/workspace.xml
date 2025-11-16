@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/laserDrone_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/laserDrone_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/weapon/iron_rod/Iron_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/weapon/iron_rod/Iron_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/PlayerTestScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/CloseLevel1.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/CloseLevel1.asset" afterDir="false" />
-    </list>
+    <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -135,7 +129,7 @@
       <workItem from="1763227021524" duration="1100000" />
       <workItem from="1763273813134" duration="423000" />
       <workItem from="1763278819166" duration="1736000" />
-      <workItem from="1763298872520" duration="670000" />
+      <workItem from="1763298872520" duration="1501000" />
     </task>
     <servers />
   </component>
