@@ -6,13 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Repair_main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Repair_main.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/GameManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/MJumpGameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/MJumpGameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/MiniGame/JumpGame/JumpPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/MiniGame/JumpGame/JumpPlayer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/StationManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/StationManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/TransitionManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/TransitionManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Repair.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Repair.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/770Balsa-Regular SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/770Balsa-Regular SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -143,7 +141,7 @@
       <workItem from="1763278819166" duration="1736000" />
       <workItem from="1763298872520" duration="1501000" />
       <workItem from="1763321433211" duration="506000" />
-      <workItem from="1763321980135" duration="2727000" />
+      <workItem from="1763321980135" duration="5088000" />
     </task>
     <servers />
   </component>

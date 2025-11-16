@@ -47,23 +47,12 @@ public class MJumpGameManager : MonoBehaviour
         if (!playing) return;
         playing = false;
 
-        if (isSuccess)
-        {
-            Debug.Log($"SUCCES");
-            SendPlayer_HP();
-        }
-        else
-        {
-            Debug.Log("FAIL");
-        }
-
-        Time.timeScale = 0f;
+        GameManager.Instance.ApplyHealthMiniGame(isSuccess);
+        Debug.Log(isSuccess ? "게임 성공!" : "게임 실패!");
+        TransitionManager.Instance.EndMiniGame("JumpMGame");
+        TransitionManager.Instance.CurStationManager.ShowEndingPage(isSuccess);
     }
-
-    public void SendPlayer_HP()
-    {
-        Debug.Log($"true 전달");
-    }
+    
 
     public bool IsPlaying => playing;
     public float TimeLeft => timeLeft;

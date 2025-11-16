@@ -4,9 +4,15 @@ using UnityEngine.SceneManagement;
 
 public class TransitionManager : Singleton<TransitionManager>
 {
+    public StationManager CurStationManager;
     protected override void Awake()
     {
         base.Awake();
+    }
+
+    public void RegisterStationManager(StationManager manager)
+    {
+        CurStationManager = manager;
     }
     
     // ▣ Map → Repair 이동
