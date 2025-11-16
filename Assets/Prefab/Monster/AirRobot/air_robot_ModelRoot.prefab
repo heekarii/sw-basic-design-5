@@ -654,7 +654,7 @@ MonoBehaviour:
   _detectDistance: 11.9
   _windLength: 11.9
   _windRadius: 1.5
-  _windEffectPrefab: {fileID: 0}
+  _windEffectPrefab: {fileID: 3911287590610637130, guid: 3a62f4d5e1ecdbe4391dd59fe94eb957, type: 3}
   _windOrigin: {fileID: 0}
   _attackAudio: {fileID: 4790027928465039533}
   _scrapAmount: 2
