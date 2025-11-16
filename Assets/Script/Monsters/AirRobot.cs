@@ -1,6 +1,7 @@
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;      // HP바 Image용
 
 public class AirRobot : MonoBehaviour, IEnemy
 {
@@ -25,6 +26,11 @@ public class AirRobot : MonoBehaviour, IEnemy
     private Transform _playerTr;
     private Transform _tr;
     
+    // ================== HP BAR UI ==================
+    [Header("HP Bar UI")]
+    [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
+    [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
+    
     private void Start()
     { 
         _zeron = GameObject.FindWithTag("Player")?.transform;
@@ -32,6 +38,14 @@ public class AirRobot : MonoBehaviour, IEnemy
         _currentHealth = _maxHealth;
         _tr = transform;
         _playerTr = _zeron;
+        
+        if (_hpFillImage != null)
+        {
+            _hpFillImage.type = Image.Type.Filled;
+            _hpFillImage.fillMethod = Image.FillMethod.Horizontal;
+            _hpFillImage.fillOrigin = (int)Image.OriginHorizontal.Left; // 왼쪽 고정, 오른쪽이 줄어듦
+        }
+        UpdateHpUI();   // 데미지 받을 때마다 HP바 갱신
         
         // ✅ WindOrigin 자동 할당
         if (_windOrigin == null)
@@ -195,10 +209,19 @@ public class AirRobot : MonoBehaviour, IEnemy
     public void TakeDamage(float dmg)
     {
         _currentHealth -= dmg;
+        UpdateHpUI();
         if (_currentHealth <= 0)
             Die();
     }
 
+    private void UpdateHpUI()
+    {
+        if (_hpFillImage == null) return;
+
+        float ratio = (_maxHealth > 0f) ? _currentHealth / _maxHealth : 0f;
+        _hpFillImage.fillAmount = Mathf.Clamp01(ratio);
+    }
+    
     private void Die()
     {
         DropScrap(_scrapAmount);

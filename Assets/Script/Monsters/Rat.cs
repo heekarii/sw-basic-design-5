@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;      // HP바 Image용
 
 public class Rat : MonoBehaviour, IEnemy
 {
@@ -17,8 +18,14 @@ public class Rat : MonoBehaviour, IEnemy
     [SerializeField] private Player _player;
     [SerializeField] private ParticleSystem _explosionEffect;
     [SerializeField] private AudioSource _explosionAudio;
-    private NavMeshAgent _agent;
     
+    // ================== HP BAR UI ==================
+    [Header("HP Bar UI")]
+    [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
+    [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
+    
+    
+    private NavMeshAgent _agent;
     private Transform _tr;
     private Transform _playerTr;
 
@@ -27,6 +34,15 @@ public class Rat : MonoBehaviour, IEnemy
         _agent = GetComponent<NavMeshAgent>();
         _player = FindObjectOfType<Player>();
         _curHp = _maxHp;
+        
+        if (_hpFillImage != null)
+        {
+            _hpFillImage.type = Image.Type.Filled;
+            _hpFillImage.fillMethod = Image.FillMethod.Horizontal;
+            _hpFillImage.fillOrigin = (int)Image.OriginHorizontal.Left; // 왼쪽 고정, 오른쪽이 줄어듦
+        }
+        UpdateHpUI();   // 데미지 받을 때마다 HP바 갱신
+        
         
         _tr = transform;                 // 🔹 자기 Transform 캐시
         if (_player != null)
@@ -224,10 +240,20 @@ public class Rat : MonoBehaviour, IEnemy
     public void TakeDamage(float dmg)
     {
         _curHp -= dmg;
+        UpdateHpUI();   // 데미지 받을 때마다 HP바 갱신
+        
         if (_curHp <= 0f) Die();
         Debug.Log($"Rat took {dmg} damage, current HP: {_curHp}");
     }
 
+    private void UpdateHpUI()
+    {
+        if (_hpFillImage == null) return;
+
+        float ratio = (_maxHp > 0f) ? _curHp / _maxHp : 0f;
+        _hpFillImage.fillAmount = Mathf.Clamp01(ratio);
+    }
+    
     private void Die()
     {
         DropScrap(_scrapAmount);

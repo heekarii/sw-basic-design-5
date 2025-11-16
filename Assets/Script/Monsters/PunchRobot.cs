@@ -37,10 +37,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
         _player   = FindObjectOfType<Player>();
         _animator = GetComponentInChildren<Animator>();
         _curHp    = _maxHp;
-
-        // 메인 카메라 캐시
-        if (Camera.main != null)
-            _camTr = Camera.main.transform;
+        
 
         // HP Image 기본 설정 강제 (실수 방지용)
         if (_hpFillImage != null)
@@ -49,10 +46,9 @@ public class PunchRobot : MonoBehaviour, IEnemy
             _hpFillImage.fillMethod = Image.FillMethod.Horizontal;
             _hpFillImage.fillOrigin = (int)Image.OriginHorizontal.Left; // 왼쪽 고정, 오른쪽이 줄어듦
         }
-
-        // 시작 시 HP UI 초기화
         UpdateHpUI();
-
+        
+        
         if (_agent == null)
         {
             Debug.LogError("[PunchRobot] NavMeshAgent가 없습니다.");
@@ -148,22 +144,6 @@ public class PunchRobot : MonoBehaviour, IEnemy
     }
 
     // HP바는 항상 카메라 바라보게 (빌보드)
-    void LateUpdate()
-    {
-        if (_hpCanvas == null || _camTr == null) return;
-
-        Vector3 dir = _camTr.position - _hpCanvas.position;
-
-        // 완전 카메라를 향하게 (위/아래도 따라감)
-        _hpCanvas.rotation = Quaternion.LookRotation(dir);
-
-        // 만약 위/아래 회전이 어색하면 이렇게도 가능:
-        /*
-        dir.y = 0f;
-        if (dir.sqrMagnitude > 0.0001f)
-            _hpCanvas.rotation = Quaternion.LookRotation(dir);
-        */
-    }
 
     // NavMesh 근처 위치 찾는 헬퍼
     private bool TrySnapToNavMesh(Vector3 origin, out Vector3 snapped)
