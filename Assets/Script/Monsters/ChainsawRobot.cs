@@ -290,7 +290,7 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
             if (dist <= _attackRange * 1.05f && HasLineOfSight())
             {
                 _player.TakeDamage(_damage);
-                yield return new WaitForSeconds(0.5f);
+                yield return new WaitForSeconds(0.2f);
                 if (_hitAudioSource != null && _hitSound != null) 
                     _hitAudioSource.Play();
             }
