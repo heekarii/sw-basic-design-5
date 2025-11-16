@@ -62,8 +62,9 @@ public class Player : MonoBehaviour
     private float _cameraPitch = 0f;
     
     [Header("Weapon")]
-    [SerializeField]
-    private WeaponData _currentWeaponData;
+    [SerializeField] private WeaponData _currentWeaponData;
+
+    [SerializeField] private int _currentWeaponIdx;
     private GameObject _currentWeaponModel;
     
     private Rigidbody _rb;
@@ -110,11 +111,13 @@ public class Player : MonoBehaviour
         _wm = WeaponManager.Instance;
         if (_gm.WeaponType == 0)
         {
-            _wm.EquipWeapon(0); // 근접 무기 장착
+            _currentWeaponIdx = 0;
+            _wm.EquipWeapon(_currentWeaponIdx); // 근접 무기 장착
         }
         else
         {
-            _wm.EquipWeapon(4); // 원거리 무기 장착
+            _currentWeaponIdx = 4;
+            _wm.EquipWeapon(_currentWeaponIdx); // 원거리 무기 장착
         }
         
         StartCoroutine(BatteryReduction());
@@ -447,15 +450,6 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    /// <returns></returns>
-    public PlayerStatus GetStatus()
-    {
-        return new PlayerStatus(_attackPower, _moveSpeed, _maxHealth, _currentHealth, _curBattery);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
     /// <param name="weaponData"></param>
     public void InitWeapon(WeaponData weaponData)
     {
@@ -517,6 +511,19 @@ public class Player : MonoBehaviour
 
         // Debug.Log($"[Player] 배터리 {reduction:F3}감소  현재 → {_curBattery:F2}");
     }
+    
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public PlayerStatus GetStatus()
+    {
+        int idx = _currentWeaponIdx + 1;
+        if (_currentWeaponIdx >= 5) _currentWeaponIdx = -3;
+        else _currentWeaponIdx = 0;
+        return new PlayerStatus(_attackPower, _moveSpeed, _maxHealth, _currentHealth, _curBattery, 
+            _curHealthLevel, _curSpeedLevel, idx, _curBullets, _speedWithBoostPerLevel[_curSpeedLevel - 1]);
+    }
 }
 
 
@@ -531,14 +538,25 @@ public class PlayerStatus
     public readonly float MaxHealth;
     public readonly float CurrentHealth;
     public readonly float BatteryRemaining;
+    public readonly int CurrentHealthLevel;
+    public readonly int CurrentSpeedLevel;
+    public readonly int CurrentWeaponLevel;
+    public readonly int BulletCount;
+    public readonly float SpeedWithBoost;
 
-    public PlayerStatus(float attack, float speed, float maxHp, float curHp, float batteryRemaining)
+    public PlayerStatus(float attack, float speed, float maxHp, float curHp, float batteryRemaining, 
+        int curHealthLevel, int curSpeedLevel, int curWeaponLevel, int bulletCount = 0, float speedWithBoost = 0)
     {
         AttackPower = attack;
         MoveSpeed = speed;
         MaxHealth = maxHp;
         CurrentHealth = curHp;
         BatteryRemaining = batteryRemaining;
+        CurrentHealthLevel = curHealthLevel;
+        CurrentSpeedLevel = curSpeedLevel;
+        CurrentWeaponLevel = curWeaponLevel;
+        BulletCount = bulletCount;
+        SpeedWithBoost = speedWithBoost;
     }
 }
 
