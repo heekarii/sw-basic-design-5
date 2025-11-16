@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
 {
     [Header("Player Status")]
     [SerializeField] private float _attackPower = 10f;   // 공격력
-    [SerializeField] private float _moveSpeed = 1f;      // 이동 속도
+    [SerializeField] private float _moveSpeed = 5f;      // 이동 속도
     [SerializeField] private float _maxHealth = 500f;    // 최대 체력
     [SerializeField] private float _currentHealth;       // 현재 체력
     [SerializeField] private bool _isGrounded = true;
@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     [SerializeField] private int _curBullets;
     [SerializeField] private bool _isStunned = false;   
     
+    [SerializeField] private float _curSpeed = 0f;
     [SerializeField] private bool _isSlowed = false;
     
     [SerializeField] private float[] _batteryReductionAmount =
@@ -34,9 +35,9 @@ public class Player : MonoBehaviour
     
     [FormerlySerializedAs("_speedPerLevel")] [SerializeField] private float[] _speedWithBoostPerLevel =
     {
-        1.3f,
-        1.5f,
-        1.7f
+        7f,
+        8f,
+        9f
     };
     
     [Header("Combat")] 
@@ -115,7 +116,7 @@ public class Player : MonoBehaviour
         {
             _wm.EquipWeapon(4); // 원거리 무기 장착
         }
-        _attackRaycastDist = _currentWeaponData.range;
+        
         StartCoroutine(BatteryReduction());
         
     }
@@ -198,15 +199,27 @@ public class Player : MonoBehaviour
     {
         if (_moveDirection.sqrMagnitude > 0f)
         {
-            Vector3 targetPos;
-            if (_isShifting)
-                targetPos = _rb.position + _moveDirection * (_moveSpeed * _speedWithBoostPerLevel[_curSpeedLevel - 1] * Time.fixedDeltaTime);
-            else
-                targetPos = _rb.position + _moveDirection * (_moveSpeed * Time.fixedDeltaTime);
+            float baseSpeed;
 
+            // 1) 기본 속도: 걷기 or 달리기
+            if (_isShifting)
+                baseSpeed = _speedWithBoostPerLevel[_curSpeedLevel - 1];
+            else
+                baseSpeed = _moveSpeed;
+
+            // 2) 감속 적용: 20% 감소
+            if (_isSlowed)
+                baseSpeed *= 0.8f;
+
+            _curSpeed = baseSpeed;
+
+            // 최종 이동
+            Vector3 targetPos = _rb.position + _moveDirection * (_curSpeed * Time.fixedDeltaTime);
             Vector3 nextPos = Vector3.Lerp(_rb.position, targetPos, 0.8f);
-            nextPos.y = _rb.position.y; // 🧩 점프 시 Y축은 물리에 맡김
+            nextPos.y = _rb.position.y;
             _rb.MovePosition(nextPos);
+
+            // 애니메이션
             if (_isShifting)
             {
                 _animator.SetBool("isRunning", true);
@@ -262,8 +275,7 @@ public class Player : MonoBehaviour
         _isReloading = false;
         Debug.Log("[Player] 재장전 완료");
     }
-
-
+    
     /// <summary>
     /// 
     /// </summary>
@@ -411,9 +423,6 @@ public class Player : MonoBehaviour
         _stunCo = null;
     }
 
-    
-    
-
     /// <summary>
     /// 바람에 맞을 때 이동속도 20% 감소
     /// </summary>
@@ -423,14 +432,14 @@ public class Player : MonoBehaviour
         if (enable && !_isSlowed)
         {
             _isSlowed = true;
-            _moveSpeed *= 0.8f; // 20% 감소
+            
             Debug.Log("[Player] 바람 감속 적용");
         }
         // 바람 범위를 벗어나면 원래 속도 복원
         else if (!enable && _isSlowed)
         {
             _isSlowed = false;
-            _moveSpeed = 1f;
+            
             Debug.Log("[Player] 바람 감속 해제");
         }
     }
@@ -479,7 +488,7 @@ public class Player : MonoBehaviour
         {
             _animator.runtimeAnimatorController = weaponData.AnimatorController;
         }
-
+        _attackRaycastDist = _currentWeaponData.range;
         Debug.Log($"[Player] 무기 초기화 완료: {weaponData.WeaponName}, 공격력: {_attackPower}");
     }
 
