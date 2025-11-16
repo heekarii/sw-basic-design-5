@@ -20,11 +20,12 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
 
     [Header("Effects")] 
     [SerializeField] private AudioClip _sawSound;
-
     [SerializeField] private AudioClip _attackSound;
+    [SerializeField] private AudioClip _hitSound;
     
     private AudioSource _sawAudioSource;
     private AudioSource _attackAudioSource;
+    private AudioSource _hitAudioSource;
     
 // Animator Parameters (Animator 창에 동일한 이름으로 만들어야 함)
     private static readonly int HashIsMoving = Animator.StringToHash("IsMoving"); // bool
@@ -56,6 +57,12 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
         _attackAudioSource.loop = false;
         _attackAudioSource.playOnAwake = false;
         _attackAudioSource.spatialBlend = 1.0f; // 3D
+        
+        _hitAudioSource = gameObject.AddComponent<AudioSource>();
+        _hitAudioSource.clip = _hitSound;
+        _hitAudioSource.loop = false;
+        _hitAudioSource.playOnAwake = false;
+        _hitAudioSource.spatialBlend = 1.0f; // 3D
 
         //애니메이션 효과 적용을 위한 애니메이터 찾기
         if (_anim == null)
@@ -281,7 +288,12 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
         {
             float dist = Vector3.Distance(transform.position, _player.transform.position);
             if (dist <= _attackRange * 1.05f && HasLineOfSight())
+            {
                 _player.TakeDamage(_damage);
+                yield return new WaitForSeconds(0.5f);
+                if (_hitAudioSource != null && _hitSound != null) 
+                    _hitAudioSource.Play();
+            }
         }
 
         // 종료 → 쿨다운
@@ -289,7 +301,7 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
         _isCoolingDown = true;
         _agent.isStopped = false;
 
-        yield return new WaitForSeconds(_attackCooldown);
+        yield return new WaitForSeconds(_attackCooldown - 1.0f);
         _isCoolingDown = false;
     }
 

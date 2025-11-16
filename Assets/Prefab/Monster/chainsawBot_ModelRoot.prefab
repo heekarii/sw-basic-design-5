@@ -596,7 +596,8 @@ MonoBehaviour:
   _scrapAmount: 15
   _sawSound: {fileID: 8300000, guid: 656f899ef532d5b46ad8926ef898d18a, type: 3}
   _attackSound: {fileID: 8300000, guid: a92bcbdc84d116d41a63de4db9426c30, type: 3}
-  _player: {fileID: 5894040061406813158, guid: a37229b336ba2c346bef853d60ec9ae2, type: 3}
+  _hitSound: {fileID: 8300000, guid: df62e59aa253a4c4ca386303352e257b, type: 3}
+  _player: {fileID: 0}
 --- !u!95 &5315567320004527438
 Animator:
   serializedVersion: 7
