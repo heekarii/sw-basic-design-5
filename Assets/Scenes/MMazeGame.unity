@@ -178,7 +178,7 @@ MonoBehaviour:
   timeLimit: 30
   speedBonus: 0.2
   cameraPadding: 2
-  trailSprite: {fileID: 21300000, guid: 78ce34a1713680f49a583f608ec84b8c, type: 3}
+  trailSprite: {fileID: 21300000, guid: ad510441362cb194d81f20187a2ec096, type: 3}
   trailStep: 0.08
   trailSortingOrder: 4
   trailPoolMax: 2000
