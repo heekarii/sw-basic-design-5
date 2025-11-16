@@ -226,7 +226,6 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
         // 아무것도 안 맞았으면 가려진 게 없는 것으로 간주
         return true;
     }
-
     
     private void LookAtPlayer()
     {
@@ -235,12 +234,19 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
         Vector3 lockedDir = (_player != null)
             ? (_player.transform.position - transform.position)
             : transform.forward;
-        lockedDir.y = 0f;
+        lockedDir.y = 0.0f;
         lockedDir.Normalize();
         
         // 몸을 스냅샷 방향으로 즉시 정렬
         if (lockedDir.sqrMagnitude > 0.001f)
-            transform.rotation = Quaternion.LookRotation(lockedDir);
+        {
+            float rotSpeed = _lookAtTurnSpeed;
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                Quaternion.LookRotation(lockedDir),
+                Time.deltaTime * rotSpeed
+            );
+        }
     }
     
     private void AttackPlayer()

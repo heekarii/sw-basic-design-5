@@ -165,20 +165,24 @@ public class BulletRobot : MonoBehaviour, IEnemy
     // 항상 수평으로 플레이어 바라보기
     private void LookAtPlayer()
     {
-        if (_playerTr == null) return;
+        if (_player == null || !HasLineOfSight()) return;
 
-        Vector3 dir = _playerTr.position - _tr.position;
-        dir.y = 0f;
-
-        if (dir.sqrMagnitude < 0.0001f)
-            return;
-
-        Quaternion targetRot = Quaternion.LookRotation(dir);
-        _tr.rotation = Quaternion.Slerp(
-            _tr.rotation,
-            targetRot,
-            _lookAtTurnSpeed * Time.deltaTime
-        );
+        Vector3 lockedDir = (_player != null)
+            ? (_player.transform.position - transform.position)
+            : transform.forward;
+        lockedDir.y = 0.0f;
+        lockedDir.Normalize();
+        
+        // 몸을 스냅샷 방향으로 즉시 정렬
+        if (lockedDir.sqrMagnitude > 0.001f)
+        {
+            float rotSpeed = _lookAtTurnSpeed;
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                Quaternion.LookRotation(lockedDir),
+                Time.deltaTime * rotSpeed
+            );
+        }
     }
 
     private System.Collections.IEnumerator AttackRoutine()
