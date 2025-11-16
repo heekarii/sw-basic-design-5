@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/discord.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/discord.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/UIScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/UIScene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/GameManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +41,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "hotfix/player",
+    "git-widget-placeholder": "feat/ingameUI",
     "junie.onboarding.icon.badge.shown": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -131,6 +133,7 @@
       <workItem from="1763115781606" duration="4273000" />
       <workItem from="1763227021524" duration="1100000" />
       <workItem from="1763273813134" duration="423000" />
+      <workItem from="1763278819166" duration="1736000" />
     </task>
     <servers />
   </component>
