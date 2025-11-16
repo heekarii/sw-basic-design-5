@@ -7,7 +7,6 @@ public class LaserDrone : MonoBehaviour, IEnemy
     [Header("섬광 로봇 기본 설정")]
     [SerializeField] private float _detectDistance = 13.7f;  // 시야 감지 거리
     [SerializeField] private float _attackDistance = 8.7f;   // 공격 거리
-    [SerializeField] private float _hoverHeight = 4.0f;      // 공중 높이
     [SerializeField] private float _moveSpeed = 6f;          // 이동 속도
     [SerializeField] private int _maxHealth = 50;            // 체력
     [SerializeField] private int _currentHealth;
