@@ -58,7 +58,7 @@ MonoBehaviour:
   _moveSpeed: 7
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
   _scrapAmount: 2
-  _player: {fileID: 1165592682695907715, guid: df33ba8c26bbf884fb64ed3b3554a6ad, type: 3}
+  _player: {fileID: 0}
   _explosionEffect: {fileID: 9171465803602233426}
   _explosionAudio: {fileID: 8890327279721248500}
 --- !u!195 &4749888145082481451
@@ -158,7 +158,7 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
@@ -308,15 +308,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1002568664511396794, guid: 634fc00357acf964ea12be1bca665d76, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.96
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1002568664511396794, guid: 634fc00357acf964ea12be1bca665d76, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 34.387
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1002568664511396794, guid: 634fc00357acf964ea12be1bca665d76, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10.570684
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1002568664511396794, guid: 634fc00357acf964ea12be1bca665d76, type: 3}
       propertyPath: m_LocalRotation.w
