@@ -10,15 +10,19 @@ public class MJumpGameManager : MonoBehaviour
 
     [Header("Rule")]
     public float gameTime = 30f;
+    [SerializeField] private AudioSource _successAudio;
+    [SerializeField] private AudioSource _BGAudio;
 
     float timeLeft;
-    bool playing = false;
-
+    public bool playing = false;
+    
     void Awake()
     {
         if (Instance != null) { Destroy(gameObject); return; }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        _successAudio.Stop();
+        _BGAudio.Play();
     }
 
     void Start() => StartGame();
@@ -31,7 +35,9 @@ public class MJumpGameManager : MonoBehaviour
         UpdateTimerUI();
 
         if (timeLeft <= 0f)
+        {
             EndGame(true);
+        }
     }
 
     void UpdateTimerUI()
@@ -55,10 +61,13 @@ public class MJumpGameManager : MonoBehaviour
     {
         if (!playing) return;
         playing = false;
-
+        
+        _BGAudio.Stop();
+        
         if (isSuccess)
         {
             Debug.Log($"SUCCES");
+            _successAudio.Play();
             SendPlayer_HP();
         }
         else
@@ -73,7 +82,4 @@ public class MJumpGameManager : MonoBehaviour
     {
         Debug.Log($"true 전달");
     }
-
-    public bool IsPlaying => playing;
-    public float TimeLeft => timeLeft;
 }
