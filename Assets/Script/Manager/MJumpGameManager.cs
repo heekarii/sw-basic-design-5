@@ -3,8 +3,6 @@ using TMPro;
 
 public class MJumpGameManager : MonoBehaviour
 {
-    public static MJumpGameManager Instance { get; private set; }
-
     [Header("UI")]
     public TMP_Text timerText; // ← 타이머 UI 연결용
 
@@ -13,13 +11,6 @@ public class MJumpGameManager : MonoBehaviour
 
     float timeLeft;
     bool playing = false;
-
-    void Awake()
-    {
-        if (Instance != null) { Destroy(gameObject); return; }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
 
     void Start() => StartGame();
 

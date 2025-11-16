@@ -9,8 +9,11 @@ public class JumpPlayer : MonoBehaviour
     private Rigidbody2D rb;
     private bool isGrounded = false;
 
+    private MJumpGameManager _jm;
+
     void Start()
     {
+        _jm = FindObjectOfType<MJumpGameManager>();
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -49,7 +52,7 @@ public class JumpPlayer : MonoBehaviour
         if (collision.collider.CompareTag("Obstacle"))
         {
             // GameManager에 충돌 알림
-            MJumpGameManager.Instance.OnPlayerHitObstacle();
+            _jm.OnPlayerHitObstacle();
         }
     }
 

@@ -1,19 +1,24 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class Repair : MonoBehaviour
 {
-    void OnTriggerEnter(Collider collision)
+    private TransitionManager _transitionManager;
+
+    private void Start()
     {
+        _transitionManager = FindObjectOfType<TransitionManager>();
+    }
+    
+    void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log("Collision Detected");
         if (collision.gameObject.CompareTag("Player"))
         {
-            SceneManager.LoadScene("Repair_main", LoadSceneMode.Additive);
-            Scene mapScene = SceneManager.GetSceneByName("Map_SCENE");
-            
-            foreach (GameObject go in mapScene.GetRootGameObjects())
-            {
-                go.SetActive(false);
-            }
+            _transitionManager.EnterRepairStation();
         }
         
         
