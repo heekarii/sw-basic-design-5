@@ -29,8 +29,6 @@ public class GameManager : Singleton<GameManager>
     
     [SerializeField] private TextMeshProUGUI _curScrapText;
     
-    
-    
     public Player Player;
     public int WeaponType; // 0 : Short, 1 : long
     
@@ -86,6 +84,8 @@ public class GameManager : Singleton<GameManager>
         
         _curScrapText.text = $"{_curScrap}";
     }
+
+    public PlayerStatus SendStatus => _playerStatus;
     
     private void Update()
     {
@@ -97,5 +97,12 @@ public class GameManager : Singleton<GameManager>
     {
         _curScrap += amount;
         Debug.Log($"[GameManager] 스크랩 {_curScrap} 보유 중");
+    }
+
+    public void ApplyHealthMiniGame(bool isSuccess)
+    {
+        if (!isSuccess) return;
+        Player.UpdateHealth();
+        
     }
 }

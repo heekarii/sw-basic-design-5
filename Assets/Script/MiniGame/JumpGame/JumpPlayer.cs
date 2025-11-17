@@ -10,16 +10,15 @@ public class JumpPlayer : MonoBehaviour
     [SerializeField] private AudioSource _walkAudio;
     [SerializeField] private AudioSource _collisionAudio;
 
-    private MJumpGameManager _mjgm;
+    private MJumpGameManager _jm;
     private Rigidbody2D rb;
     private bool isGrounded = false;
 
-    // 걷기 상태 전환 체크용
-    private bool _wasWalking = false;
+    private MJumpGameManager _jm;
 
     void Start()
     {
-        _mjgm = MJumpGameManager.Instance;
+        _jm = FindObjectOfType<MJumpGameManager>();
         rb = GetComponent<Rigidbody2D>();
 
         // 시작 시 모든 소리를 정리
@@ -85,8 +84,9 @@ public class JumpPlayer : MonoBehaviour
     {
         if (collision.collider.CompareTag("Obstacle"))
         {
+            // GameManager에 충돌 알림
+            _jm.OnPlayerHitObstacle();
             _collisionAudio.Play();
-            MJumpGameManager.Instance.OnPlayerHitObstacle();
         }
     }
 }

@@ -87,6 +87,10 @@ public class Player : MonoBehaviour
     public float MoveSpeed => _moveSpeed;
     public float MaxHealth => _maxHealth;
     public float CurrentHealth => _currentHealth;
+    
+    public int CurrentHealthLevel => _curHealthLevel;
+    public int CurrentSpeedLevel => _curSpeedLevel;
+    public int CurrentBullets => _curBullets;
 
 
     private void Awake()
@@ -380,17 +384,7 @@ public class Player : MonoBehaviour
         }
         _isMeleeCasting = false;
     }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="durabilityLevel"></param>
-    public void SetHealth(float durabilityLevel)
-    {
-        _maxHealth = durabilityLevel;
-        _currentHealth = Mathf.Min(_currentHealth, _maxHealth);
-    }
-
+    
     /// <summary>
     /// 
     /// </summary>
@@ -514,6 +508,27 @@ public class Player : MonoBehaviour
         float reduction = percent * 0.01f;
         _curBattery -= reduction;
         // Debug.Log($"[Player] 배터리 {reduction:F3}감소  현재 → {_curBattery:F2}");
+    }
+
+    public void UpdateHealth()
+    {
+        _curHealthLevel++;
+        switch (_curHealthLevel)
+        {
+            case 2:
+                _maxHealth = 700f;
+                _currentHealth = Mathf.Min(_currentHealth + 200f, _maxHealth);
+                break;
+            case 3:
+                _maxHealth = 1000f;
+                _currentHealth = Mathf.Min(_currentHealth + 300f, _maxHealth);
+                break;
+            case 4:
+                _maxHealth = 1300f;
+                _currentHealth = Mathf.Min(_currentHealth + 300f, _maxHealth);
+                break;
+            default: break;
+        }
     }
     
     /// <summary>

@@ -3,8 +3,6 @@ using TMPro;
 
 public class MJumpGameManager : MonoBehaviour
 {
-    public static MJumpGameManager Instance { get; private set; }
-
     [Header("UI")]
     public TMP_Text timerText; // ← 타이머 UI 연결용
 
@@ -14,16 +12,7 @@ public class MJumpGameManager : MonoBehaviour
     [SerializeField] private AudioSource _BGAudio;
 
     float timeLeft;
-    public bool playing = false;
-    
-    void Awake()
-    {
-        if (Instance != null) { Destroy(gameObject); return; }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-        _successAudio.Stop();
-        _BGAudio.Play();
-    }
+    bool playing = false;
 
     void Start() => StartGame();
 
@@ -61,25 +50,14 @@ public class MJumpGameManager : MonoBehaviour
     {
         if (!playing) return;
         playing = false;
-        
-        _BGAudio.Stop();
-        
-        if (isSuccess)
-        {
-            Debug.Log($"SUCCES");
-            _successAudio.Play();
-            SendPlayer_HP();
-        }
-        else
-        {
-            Debug.Log("FAIL");
-        }
 
-        Time.timeScale = 0f;
+        GameManager.Instance.ApplyHealthMiniGame(isSuccess);
+        Debug.Log(isSuccess ? "게임 성공!" : "게임 실패!");
+        TransitionManager.Instance.EndMiniGame("JumpMGame");
+        TransitionManager.Instance.CurStationManager.ShowEndingPage(isSuccess);
     }
+    
 
-    public void SendPlayer_HP()
-    {
-        Debug.Log($"true 전달");
-    }
+    public bool IsPlaying => playing;
+    public float TimeLeft => timeLeft;
 }
