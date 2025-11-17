@@ -53,7 +53,7 @@ public class MJumpGameManager : MonoBehaviour
         if (!playing) return;
         playing = false;
 
-        // Time.timeScale = 0f;
+        Time.timeScale = 0f;
         _BGAudio.Stop();
         if (isSuccess) 
             _successAudio.Play();

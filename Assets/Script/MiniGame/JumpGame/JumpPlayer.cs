@@ -80,9 +80,9 @@ public class JumpPlayer : MonoBehaviour
     {
         if (collision.collider.CompareTag("Obstacle"))
         {
+            _collisionAudio.Play();
             // GameManager에 충돌 알림
             _jm.OnPlayerHitObstacle();
-            _collisionAudio.Play();
         }
     }
 }

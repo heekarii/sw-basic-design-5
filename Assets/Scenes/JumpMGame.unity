@@ -1156,7 +1156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timerText: {fileID: 418217946}
-  gameTime: 30
+  gameTime: 3
   _successAudio: {fileID: 1697786302}
   _BGAudio: {fileID: 87699941}
 --- !u!4 &910586997
