@@ -14,8 +14,6 @@ public class JumpPlayer : MonoBehaviour
     private Rigidbody2D rb;
     private bool isGrounded = false;
 
-    private MJumpGameManager _jm;
-
     void Start()
     {
         _jm = FindObjectOfType<MJumpGameManager>();
@@ -32,10 +30,10 @@ public class JumpPlayer : MonoBehaviour
 
     void Update()
     {
-        if (_mjgm == null) return;
+        if (_jm == null) return;
 
         // --- 점프 ---
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && _mjgm.playing)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
             isGrounded = false;
@@ -48,10 +46,10 @@ public class JumpPlayer : MonoBehaviour
         CheckGround();
 
         // --- 걷기 상태 판단 ---
-        bool isWalkingNow = isGrounded && _mjgm.playing;
+        bool isWalkingNow = isGrounded;
 
         // 걷기 "시작" 순간
-        if (isWalkingNow && !_wasWalking)
+        if (isWalkingNow)
         {
             _jumpAudio.Stop();
             if (!_walkAudio.isPlaying)
@@ -59,13 +57,11 @@ public class JumpPlayer : MonoBehaviour
         }
 
         // 걷기 "종료" 순간 (공중 / 게임 끝 / 착지 X)
-        if (!isWalkingNow && _wasWalking)
+        if (!isWalkingNow)
         {
             if (_walkAudio.isPlaying)
                 _walkAudio.Stop();
         }
-
-        _wasWalking = isWalkingNow;
     }
 
     // --- 바닥 체크 ---
