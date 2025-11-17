@@ -6,9 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Repair_main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Repair_main.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/MiniGame/JumpGame/JumpPlayer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/MiniGame/JumpGame/JumpPlayer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/770Balsa-Regular SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/770Balsa-Regular SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/JumpMGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/JumpMGame.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/MJumpGameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/MJumpGameManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +42,7 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "develop",
+    "git-widget-placeholder": "hotfix/MosterMaster",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -172,6 +171,7 @@
       <workItem from="1763312804088" duration="1059000" />
       <workItem from="1763314484276" duration="4866000" />
       <workItem from="1763348248497" duration="2128000" />
+      <workItem from="1763390090350" duration="1263000" />
     </task>
     <servers />
   </component>

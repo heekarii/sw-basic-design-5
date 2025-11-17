@@ -1159,7 +1159,6 @@ MonoBehaviour:
   gameTime: 30
   _successAudio: {fileID: 1697786302}
   _BGAudio: {fileID: 87699941}
-  playing: 0
 --- !u!4 &910586997
 Transform:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ public class MJumpGameManager : MonoBehaviour
     [SerializeField] private AudioSource _successAudio;
     [SerializeField] private AudioSource _BGAudio;
 
+    
     float timeLeft;
     bool playing = false;
 
@@ -37,6 +38,7 @@ public class MJumpGameManager : MonoBehaviour
 
     public void StartGame()
     {
+        _successAudio.Stop();
         timeLeft = gameTime;
         playing = true;
         Time.timeScale = 1f;
@@ -51,6 +53,10 @@ public class MJumpGameManager : MonoBehaviour
         if (!playing) return;
         playing = false;
 
+        // Time.timeScale = 0f;
+        _BGAudio.Stop();
+        if (isSuccess) 
+            _successAudio.Play();
         GameManager.Instance.ApplyHealthMiniGame(isSuccess);
         Debug.Log(isSuccess ? "게임 성공!" : "게임 실패!");
         TransitionManager.Instance.EndMiniGame("JumpMGame");
