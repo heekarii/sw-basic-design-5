@@ -8,7 +8,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private int _curScrap;
     [SerializeField] private float _curBattery;
 
-    private PlayerStatus _playerStatus;
+    private PlayerStatus _playerStatus;  // 항상 마지막으로 계산된 스냅샷
     private bool _initialized;
 
     [Header("UI - Battery")]
@@ -209,8 +209,19 @@ public class GameManager : Singleton<GameManager>
 
     /// <summary>
     /// 다른 시스템에서 플레이어 상태 스냅샷을 조회할 수 있도록 제공.
+    /// 항상 가장 마지막으로 계산된 상태를 반환한다.
     /// </summary>
     public PlayerStatus SendStatus => _playerStatus;
+
+    /// <summary>
+    /// StationManager 등에서 "지금 이 시점의 스냅샷"이 필요할 때 호출.
+    /// 내부적으로 PlayerStatus를 한 번 더 계산해 두는 것이 필요하면 여기에서 처리.
+    /// 현재는 Update()에서 매 프레임 갱신하므로, 단순히 캐시된 값을 반환한다.
+    /// </summary>
+    public PlayerStatus GetLatestStatus()
+    {
+        return _playerStatus;
+    }
 
     /// <summary>
     /// 스크랩 자원을 증가시키고, 디버그 로그를 남깁니다.
