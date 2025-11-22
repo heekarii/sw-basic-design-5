@@ -159,8 +159,8 @@ MonoBehaviour:
   _upgradeHealth: {fileID: 2166875614203917427}
   _upgradeWeapon: {fileID: 1095658805525529334}
   _upgradeMove: {fileID: 8462385023048953925}
-  _level: {fileID: 0}
-  _amount: {fileID: 0}
+  _level: {fileID: 2318628319643930323}
+  _amount: {fileID: 1897546370}
   UpgradeIdx: 0
 --- !u!4 &393394449
 Transform:
@@ -432,7 +432,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 20.3, y: -12.184481}
+  m_AnchoredPosition: {x: 19.99, y: -11.2}
   m_SizeDelta: {x: 9.07558, y: 10.00217}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1897546370
@@ -455,7 +455,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '  1 '
+  m_text: +200
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 54cd43d8ee2686840b6719a180242597, type: 2}
   m_sharedMaterial: {fileID: -5568895722477779541, guid: 54cd43d8ee2686840b6719a180242597, type: 2}
@@ -482,15 +482,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 8
-  m_fontSizeBase: 8
+  m_fontSize: 7.4
+  m_fontSizeBase: 7.4
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -520,10 +520,10 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -9.106023, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1897546371
@@ -693,7 +693,7 @@ MonoBehaviour:
   _curHealthText: {fileID: 0}
   _attackLevel: {fileID: 0}
   _curAttackText: {fileID: 0}
-  _curBulletetText: {fileID: 0}
+  _curBulletText: {fileID: 0}
   _meleeImage: {fileID: 0}
   _moveLevel: {fileID: 0}
   _curSpeedText: {fileID: 0}
@@ -760,7 +760,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &218863969994265729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3039,7 +3039,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &6273504805078968183
 MonoBehaviour:
   m_ObjectHideFlags: 0
