@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/BulletBot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/BulletBot_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/BulletRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/BulletRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/chainsawBot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/chainsawBot_ModelRoot.prefab" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,7 +171,7 @@
       <workItem from="1763348248497" duration="2128000" />
       <workItem from="1763390090350" duration="1263000" />
       <workItem from="1763916089693" duration="309000" />
-      <workItem from="1763918823677" duration="653000" />
+      <workItem from="1763918823677" duration="973000" />
     </task>
     <servers />
   </component>

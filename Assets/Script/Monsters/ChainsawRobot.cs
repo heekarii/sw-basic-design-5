@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;      // HP바 Image용
 
 public class ChainsawRobot : MonoBehaviour, IEnemy
 {
@@ -17,11 +18,20 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     [SerializeField] private Animator _anim;   // 인스펙터 비워두면 Start에서 찾아줌
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 15;
+    
+    [SerializeField] private Player _player;
 
     [Header("Effects")] 
     [SerializeField] private AudioClip _sawSound;
     [SerializeField] private AudioClip _attackSound;
     [SerializeField] private AudioClip _hitSound;
+    
+    // ================== HP BAR UI ==================
+    [Header("HP Bar UI")]
+    [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
+    [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
+    private Transform _camTr;                      // 카메라 Transform
+    // =================================================
     
     private AudioSource _sawAudioSource;
     private AudioSource _attackAudioSource;
@@ -32,8 +42,6 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     private static readonly int HashAttack   = Animator.StringToHash("Attack");   // trigger
 
     
-
-    [SerializeField] private Player _player;
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
     private NavMeshAgent _agent;
@@ -43,6 +51,15 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
         _agent = GetComponent<NavMeshAgent>();
         _player = FindObjectOfType<Player>();
         _curHp = _maxHp;
+        
+        // HP Image 기본 설정 강제 (실수 방지용)
+        if (_hpFillImage != null)
+        {
+            _hpFillImage.type = Image.Type.Filled;
+            _hpFillImage.fillMethod = Image.FillMethod.Horizontal;
+            _hpFillImage.fillOrigin = (int)Image.OriginHorizontal.Left; // 왼쪽 고정, 오른쪽이 줄어듦
+        }
+        UpdateHpUI();
         
         // 사운드 소스 설정
         _sawAudioSource = gameObject.AddComponent<AudioSource>();
@@ -320,10 +337,20 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     public void TakeDamage(float dmg)
     {
         _curHp -= dmg;
+        UpdateHpUI();
         if (_curHp <= 0f) Die();
         Debug.Log($"ChainsawRobot took {dmg} damage, current HP: {_curHp}");
     }
 
+    // 체력바 채우기 갱신
+    private void UpdateHpUI()
+    {
+        if (_hpFillImage == null) return;
+
+        float ratio = (_maxHp > 0f) ? _curHp / _maxHp : 0f;
+        _hpFillImage.fillAmount = Mathf.Clamp01(ratio);
+    }
+    
     private void Die()
     {
         DropScrap(_scrapAmount);
