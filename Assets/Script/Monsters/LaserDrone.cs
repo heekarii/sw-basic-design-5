@@ -8,8 +8,8 @@ public class LaserDrone : MonoBehaviour, IEnemy
     [SerializeField] private float _detectDistance = 13.7f;  // 시야 감지 거리
     [SerializeField] private float _attackDistance = 8.7f;   // 공격 거리
     [SerializeField] private float _moveSpeed = 6f;          // 이동 속도
-    [SerializeField] private int _maxHealth = 50;            // 체력
-    [SerializeField] private int _currentHealth;
+    [SerializeField] private float _maxHealth = 50.0f;            // 체력
+    [SerializeField] private float _currentHealth;
     [SerializeField] private float _attackCooldown = 10f;    // 재공격 시간
     [SerializeField] private int _dropScrap = 5;             // 처치 시 스크랩 수
     [SerializeField] private int _scrapAmount = 5;            // 드랍 스크랩 양
@@ -20,6 +20,13 @@ public class LaserDrone : MonoBehaviour, IEnemy
     [SerializeField] private Image _flashOverlay;            // 섬광 피격용 UI (Canvas Image)
     [SerializeField] private ScrapData _scrapData;          // 스크랩 데이터
     [SerializeField] private AudioSource _attackAudio;
+    
+    // ================== HP BAR UI ==================
+    [Header("HP Bar UI")]
+    [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
+    [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
+    private Transform _camTr;                      // 카메라 Transform
+    // =================================================
 
     private bool _isActive = false;
     private bool _isAttacking = false;
@@ -28,9 +35,18 @@ public class LaserDrone : MonoBehaviour, IEnemy
     private void Start()
     {
         _currentHealth = _maxHealth;
-
+        
         if (_player == null)
             _player = GameObject.FindWithTag("Player")?.transform;
+        
+        // HP Image 기본 설정 강제 (실수 방지용)
+        if (_hpFillImage != null)
+        {
+            _hpFillImage.type = Image.Type.Filled;
+            _hpFillImage.fillMethod = Image.FillMethod.Horizontal;
+            _hpFillImage.fillOrigin = (int)Image.OriginHorizontal.Left; // 왼쪽 고정, 오른쪽이 줄어듦
+        }
+        UpdateHpUI();
     }
 
     private void Update()
@@ -150,6 +166,15 @@ public class LaserDrone : MonoBehaviour, IEnemy
 
         return true; // 아무것도 안 맞았으면 개방된 시야
     }
+    
+    // 체력바 채우기 갱신
+    private void UpdateHpUI()
+    {
+        if (_hpFillImage == null) return;
+
+        float ratio = (_maxHealth > 0f) ? _currentHealth / _maxHealth : 0f;
+        _hpFillImage.fillAmount = Mathf.Clamp01(ratio);
+    }
 
     // ============================================================
     //  피해 / 사망 처리
@@ -157,6 +182,7 @@ public class LaserDrone : MonoBehaviour, IEnemy
     public void TakeDamage(float damage)
     {
         _currentHealth -= Mathf.RoundToInt(damage);
+        UpdateHpUI();
         if (_currentHealth <= 0)
         {
             DropScrap(_scrapAmount);
