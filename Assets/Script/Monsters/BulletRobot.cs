@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;      // HP바 Image용
 
 public class BulletRobot : MonoBehaviour, IEnemy
 {
@@ -29,7 +30,13 @@ public class BulletRobot : MonoBehaviour, IEnemy
     [SerializeField] private int _boltsPerSecond = 24;       // 초당 생성 개수
     [SerializeField] private AudioSource _attackAudio;
 
-
+    // ================== HP BAR UI ==================
+    [Header("HP Bar UI")]
+    [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
+    [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
+    private Transform _camTr;                      // 카메라 Transform
+    // =================================================
+    
     // ===== 내부 캐시 =====
     private Collider _playerCol;    // 플레이어 콜라이더
     private Transform _playerTr;
@@ -55,7 +62,7 @@ public class BulletRobot : MonoBehaviour, IEnemy
 
         if (_player == null)
             _player = FindObjectOfType<Player>();
-
+        
         if (_agent == null || _player == null)
         {
             enabled = false;
@@ -74,6 +81,15 @@ public class BulletRobot : MonoBehaviour, IEnemy
 
         _curHp = _maxHp;
 
+        // HP Image 기본 설정 강제 (실수 방지용)
+        if (_hpFillImage != null)
+        {
+            _hpFillImage.type = Image.Type.Filled;
+            _hpFillImage.fillMethod = Image.FillMethod.Horizontal;
+            _hpFillImage.fillOrigin = (int)Image.OriginHorizontal.Left; // 왼쪽 고정, 오른쪽이 줄어듦
+        }
+        UpdateHpUI();
+        
         // NavMesh 기본 세팅
         _agent.speed = _moveSpeed;
         _agent.stoppingDistance = _attackRange;
@@ -440,13 +456,23 @@ public class BulletRobot : MonoBehaviour, IEnemy
         return true;
     }
 
+    // 체력바 채우기 갱신
+    private void UpdateHpUI()
+    {
+        if (_hpFillImage == null) return;
+
+        float ratio = (_maxHp > 0f) ? _curHp / _maxHp : 0f;
+        _hpFillImage.fillAmount = Mathf.Clamp01(ratio);
+    }
+    
     public void TakeDamage(float dmg)
     {
         _curHp -= dmg;
+        UpdateHpUI();
         if (_curHp <= 0f)
             Die();
     }
-
+    
     private void Die()
     {
         DropScrap(_scarpAmount);
