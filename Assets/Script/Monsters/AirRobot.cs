@@ -249,7 +249,7 @@ public class AirRobot : MonoBehaviour, IEnemy
     private void DrawAggroRadiusGizmo()
     {
         // 반경이 0 이하면 그릴 필요 없음
-        if (_aggravationRange <= 0f) return;
+        if (_detectDistance <= 0f) return;
 
         Gizmos.color = Color.white;
 
@@ -257,7 +257,7 @@ public class AirRobot : MonoBehaviour, IEnemy
         Vector3 center = transform.position;
         center.y += 0.05f;
 
-        float radius = _aggravationRange;
+        float radius = _detectDistance;
         int segments = 48;
         float step = 360f / segments;
 
