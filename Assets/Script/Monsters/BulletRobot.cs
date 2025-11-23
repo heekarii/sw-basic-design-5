@@ -161,6 +161,12 @@ public class BulletRobot : MonoBehaviour, IEnemy
                 _agent.ResetPath();
         }
     }
+    
+    private void OnDrawGizmos()
+    {
+        DrawAggroRadiusGizmo();
+    }
+
 
     // 항상 수평으로 플레이어 바라보기
     private void LookAtPlayer()
@@ -456,6 +462,38 @@ public class BulletRobot : MonoBehaviour, IEnemy
         scrapComponent.InitScrap(amount);
         Debug.Log($"[AirRobot] 스크랩 {amount} 드랍");
     }
+    
+    // 몬스터를 중심으로 인식 범위(_aggravationRange)를 흰 원으로 시각화
+    private void DrawAggroRadiusGizmo()
+    {
+        // 반경이 0 이하면 그릴 필요 없음
+        if (_aggravationRange <= 0f) return;
+
+        Gizmos.color = Color.white;
+
+        // 원의 중심: 몬스터 위치, 살짝 위로 띄워서 바닥에 안 묻히게
+        Vector3 center = transform.position;
+        center.y += 0.05f;
+
+        float radius = _aggravationRange;
+        int segments = 48;
+        float step = 360f / segments;
+
+        // 시작점: 중심 기준 X축 방향으로 radius 떨어진 곳
+        Vector3 prev = center + new Vector3(radius, 0f, 0f);
+
+        for (int i = 1; i <= segments; i++)
+        {
+            float angle = step * i * Mathf.Deg2Rad;
+            float x = Mathf.Cos(angle) * radius;
+            float z = Mathf.Sin(angle) * radius;
+
+            Vector3 next = center + new Vector3(x, 0f, z);
+            Gizmos.DrawLine(prev, next);
+            prev = next;
+        }
+    }
+
 
     // Scene 뷰에서 원뿔 시각화
     private void OnDrawGizmosSelected()
