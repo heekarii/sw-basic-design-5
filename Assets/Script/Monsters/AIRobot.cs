@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;      // HP바 Image용
 
 public class AIRobot : MonoBehaviour, IEnemy
 {
@@ -26,6 +27,13 @@ public class AIRobot : MonoBehaviour, IEnemy
     [Header("Ref")]
     [SerializeField] private Player _player;
     
+    // ================== HP BAR UI ==================
+    [Header("HP Bar UI")]
+    [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
+    [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
+    private Transform _camTr;                      // 카메라 Transform
+    // =================================================
+    
     private float _attackRangeSqr;
     private float _aggravationRangeSqr;
 
@@ -50,6 +58,15 @@ public class AIRobot : MonoBehaviour, IEnemy
         if (_player == null)
             _player = FindObjectOfType<Player>();
 
+        // HP Image 기본 설정 강제 (실수 방지용)
+        if (_hpFillImage != null)
+        {
+            _hpFillImage.type = Image.Type.Filled;
+            _hpFillImage.fillMethod = Image.FillMethod.Horizontal;
+            _hpFillImage.fillOrigin = (int)Image.OriginHorizontal.Left; // 왼쪽 고정, 오른쪽이 줄어듦
+        }
+        UpdateHpUI();
+        
         if (_player == null)
         {
             Debug.LogError("[AIRobot] Player를 찾지 못했습니다.");
@@ -369,12 +386,21 @@ public class AIRobot : MonoBehaviour, IEnemy
     public void TakeDamage(float dmg)
     {
         _curHp -= dmg;
+        UpdateHpUI();
         Debug.Log($"[AIRobot] took {dmg} damage, current HP: {_curHp}");
 
         if (_curHp <= 0f)
             Die();
     }
 
+    private void UpdateHpUI()
+    {
+        if (_hpFillImage == null) return;
+
+        float ratio = (_maxHp > 0f) ? _curHp / _maxHp : 0f;
+        _hpFillImage.fillAmount = Mathf.Clamp01(ratio);
+    }
+    
     private void Die()
     {
         SetRed(false);
