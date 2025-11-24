@@ -372,7 +372,7 @@ public class Player : MonoBehaviour
 
         if (weaponName.Contains("Close") && !_isMeleeCasting)
         {
-            PlayMeleeAnimation();
+            if (_wm != null) _animator.SetTrigger("isSwing");
 
             _isMeleeCasting = true;
             StartCoroutine(MeleeAttackCoroutine());
@@ -383,19 +383,6 @@ public class Player : MonoBehaviour
         }
 
         _curBattery -= _currentWeaponData.BatteryUsage;
-    }
-
-    private void PlayMeleeAnimation()
-    {
-        if (_wm != null && _wm.GetWeaponLevel() == 0)
-        {
-            _animator.SetTrigger("isPunching");
-            Debug.Log("punch");
-        }
-        else
-        {
-            _animator.SetTrigger("isSwing");
-        }
     }
 
     private void HandleRangedAttack(RaycastHit hit, bool isHit)
