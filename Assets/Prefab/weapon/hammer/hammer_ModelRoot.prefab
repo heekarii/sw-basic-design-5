@@ -47,11 +47,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -7183352899807122521, guid: 51bd815050dcdcf4498fb7eea4ad8796, type: 3}
 --- !u!1 &972251202184179729
@@ -101,11 +101,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 8933368089859144834, guid: 51bd815050dcdcf4498fb7eea4ad8796, type: 3}
 --- !u!1 &1507471863885922990
@@ -155,11 +155,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 4955713394821598952, guid: 51bd815050dcdcf4498fb7eea4ad8796, type: 3}
 --- !u!1 &1932916648813850993
@@ -209,11 +209,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -5547633622916760689, guid: 51bd815050dcdcf4498fb7eea4ad8796, type: 3}
 --- !u!1 &3881396626882661078
@@ -263,11 +263,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -279074181900992678, guid: 51bd815050dcdcf4498fb7eea4ad8796, type: 3}
 --- !u!1 &4814208251469463991
@@ -317,11 +317,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 8750536128116502363, guid: 51bd815050dcdcf4498fb7eea4ad8796, type: 3}
 --- !u!1 &5429454683682526974
@@ -411,11 +411,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 1222371033307074309, guid: 51bd815050dcdcf4498fb7eea4ad8796, type: 3}
 --- !u!1 &7384045590737618510
@@ -465,11 +465,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 8881103968094099786, guid: 51bd815050dcdcf4498fb7eea4ad8796, type: 3}
 --- !u!1 &7917609739524936902
@@ -519,11 +519,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 2676546583371220146, guid: 51bd815050dcdcf4498fb7eea4ad8796, type: 3}
 --- !u!1 &7929532819254633968
@@ -535,6 +535,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5972026646354036192}
+  - component: {fileID: -8607355869392973282}
   m_Layer: 0
   m_Name: hammer_ModelRoot
   m_TagString: Untagged
@@ -559,6 +560,18 @@ Transform:
   - {fileID: 1509857143760182582}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -77.779, z: -73.848}
+--- !u!114 &-8607355869392973282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7929532819254633968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35b7621fcb6cea040b98940c1b7774d4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1161129530636528217
 PrefabInstance:
   m_ObjectHideFlags: 0
