@@ -54,7 +54,7 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isMeleeCasting = false;
     [SerializeField] private bool _isStunned = false;
 
-    private float _lastAttackTime = 0f;
+    private float _lastAttackTime = float.NegativeInfinity;
     private bool _isReloading = false;
     private int _curBullets;
 
@@ -68,6 +68,7 @@ public class Player : MonoBehaviour
     [SerializeField] private WeaponData _currentWeaponData;
     [SerializeField] private int _currentWeaponIdx;
     [SerializeField] private Transform _weaponSocket;
+    [SerializeField] private WeaponHitbox _meleeHitbox;
 
     private GameObject _currentWeaponModel;
 
@@ -225,20 +226,32 @@ public class Player : MonoBehaviour
         if (!Input.GetMouseButton(0) || _isReloading) return;
         if (_gm == null) return;
 
-        if (Time.time - _lastAttackTime < _coolDownTime[_gm.WeaponType]) return;
+        int weaponTypeIndex = Mathf.Clamp(_gm.WeaponType, 0, _coolDownTime.Length - 1);
+        if (Time.time - _lastAttackTime < _coolDownTime[weaponTypeIndex]) return;
 
-        _lastAttackTime = Time.time;
-        Camera cam = _camera.GetComponent<Camera>();
+        // 무기/탄약이 준비되지 않았으면 공격 불가능
+        if (_currentWeaponData == null) return;
+        if (_currentWeaponData.Type == WeaponType.Ranged && _curBullets <= 0)
+        {
+            Reload();
+            return;
+        }
+
+        Camera cam = _camera != null ? _camera.GetComponent<Camera>() : Camera.main;
+        if (cam == null) return;
+
         Ray ray = cam.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
         Debug.DrawRay(ray.origin, ray.direction * _attackRaycastDist, Color.red, 1f);
 
         if (Physics.Raycast(ray, out RaycastHit hit, _attackRaycastDist, _attackRaycastMask))
         {
             Attack(hit);
+            _lastAttackTime = Time.time; // 실제 공격이 수행된 시점에 쿨다운 시작
         }
         else
         {
             Attack(hit, false);
+            _lastAttackTime = Time.time; // 피격 실패도 공격으로 간주
         }
     }
 
@@ -363,21 +376,19 @@ public class Player : MonoBehaviour
     private void Attack(RaycastHit hit, bool isHit = true)
     {
         if (_currentWeaponData == null)
-        {
-            Debug.LogWarning("[Player] 무기가 설정되지 않았습니다.");
             return;
-        }
 
-        string weaponName = _currentWeaponData.WeaponName;
-
-        if (weaponName.Contains("Close") && !_isMeleeCasting)
+        if (_currentWeaponData.Type == WeaponType.Melee)
         {
-            if (_wm != null) _animator.SetTrigger("isSwing");
-
-            _isMeleeCasting = true;
-            StartCoroutine(MeleeAttackCoroutine());
+            if (!_isMeleeCasting)
+            {
+                _animator.SetTrigger("isSwing");
+                _isMeleeCasting = true;
+                Debug.Log($"[Player] Melee attack triggered (weapon: {_currentWeaponData?.WeaponName})");
+                StartCoroutine(MeleeAttackCoroutine());
+            }
         }
-        else if (weaponName.Contains("Long"))
+        else if (_currentWeaponData.Type == WeaponType.Ranged)
         {
             HandleRangedAttack(hit, isHit);
         }
@@ -420,32 +431,32 @@ public class Player : MonoBehaviour
 
     private IEnumerator MeleeAttackCoroutine()
     {
-        yield return new WaitForSeconds(_castingTime);
+        // 공격 모션의 시작 지연
+        yield return new WaitForSeconds(_castingTime * 0.5f);
 
-        float range = _currentWeaponData.range;
-        float halfAngle = 45f;
-
-        Vector3 center = _camera.position; // 공격 중심 = 카메라 위치
-        Vector3 forward = _camera.forward; // 공격 방향 = 카메라 forward
-
-        HashSet<IEnemy> hitEnemies = new HashSet<IEnemy>();
-        Collider[] hits = Physics.OverlapSphere(center, range, _attackRaycastMask);
-
-        foreach (Collider target in hits)
+        // ★ 타격 가능 시간 ON
+        if (_meleeHitbox != null)
         {
-            IEnemy enemy = target.GetComponentInParent<IEnemy>();
-            if (enemy == null) continue;
-
-            Vector3 dir = (target.transform.position - center).normalized;
-
-            if (Vector3.Angle(forward, dir) <= halfAngle)
-            {
-                if (hitEnemies.Contains(enemy)) continue; // 중복 데미지 방지
-                hitEnemies.Add(enemy);
-                enemy.TakeDamage(_attackPower);
-                Debug.Log($"근거리 hit: {target.name}");
-            }
+            Debug.Log("[Player] Activating melee hitbox");
+            _meleeHitbox.Activate(_attackPower);
         }
+        else
+        {
+            // Hitbox가 없을 때는 OverlapSphere로 대체하지 않고 경고만 출력
+            Debug.LogWarning("[Player] Melee hitbox가 존재하지 않아 근접 공격이 적용되지 않습니다. 무기 프리팹에 WeaponHitbox가 있는지 확인하세요.");
+        }
+
+        yield return new WaitForSeconds(1f);
+
+        // ★ 타격 가능 시간 OFF
+        if (_meleeHitbox != null)
+        {
+            _meleeHitbox.Deactivate();
+            Debug.Log("[Player] Deactivated melee hitbox");
+        }
+
+        // 후딜
+        yield return new WaitForSeconds(0.2f);
 
         _isMeleeCasting = false;
     }
@@ -543,30 +554,25 @@ public class Player : MonoBehaviour
         _currentWeaponModel.transform.localPosition = new Vector3(0, 0.25f, 1);
         _currentWeaponModel.transform.localRotation = Quaternion.identity;
 
+        // ★ 여기서 melee hitbox 자동 연결
+        _meleeHitbox = _currentWeaponModel.GetComponentInChildren<WeaponHitbox>();
+
         _attackPower = weaponData.baseAttackPower;
         _currentWeaponData = weaponData;
         _curBullets = weaponData.Bullets;
         _attackRaycastDist = weaponData.range;
 
-        if (_animator != null && !string.IsNullOrEmpty(weaponData.AttackAnimation))
-        {
-            _animator.runtimeAnimatorController = weaponData.AnimatorController;
-        }
-
         Debug.Log($"[Player] 무기 초기화 완료: {weaponData.WeaponName}, 공격력: {_attackPower}");
     }
+
 
     /// <summary>
     /// 현재 플레이어 상태를 조회
     /// </summary>
     public PlayerStatus GetStatus()
     {
-        int idx = _currentWeaponIdx + 1;
-
-        if (_currentWeaponIdx >= 5)
-            _currentWeaponIdx = -3;
-        else
-            _currentWeaponIdx = 0;
+        // GetStatus는 상태를 반환만 해야 하며 내부 필드를 변경하면 안됩니다.
+        int displayWeaponLevel = (_currentWeaponIdx >= 0) ? _currentWeaponIdx + 1 : 0;
 
         float speedWithBoost = _speedWithBoostPerLevel[Mathf.Clamp(_curSpeedLevel - 1, 0,
             _speedWithBoostPerLevel.Length - 1)];
@@ -579,7 +585,7 @@ public class Player : MonoBehaviour
             _curBattery,
             _curHealthLevel,
             _curSpeedLevel,
-            idx,
+            displayWeaponLevel,
             _curBullets,
             speedWithBoost
         );

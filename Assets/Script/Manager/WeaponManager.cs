@@ -15,6 +15,10 @@ public class WeaponManager : Singleton<WeaponManager>
     // 무기 장착
     public void EquipWeapon(int index)
     {
+        // _player가 null일 수 있으므로 안전하게 재조회
+        if (_player == null)
+            _player = FindObjectOfType<Player>();
+
         if (_player == null || index < 0 || index >= weaponList.Length)
             return;
         
