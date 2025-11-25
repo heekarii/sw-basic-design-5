@@ -446,7 +446,7 @@ public class Player : MonoBehaviour
             Debug.LogWarning("[Player] Melee hitbox가 존재하지 않아 근접 공격이 적용되지 않습니다. 무기 프리팹에 WeaponHitbox가 있는지 확인하세요.");
         }
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(1f);
 
         // ★ 타격 가능 시간 OFF
         if (_meleeHitbox != null)

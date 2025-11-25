@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class WeaponHitbox : MonoBehaviour
 {
     private float _damage;
-    private bool _active = false;
+    [SerializeField]private bool _active = false;
     private HashSet<IEnemy> _hitEnemies = new HashSet<IEnemy>();
 
     public void Activate(float damage)
