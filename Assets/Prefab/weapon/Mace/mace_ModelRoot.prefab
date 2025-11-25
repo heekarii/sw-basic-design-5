@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 935399114709569400}
   - component: {fileID: -1835892007488708224}
+  - component: {fileID: 1498866520298644574}
   m_Layer: 0
   m_Name: mace_ModelRoot
   m_TagString: Untagged
@@ -45,6 +46,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b7621fcb6cea040b98940c1b7774d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _active: 0
+--- !u!54 &1498866520298644574
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4844560226616983633}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &7036746274513528095
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,11 +121,11 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -6659003102834268097, guid: ff6627177a079f645ab4eb3b1e30a172, type: 3}
 --- !u!1 &7671469928816292630
