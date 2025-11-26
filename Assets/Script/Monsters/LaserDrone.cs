@@ -38,6 +38,18 @@ public class LaserDrone : MonoBehaviour, IEnemy
         
         if (_player == null)
             _player = GameObject.FindWithTag("Player")?.transform;
+
+        if (_flashOverlay == null)
+        {
+            foreach (var img in Resources.FindObjectsOfTypeAll<Image>())
+            {
+                if (img.CompareTag("FlashOverlay"))
+                {
+                    _flashOverlay = img;
+                    break;
+                }
+            }
+        }
         
         // HP Image 기본 설정 강제 (실수 방지용)
         if (_hpFillImage != null)
@@ -122,7 +134,7 @@ public class LaserDrone : MonoBehaviour, IEnemy
     private IEnumerator ApplyFlashEffect()
     {
         _flashOverlay.gameObject.SetActive(true);
-        _flashOverlay.color = new Color(1f, 1f, 0.7f, 0.9f); // 밝은 노란색
+        _flashOverlay.color = new Color(1f, 1f, 0.7f, 0.8f); // 밝은 노란색
         yield return new WaitForSeconds(3f);
         _flashOverlay.gameObject.SetActive(false);
     }
