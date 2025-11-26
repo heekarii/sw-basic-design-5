@@ -230,7 +230,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 973242834122530442, guid: df33ba8c26bbf884fb64ed3b3554a6ad, type: 3}
   m_PrefabInstance: {fileID: 325563630}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &346691908
+--- !u!1001 &401052847
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -238,55 +238,55 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2058012005468261625, guid: f5f286427ee55ae46a033a5b536fc36d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -6.5673523
+    - target: {fileID: 726582100990455483, guid: fa56a7991dba7c741b3cf28bb08bfdaf, type: 3}
+      propertyPath: m_Name
+      value: ModelRoot_RatRobot
       objectReference: {fileID: 0}
-    - target: {fileID: 2058012005468261625, guid: f5f286427ee55ae46a033a5b536fc36d, type: 3}
+    - target: {fileID: 6234863342697257649, guid: fa56a7991dba7c741b3cf28bb08bfdaf, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.1467943
+      objectReference: {fileID: 0}
+    - target: {fileID: 6234863342697257649, guid: fa56a7991dba7c741b3cf28bb08bfdaf, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.00000023841858
       objectReference: {fileID: 0}
-    - target: {fileID: 2058012005468261625, guid: f5f286427ee55ae46a033a5b536fc36d, type: 3}
+    - target: {fileID: 6234863342697257649, guid: fa56a7991dba7c741b3cf28bb08bfdaf, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.577635
+      value: 18.515747
       objectReference: {fileID: 0}
-    - target: {fileID: 2058012005468261625, guid: f5f286427ee55ae46a033a5b536fc36d, type: 3}
+    - target: {fileID: 6234863342697257649, guid: fa56a7991dba7c741b3cf28bb08bfdaf, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2058012005468261625, guid: f5f286427ee55ae46a033a5b536fc36d, type: 3}
+    - target: {fileID: 6234863342697257649, guid: fa56a7991dba7c741b3cf28bb08bfdaf, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2058012005468261625, guid: f5f286427ee55ae46a033a5b536fc36d, type: 3}
+    - target: {fileID: 6234863342697257649, guid: fa56a7991dba7c741b3cf28bb08bfdaf, type: 3}
       propertyPath: m_LocalRotation.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2058012005468261625, guid: f5f286427ee55ae46a033a5b536fc36d, type: 3}
+    - target: {fileID: 6234863342697257649, guid: fa56a7991dba7c741b3cf28bb08bfdaf, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2058012005468261625, guid: f5f286427ee55ae46a033a5b536fc36d, type: 3}
+    - target: {fileID: 6234863342697257649, guid: fa56a7991dba7c741b3cf28bb08bfdaf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2058012005468261625, guid: f5f286427ee55ae46a033a5b536fc36d, type: 3}
+    - target: {fileID: 6234863342697257649, guid: fa56a7991dba7c741b3cf28bb08bfdaf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2058012005468261625, guid: f5f286427ee55ae46a033a5b536fc36d, type: 3}
+    - target: {fileID: 6234863342697257649, guid: fa56a7991dba7c741b3cf28bb08bfdaf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3533128654579442443, guid: f5f286427ee55ae46a033a5b536fc36d, type: 3}
-      propertyPath: m_Name
-      value: BulletBot_ModelRoot
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: f5f286427ee55ae46a033a5b536fc36d, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: fa56a7991dba7c741b3cf28bb08bfdaf, type: 3}
 --- !u!1 &845973695
 GameObject:
   m_ObjectHideFlags: 0
@@ -916,4 +916,4 @@ SceneRoots:
   - {fileID: 1337542217}
   - {fileID: 1596477135}
   - {fileID: 941544514}
-  - {fileID: 346691908}
+  - {fileID: 401052847}
