@@ -29,7 +29,10 @@ public class BulletRobot : MonoBehaviour, IEnemy
     [SerializeField] private GameObject _boltPrefab;
     [SerializeField] private int _boltsPerSecond = 24;       // 초당 생성 개수
     [SerializeField] private AudioSource _attackAudio;
+    [SerializeField] private GameObject _shotLeftFx;
+    [SerializeField] private GameObject _shotRightFx;
 
+    
     // ================== HP BAR UI ==================
     [Header("HP Bar UI")]
     [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
@@ -105,6 +108,7 @@ public class BulletRobot : MonoBehaviour, IEnemy
         {
             _agent.Warp(hit.position);
         }
+        SetShotFx(false);
     }
 
     private void Update()
@@ -183,6 +187,11 @@ public class BulletRobot : MonoBehaviour, IEnemy
         DrawAggroRadiusGizmo();
     }
 
+    private void SetShotFx(bool on)
+    {
+        if (_shotLeftFx  != null) _shotLeftFx.SetActive(on);
+        if (_shotRightFx != null) _shotRightFx.SetActive(on);
+    }
 
     // 항상 수평으로 플레이어 바라보기
     private void LookAtPlayer()
@@ -223,9 +232,12 @@ public class BulletRobot : MonoBehaviour, IEnemy
 
         Transform tDetect = _muzzleDetect != null ? _muzzleDetect : _tr;
         Transform tVisual = _muzzleVisual != null ? _muzzleVisual : tDetect;
-        
+    
         if (_attackAudio != null && !_attackAudio.isPlaying)
             _attackAudio.Play();
+
+        // 🔹 공격 시작할 때 이펙트 ON
+        SetShotFx(true);
 
         while (elapsed < _attackingTime)
         {
@@ -255,10 +267,13 @@ public class BulletRobot : MonoBehaviour, IEnemy
             yield return null;
         }
 
+        // 🔹 공격 끝났으면 이펙트 OFF
+        SetShotFx(false);
+
         // ★ 공격 종료 시 사운드 정지
         if (_attackAudio != null && _attackAudio.isPlaying)
             _attackAudio.Stop();
-        
+    
         // 쿨다운
         _isAttacking = false;
         _isCoolingDown = true;
@@ -268,6 +283,7 @@ public class BulletRobot : MonoBehaviour, IEnemy
 
         _isCoolingDown = false;
     }
+
 
     // ===== 시각용 볼트 스폰 =====
     private void SpawnVisualBolt(Transform muzzle)
@@ -475,6 +491,7 @@ public class BulletRobot : MonoBehaviour, IEnemy
     
     private void Die()
     {
+        SetShotFx(false);
         DropScrap(_scarpAmount);
         Destroy(gameObject);
     }
