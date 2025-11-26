@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/LaserDrone.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/LaserDrone.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprite/flashOverlay.png.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprite/flashOverlay.png.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/770Balsa-Regular SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/770Balsa-Regular SDF.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +143,7 @@
       <workItem from="1763912766359" duration="149000" />
       <workItem from="1763991906373" duration="371000" />
       <workItem from="1763996169194" duration="4714000" />
-      <workItem from="1764168827293" duration="1153000" />
+      <workItem from="1764168827293" duration="1977000" />
     </task>
     <servers />
   </component>

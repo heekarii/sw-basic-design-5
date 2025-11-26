@@ -105,6 +105,8 @@ public class FireRobot : MonoBehaviour, IEnemy
 
         // --- ✅ NavMesh 기반 거리 판정 ---
         float navDist = _agent.remainingDistance;
+        if (_agent == null)
+            Debug.LogError("what");
         float worldDist = Vector3.Distance(transform.position, _player.transform.position);
         // ---------------------------------
 
