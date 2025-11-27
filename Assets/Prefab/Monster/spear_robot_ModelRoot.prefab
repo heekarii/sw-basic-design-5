@@ -1650,7 +1650,7 @@ MonoBehaviour:
   _attackCooldown: 3
   _attackingTime: 1
   _stunTime: 1
-  _aggravationRange: 12.25
+  _aggravationRange: 15.25
   _attackRange: 5.25
   _moveSpeed: 5
   _lookAtTurnSpeed: 8

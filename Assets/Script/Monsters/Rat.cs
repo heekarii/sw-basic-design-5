@@ -8,10 +8,10 @@ public class Rat : MonoBehaviour, IEnemy
     [SerializeField] private float _maxHp = 15f;
     [SerializeField] private float _curHp;
     [SerializeField] private float _damage = 20f;
-    [SerializeField] private float _aggravationRange = 12.75f;
+    [SerializeField] private float _aggravationRange = 15.75f;
     [SerializeField] private float _attackRange = 1.05f;
     [SerializeField] private float _explosionRadius = 2.0f;
-    [SerializeField] private float _moveSpeed = 7f;
+    [SerializeField] private float _moveSpeed = 8f;
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 2;
 
