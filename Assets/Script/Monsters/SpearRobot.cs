@@ -14,7 +14,7 @@ public class SpearRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _attackCooldown = 3.0f;
     [SerializeField] private float _attackingTime = 1.0f;
     [SerializeField] private float _stunTime = 1.0f;
-    [SerializeField] private float _aggravationRange = 12.25f;
+    [SerializeField] private float _aggravationRange = 15.25f;
     [SerializeField] private float _attackRange = 5.25f;
     [SerializeField] private float _moveSpeed = 5.0f;
     [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절

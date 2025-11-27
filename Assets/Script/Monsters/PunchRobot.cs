@@ -12,7 +12,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _attackCooldown = 1.0f;
     [SerializeField] private float _aggravationRange = 6.9f;
     [SerializeField] private float _attackRange = 2.0f;
-    [SerializeField] private float _moveSpeed = 2.0f;
+    [SerializeField] private float _moveSpeed = 3.5f;
     [SerializeField] private float _lookAtTurnSpeed = 8.0f;
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 3;

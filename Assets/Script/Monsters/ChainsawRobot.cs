@@ -11,7 +11,7 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _attackCastingTime = 0.5f;
     [SerializeField] private float _attackCooldown = 3.0f;
     [SerializeField] private float _attackingTime = 1.0f;
-    [SerializeField] private float _aggravationRange = 12.25f;
+    [SerializeField] private float _aggravationRange = 14.25f;
     [SerializeField] private float _attackRange = 4.25f;
     [SerializeField] private float _moveSpeed = 4.0f;
     [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절

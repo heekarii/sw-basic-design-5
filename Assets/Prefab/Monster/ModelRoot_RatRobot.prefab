@@ -128,10 +128,10 @@ MonoBehaviour:
   _maxHp: 15
   _curHp: 0
   _damage: 20
-  _aggravationRange: 12.75
+  _aggravationRange: 15.75
   _attackRange: 1.05
   _explosionRadius: 2
-  _moveSpeed: 7
+  _moveSpeed: 8
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
   _scrapAmount: 2
   _player: {fileID: 0}
@@ -147,7 +147,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 726582100990455483}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: -1372625422
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
