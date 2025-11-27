@@ -14,6 +14,8 @@ public class LaserDrone : MonoBehaviour, IEnemy
     [SerializeField] private int _dropScrap = 5;             // 처치 시 스크랩 수
     [SerializeField] private int _scrapAmount = 5;            // 드랍 스크랩 양
     [SerializeField] private float _flashMaintainTime = 3f;
+    [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절
+
     
     [Header("참조 오브젝트")]
     [SerializeField] private Transform _player;              // ZERON
@@ -73,6 +75,11 @@ public class LaserDrone : MonoBehaviour, IEnemy
 
         if (!_isActive) return;
 
+        float worldDist = Vector3.Distance(transform.position, _player.transform.position);
+        // 인식범위 밖의 플레이어가 아니라면 계속 쳐다보게
+        if (worldDist <= _detectDistance)   
+            LookAtPlayer();
+        
         // ✅ 공격 / 이동 판단
         if (distance > _attackDistance && !_isAttacking)
         {
@@ -177,6 +184,28 @@ public class LaserDrone : MonoBehaviour, IEnemy
         }
 
         return true; // 아무것도 안 맞았으면 개방된 시야
+    }
+    
+    private void LookAtPlayer()
+    {
+        if (_player == null || !HasLineOfSight()) return;
+
+        Vector3 lockedDir = (_player != null)
+            ? (_player.transform.position - transform.position)
+            : transform.forward;
+        lockedDir.y = 0.0f;
+        lockedDir.Normalize();
+        
+        // 몸을 스냅샷 방향으로 즉시 정렬
+        if (lockedDir.sqrMagnitude > 0.001f)
+        {
+            float rotSpeed = _lookAtTurnSpeed;
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                Quaternion.LookRotation(lockedDir),
+                Time.deltaTime * rotSpeed
+            );
+        }
     }
     
     // 체력바 채우기 갱신
