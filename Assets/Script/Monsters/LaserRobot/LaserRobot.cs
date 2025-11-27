@@ -31,12 +31,13 @@ public class LaserRobot : MonoBehaviour, IEnemy
     private NavMeshAgent _agent;
     private Transform _tr;
     private Transform _playerTr;
-    
+
     // ================== HP BAR UI ==================
     [Header("HP Bar UI")]
     [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
     [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
-    
+    // ==============================================
+
     private void Awake()
     {
         _tr = transform;
@@ -47,40 +48,40 @@ public class LaserRobot : MonoBehaviour, IEnemy
         _agent = GetComponent<NavMeshAgent>();
         if (_player == null)
             _player = FindObjectOfType<Player>();
-        
+
         if (_agent == null)
         {
             Debug.LogError("[LaserRobot] NavMeshAgent가 없습니다.");
             enabled = false;
             return;
         }
+
         if (_player == null)
         {
             Debug.LogError("[LaserRobot] Player를 찾지 못했습니다.");
             enabled = false;
             return;
         }
-        
-        
+
         _playerTr = _player.transform;
         _curHp = _maxHp;
 
         // NavMesh 기본 설정
-        _agent.speed = _moveSpeed;
+        _agent.speed           = _moveSpeed;
         _agent.stoppingDistance = _attackRange;
-        _agent.updateRotation = true;
-        _agent.autoBraking = true;
+        _agent.updateRotation  = false;   // 회전은 우리가 직접 제어
+        _agent.autoBraking     = true;
 
+        // HP Image 설정
         if (_hpFillImage != null)
         {
-            _hpFillImage.type = Image.Type.Filled;
+            _hpFillImage.type       = Image.Type.Filled;
             _hpFillImage.fillMethod = Image.FillMethod.Horizontal;
-            _hpFillImage.fillOrigin = (int)Image.OriginHorizontal.Left; // 왼쪽 고정, 오른쪽이 줄어듦
+            _hpFillImage.fillOrigin = (int)Image.OriginHorizontal.Left; // 왼→오 줄어듦
         }
-        UpdateHpUI();   // 데미지 받을 때마다 HP바 갱신
-        
-        
-        // 시작 위치 NavMesh 보정
+        UpdateHpUI();
+
+        // 시작 위치 NavMesh 보정 (살짝 위로 띄우기)
         if (!TrySnapToNavMesh(_tr.position, out var snapped))
         {
             Debug.LogError("[LaserRobot] 시작 위치 근처에 NavMesh가 없습니다.");
@@ -88,6 +89,7 @@ public class LaserRobot : MonoBehaviour, IEnemy
             return;
         }
 
+        snapped.y += 0.05f;
         if ((_tr.position - snapped).sqrMagnitude > 0.0001f)
             _agent.Warp(snapped);
     }
@@ -101,7 +103,10 @@ public class LaserRobot : MonoBehaviour, IEnemy
         if (!_agent.isOnNavMesh)
         {
             if (TrySnapToNavMesh(_tr.position, out var snapped))
+            {
+                snapped.y += 0.05f;
                 _agent.Warp(snapped);
+            }
             else
                 return;
         }
@@ -113,11 +118,10 @@ public class LaserRobot : MonoBehaviour, IEnemy
             return;
         }
 
-        // 기본 거리/시야 체크
         float worldDist = Vector3.Distance(_tr.position, _playerTr.position);
         bool hasLOS = HasLineOfSight();
 
-        // 인식 범위 안이면 항상 플레이어 바라보기
+        // 인식 범위 안이면 항상 플레이어 쪽으로 부드럽게 회전
         if (worldDist <= _aggravationRange)
             LookAtPlayer();
 
@@ -157,12 +161,11 @@ public class LaserRobot : MonoBehaviour, IEnemy
                 _agent.ResetPath();
         }
     }
-    
+
     private void OnDrawGizmos()
     {
         DrawAggroRadiusGizmo();
     }
-
 
     // ---------------------------------------------
     //  NavMesh / 이동 관련
@@ -178,26 +181,21 @@ public class LaserRobot : MonoBehaviour, IEnemy
         return false;
     }
 
+    // 항상 수평으로 플레이어 바라보기 (LOS와 별개로 회전만 담당)
     private void LookAtPlayer()
     {
-        if (_player == null || !HasLineOfSight()) return;
+        if (_playerTr == null) return;
 
-        Vector3 lockedDir = (_player != null)
-            ? (_player.transform.position - transform.position)
-            : transform.forward;
-        lockedDir.y = 0.0f;
-        lockedDir.Normalize();
-        
-        // 몸을 스냅샷 방향으로 즉시 정렬
-        if (lockedDir.sqrMagnitude > 0.001f)
-        {
-            float rotSpeed = _lookAtTurnSpeed;
-            transform.rotation = Quaternion.Slerp(
-                transform.rotation,
-                Quaternion.LookRotation(lockedDir),
-                Time.deltaTime * rotSpeed
-            );
-        }
+        Vector3 dir = _playerTr.position - transform.position;
+        dir.y = 0.0f;
+        if (dir.sqrMagnitude < 0.0001f) return;
+
+        Quaternion targetRot = Quaternion.LookRotation(dir);
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRot,
+            Time.deltaTime * _lookAtTurnSpeed
+        );
     }
 
     // ---------------------------------------------
@@ -223,7 +221,7 @@ public class LaserRobot : MonoBehaviour, IEnemy
             if (_playerTr == null)
                 break;
 
-            // 공격 도중에도 플레이어 쪽을 한 번 정렬
+            // 공격 도중에도 플레이어 쪽으로 정렬
             LookAtPlayer();
 
             // 실제 발사
@@ -244,10 +242,15 @@ public class LaserRobot : MonoBehaviour, IEnemy
 
     private void FireLaser(Transform muzzle)
     {
-        if (muzzle == null || _laserProjectilePrefab == null) return;
+        if (muzzle == null || _laserProjectilePrefab == null || _playerTr == null) return;
 
-        Vector3 dir = muzzle.forward;
-        GameObject go = Instantiate(_laserProjectilePrefab, muzzle.position, muzzle.rotation);
+        // 머즐 위치에서 플레이어를 향하는 방향으로 항상 발사
+        Vector3 targetPos = _playerTr.position + Vector3.up * 1.0f;
+        Vector3 dir = (targetPos - muzzle.position).normalized;
+        if (dir.sqrMagnitude < 0.0001f) return;
+
+        Quaternion rot = Quaternion.LookRotation(dir);
+        GameObject go = Instantiate(_laserProjectilePrefab, muzzle.position, rot);
 
         // 투사체 초기화
         if (go.TryGetComponent(out LaserProjectile proj))
@@ -314,7 +317,7 @@ public class LaserRobot : MonoBehaviour, IEnemy
         float ratio = (_maxHp > 0f) ? _curHp / _maxHp : 0f;
         _hpFillImage.fillAmount = Mathf.Clamp01(ratio);
     }
-    
+
     private void Die()
     {
         DropScrap(_scrapAmount);
@@ -335,16 +338,14 @@ public class LaserRobot : MonoBehaviour, IEnemy
         scrapComponent.InitScrap(amount);
         Debug.Log($"[LaserRobot] 스크랩 {amount} 드랍");
     }
-    
+
     // 몬스터를 중심으로 인식 범위(_aggravationRange)를 흰 원으로 시각화
     private void DrawAggroRadiusGizmo()
     {
-        // 반경이 0 이하면 그릴 필요 없음
         if (_aggravationRange <= 0f) return;
 
         Gizmos.color = Color.white;
 
-        // 원의 중심: 몬스터 위치, 살짝 위로 띄워서 바닥에 안 묻히게
         Vector3 center = transform.position;
         center.y += 0.05f;
 
@@ -352,7 +353,6 @@ public class LaserRobot : MonoBehaviour, IEnemy
         int segments = 48;
         float step = 360f / segments;
 
-        // 시작점: 중심 기준 X축 방향으로 radius 떨어진 곳
         Vector3 prev = center + new Vector3(radius, 0f, 0f);
 
         for (int i = 1; i <= segments; i++)
@@ -366,5 +366,4 @@ public class LaserRobot : MonoBehaviour, IEnemy
             prev = next;
         }
     }
-
 }
