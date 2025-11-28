@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;      // HP바 Image용
+using UnityEngine.UI;
+using System.Collections;
 
 public class FireRobot : MonoBehaviour, IEnemy
 {
@@ -27,13 +28,17 @@ public class FireRobot : MonoBehaviour, IEnemy
     [SerializeField] private ParticleSystem[] _fireVFX;
     [SerializeField] private AudioSource[] _fireSfx;
 
-    // ================== HP BAR UI ==================
     [Header("HP Bar UI")]
     [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
     [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
     private Transform _camTr;                      // 카메라 Transform
-    // =================================================
     
+    [Header("Death")]
+    [SerializeField] private float _deathTime = 2f;
+    [SerializeField] private ParticleSystem _DeathEffect;
+    [SerializeField] private AudioSource _DeathAudio;
+    
+    private bool _isDead = false;
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
     private NavMeshAgent _agent;
@@ -87,7 +92,18 @@ public class FireRobot : MonoBehaviour, IEnemy
     void Update()
     {
         if (_player == null || _agent == null) return;
-
+        if (_isDead)
+        {
+            if (_agent != null)
+            {
+                _agent.isStopped = true;
+                _agent.velocity = Vector3.zero;
+                _agent.ResetPath();
+                _agent.updateRotation = false;
+            }
+            return;
+        }
+        
         // NavMesh 이탈 복구
         if (!_agent.isOnNavMesh)
         {
@@ -301,11 +317,11 @@ public class FireRobot : MonoBehaviour, IEnemy
     
     private void AttackPlayer()
     {
-        if (_isAttacking || _isCoolingDown || !HasLineOfSight()) return;
+        if (_isAttacking || _isCoolingDown || !HasLineOfSight() || _isDead) return;
         StartCoroutine(AttackRoutine());
     }
 
-    private System.Collections.IEnumerator AttackRoutine()
+    private IEnumerator AttackRoutine()
     {
         _isAttacking = true;
 
@@ -387,11 +403,52 @@ public class FireRobot : MonoBehaviour, IEnemy
         Debug.Log($"FireRobot took {dmg} damage, current HP: {_curHp}");
     }
 
+    private void PlayDeath()
+    {
+        // 🔹 이펙트 실행
+        if (_DeathEffect != null)
+        {
+            _DeathEffect.transform.SetParent(null); // 부모 떼기
+            _DeathEffect.Play();
+
+            float effectDuration =
+                _DeathEffect.main.duration +
+                _DeathEffect.main.startLifetime.constantMax;
+
+            Destroy(_DeathEffect.gameObject, effectDuration + 0.1f);
+        }
+
+        // 🔹 사운드 실행
+        if (_DeathAudio != null && _DeathAudio.clip != null)
+        {
+            _DeathAudio.transform.SetParent(null); // 부모 떼기
+            _DeathAudio.Play();
+
+            Destroy(_DeathAudio.gameObject, _DeathAudio.clip.length + 0.1f);
+        }
+    }
+    
     private void Die()
     {
-        DropScrap(_scrapAmount);
-        Destroy(gameObject);
-        Debug.Log("FireRobot has died.");
+        if (_isDead) return;
+        _isDead = true;
+        
+        
+        FxOff();
+        PlayDeath();
+
+        if (_hpCanvas != null)
+            _hpCanvas.gameObject.SetActive(false);
+
+        StartCoroutine(DieRoutine());
+    }
+
+    
+    private IEnumerator DieRoutine()
+    {
+        yield return new WaitForSeconds(_deathTime);
+        DropScrap(_scrapAmount);               
+        Destroy(gameObject);                   // 삭제
     }
     
     public void DropScrap(int amount)
