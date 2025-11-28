@@ -798,11 +798,12 @@ MonoBehaviour:
   _dropScrap: 5
   _scrapAmount: 5
   _flashMaintainTime: 3
+  _lookAtTurnSpeed: 8
   _player: {fileID: 0}
   _flashOverlay: {fileID: 0}
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
   _attackAudio: {fileID: 6337862846215028221}
-  _hpFillImage: {fileID: 1521775063943894243}
+  _hpFillImage: {fileID: 4512110661869498013}
   _hpCanvas: {fileID: 4531008295785264489}
 --- !u!1001 &4690360200954086332
 PrefabInstance:
