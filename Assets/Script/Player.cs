@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -90,10 +91,11 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        DontDestroyOnLoad(this.gameObject);
         CacheComponents();
         InitializeState();
         SetupStunAudio();
-
+        
         Cursor.visible = false;
     }
 
@@ -343,6 +345,19 @@ public class Player : MonoBehaviour
         {
             _isGrounded = false;
         }
+    }
+    
+    public void EnterStationaryState()
+    {
+        _isShifting = false;
+        _moveDirection = Vector3.zero;
+        UpdateMoveAnimation(isMoving: false);
+        _rb.useGravity = false;
+    }
+
+    public void ExitStationaryState()
+    {
+        _rb.useGravity = true;
     }
 
     #endregion

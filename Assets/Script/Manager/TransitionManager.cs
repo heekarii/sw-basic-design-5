@@ -4,10 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class TransitionManager : Singleton<TransitionManager>
 {
+    private Player _player;
     public StationManager CurStationManager;
     protected override void Awake()
     {
         base.Awake();
+        _player = FindObjectOfType<Player>();
     }
 
     public void RegisterStationManager(StationManager manager)
@@ -21,8 +23,9 @@ public class TransitionManager : Singleton<TransitionManager>
         // 1) Repair_main 로드
         SceneManager.LoadScene("Repair_main", LoadSceneMode.Additive);
         Cursor.visible = true;
-
+        
         // 2) Map_SCENE 비활성화
+        _player.EnterStationaryState();
         SetSceneActive("Map_SCENE", false);
     }
 
@@ -47,6 +50,7 @@ public class TransitionManager : Singleton<TransitionManager>
         SceneManager.UnloadSceneAsync("Repair_main");
         Cursor.visible = false; 
         SetSceneActive("Map_SCENE", true);
+        _player.ExitStationaryState();
     }
 
     // 씬 활성/비활성화 도우미

@@ -255,5 +255,15 @@ public class GameManager : Singleton<GameManager>
         // TODO: 탐사 관련 매니저 연동 시 구현
     }
 
+    public void EnterStation()
+    {
+        
+    }
+
+    public void DecreaseScrap(int amount)
+    {
+        _curScrap -= amount;
+    }
+    
     #endregion
 }

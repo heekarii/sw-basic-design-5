@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 public class Repair : MonoBehaviour
 {
     private TransitionManager _transitionManager;
-    private bool _isEntered = false;
+    [SerializeField] private bool _isEntered = false;
 
     private void Start()
     {
@@ -22,7 +22,5 @@ public class Repair : MonoBehaviour
             _transitionManager.EnterRepairStation();
             _isEntered = true;
         }
-        
-        
     }
 }
