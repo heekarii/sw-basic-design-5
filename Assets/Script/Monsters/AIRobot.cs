@@ -47,7 +47,7 @@ public class AIRobot : MonoBehaviour, IEnemy
     private Transform _playerTr;
 
     private bool _isAttacking = false;
-    private bool _isDie = false;
+    private bool _isDead = false;
     private bool _isCoolingDown = false;
 
 
@@ -97,15 +97,8 @@ public class AIRobot : MonoBehaviour, IEnemy
 
     private void Update()
     {
-        if (_playerTr == null)
+        if (_playerTr == null || _isDead) 
             return;
-
-        // 사망 체크
-        if (_curHp <= 0f)
-        {
-            Die();
-            return;
-        }
 
         // 거리/시야 계산
         bool inDetect = IsPlayerInDetectRangeAndVisible();   // 인식 범위 + 시야
@@ -418,15 +411,69 @@ public class AIRobot : MonoBehaviour, IEnemy
         _hpFillImage.fillAmount = Mathf.Clamp01(ratio);
     }
     
+    private void PlayDeath()
+    {
+        // 🔹 이펙트 실행
+        if (_DeathEffect != null)
+        {
+            _DeathEffect.transform.SetParent(null); // 부모 떼기
+            _DeathEffect.Play();
+
+            float effectDuration =
+                _DeathEffect.main.duration +
+                _DeathEffect.main.startLifetime.constantMax;
+
+            Destroy(_DeathEffect.gameObject, effectDuration + 0.1f);
+        }
+
+        // 🔹 사운드 실행
+        if (_DeathAudio != null && _DeathAudio.clip != null)
+        {
+            _DeathAudio.transform.SetParent(null); // 부모 떼기
+            _DeathAudio.Play();
+
+            Destroy(_DeathAudio.gameObject, _DeathAudio.clip.length + 0.1f);
+        }
+    }
+    
     private void Die()
     {
+        if (_isDead) return;
+        _isDead = true;
+        
+        StopAllCoroutines();
+        _isAttacking   = false;
+        _isCoolingDown = false;
+        
         SetRed(false);
         SetBlue(false);
+        
+        if (_blueAudio != null && _blueAudio.isPlaying)
+            _blueAudio.Stop();
+        
+        if (_attackStartSource != null && _attackStartSource.isPlaying)
+            _attackStartSource.Stop();
 
-        DropScrap(_scrapAmount);
-        Destroy(gameObject);
-        Debug.Log("[AIRobot] has died.");
+        Collider selfCol = GetComponent<Collider>();
+        if (selfCol != null)
+            selfCol.enabled = false;
+        
+        if (_hpCanvas != null)
+            _hpCanvas.gameObject.SetActive(false);
+        
+        PlayDeath();
+        StartCoroutine(DieRoutine());
     }
+
+
+    
+    private IEnumerator DieRoutine()
+    {
+        yield return new WaitForSeconds(_deathTime);
+        DropScrap(_scrapAmount);               
+        Destroy(gameObject);                   // 삭제
+    }
+    
 
     public void DropScrap(int amount)
     {

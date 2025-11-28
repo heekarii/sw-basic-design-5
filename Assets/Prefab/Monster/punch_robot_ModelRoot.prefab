@@ -631,6 +631,7 @@ MonoBehaviour:
   _player: {fileID: 0}
   _hpFillImage: {fileID: 5594321777131256392}
   _hpCanvas: {fileID: 7875709371403077189}
+  _deathTime: 4
 --- !u!54 &5283858588543057049
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -105,6 +105,15 @@ public class LaserRobot : MonoBehaviour, IEnemy
     {
         if (_playerTr == null || _agent == null)
             return;
+        
+        if (_isDead)
+        {
+            _agent.isStopped = true;
+            _agent.velocity = Vector3.zero;
+            _agent.ResetPath();
+            _agent.updateRotation = false;
+            return;
+        }
 
         // NavMesh 이탈 복구
         if (!_agent.isOnNavMesh)
@@ -352,15 +361,33 @@ public class LaserRobot : MonoBehaviour, IEnemy
     
     private void Die()
     {
-        if (_isDead) return;    // 여러 번 실행되는 것 방지
+        if (_isDead) return;
         _isDead = true;
-        PlayDeath();
-
+        
+        StopAllCoroutines();
+        _isAttacking   = false;
+        _isCoolingDown = false;
+        
+        if (_agent != null)
+        {
+            _agent.isStopped      = true;
+            _agent.velocity       = Vector3.zero;
+            _agent.ResetPath();
+            _agent.updateRotation = false;
+        }
+        
+        Collider selfCol = GetComponent<Collider>();
+        if (selfCol != null)
+            selfCol.enabled = false;
+        
         if (_hpCanvas != null)
             _hpCanvas.gameObject.SetActive(false);
+        
+        PlayDeath();
 
         StartCoroutine(DieRoutine());
     }
+
     
     private IEnumerator DieRoutine()
     {

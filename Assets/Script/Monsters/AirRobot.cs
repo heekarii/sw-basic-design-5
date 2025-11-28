@@ -75,6 +75,8 @@ public class AirRobot : MonoBehaviour, IEnemy
 
     private void Update()
     {
+        if (_isDead)
+            return;
         if (_zeron == null || _player == null) return;
         bool hasLOS = HasLineOfSight();
         
@@ -263,13 +265,40 @@ public class AirRobot : MonoBehaviour, IEnemy
     {
         if (_isDead) return;    // 여러 번 실행되는 것 방지
         _isDead = true;
-        PlayDeath();
 
+        // 1) 바람/슬로우 상태 정리
+        _isActive = false;
+
+        if (_player != null)
+            _player.ApplyWindSlow(false);  // 슬로우 효과 해제
+
+        // 2) 바람 이펙트 / 사운드 정지
+        if (_activeWindFX != null)
+        {
+            Destroy(_activeWindFX);
+            _activeWindFX = null;
+            Debug.Log("[AirRobot] WindEffect 해제 (사망)");
+        }
+
+        if (_attackAudio != null && _attackAudio.isPlaying)
+            _attackAudio.Stop();
+
+        // 3) 콜라이더 비활성화 (원하는 경우)
+        Collider selfCol = GetComponent<Collider>();
+        if (selfCol != null)
+            selfCol.enabled = false;
+
+        // 4) HP바 끄기
         if (_hpCanvas != null)
             _hpCanvas.gameObject.SetActive(false);
 
+        // 5) 죽음 이펙트 / 사운드 재생
+        PlayDeath();
+
+        // 6) 딜레이 후 스크랩 드랍 + 삭제
         StartCoroutine(DieRoutine());
     }
+
     
     private IEnumerator DieRoutine()
     {
