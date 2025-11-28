@@ -1,7 +1,8 @@
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.UI;      // HP바 Image용
+using UnityEngine.UI;
+using System.Collections;
 
 public class AirRobot : MonoBehaviour, IEnemy
 {
@@ -26,10 +27,15 @@ public class AirRobot : MonoBehaviour, IEnemy
     private Transform _playerTr;
     private Transform _tr;
     
-    // ================== HP BAR UI ==================
     [Header("HP Bar UI")]
     [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
     [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
+    
+    [Header("Death")]
+    [SerializeField] private float _deathTime = 2f;
+    [SerializeField] private ParticleSystem _DeathEffect;
+    [SerializeField] private AudioSource _DeathAudio;
+    private bool _isDead = false;
     
     private void Start()
     { 
@@ -228,11 +234,48 @@ public class AirRobot : MonoBehaviour, IEnemy
         _hpFillImage.fillAmount = Mathf.Clamp01(ratio);
     }
     
+    private void PlayDeath()
+    {
+        // 🔹 이펙트 실행
+        if (_DeathEffect != null)
+        {
+            _DeathEffect.transform.SetParent(null); // 부모 떼기
+            _DeathEffect.Play();
+
+            float effectDuration =
+                _DeathEffect.main.duration +
+                _DeathEffect.main.startLifetime.constantMax;
+
+            Destroy(_DeathEffect.gameObject, effectDuration + 0.1f);
+        }
+
+        // 🔹 사운드 실행
+        if (_DeathAudio != null && _DeathAudio.clip != null)
+        {
+            _DeathAudio.transform.SetParent(null); // 부모 떼기
+            _DeathAudio.Play();
+
+            Destroy(_DeathAudio.gameObject, _DeathAudio.clip.length + 0.1f);
+        }
+    }
+    
     private void Die()
     {
-        DropScrap(_scrapAmount);
+        if (_isDead) return;    // 여러 번 실행되는 것 방지
+        _isDead = true;
+        PlayDeath();
+
+        if (_hpCanvas != null)
+            _hpCanvas.gameObject.SetActive(false);
+
+        StartCoroutine(DieRoutine());
+    }
+    
+    private IEnumerator DieRoutine()
+    {
+        yield return new WaitForSeconds(_deathTime);
+        DropScrap(_scrapAmount);               
         Destroy(gameObject);
-        Debug.Log("[AirRobot] 파괴됨");
     }
 
     public void DropScrap(int amount)

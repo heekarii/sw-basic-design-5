@@ -32,7 +32,7 @@ public class LaserRobot : MonoBehaviour, IEnemy
     [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
     
     [Header("Death")]
-    [SerializeField] private float _deathTime = 3f;
+    [SerializeField] private float _deathTime = 2f;
     [SerializeField] private ParticleSystem _DeathEffect;
     [SerializeField] private AudioSource _DeathAudio;
     
@@ -214,7 +214,7 @@ public class LaserRobot : MonoBehaviour, IEnemy
         StartCoroutine(AttackRoutine());
     }
 
-    private System.Collections.IEnumerator AttackRoutine()
+    private IEnumerator AttackRoutine()
     {
         _isAttacking = true;
         _agent.isStopped = true;

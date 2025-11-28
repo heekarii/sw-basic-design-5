@@ -1,5 +1,6 @@
 using UnityEngine;
-using UnityEngine.UI;      // HP바 Image용
+using UnityEngine.UI;
+using System.Collections;
 
 public class AIRobot : MonoBehaviour, IEnemy
 {
@@ -27,12 +28,15 @@ public class AIRobot : MonoBehaviour, IEnemy
     [Header("Ref")]
     [SerializeField] private Player _player;
     
-    // ================== HP BAR UI ==================
     [Header("HP Bar UI")]
     [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
     [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
     private Transform _camTr;                      // 카메라 Transform
-    // =================================================
+    
+    [Header("Death")]
+    [SerializeField] private float _deathTime = 2f;
+    [SerializeField] private ParticleSystem _DeathEffect;
+    [SerializeField] private AudioSource _DeathAudio;
     
     private float _attackRangeSqr;
     private float _aggravationRangeSqr;
@@ -43,6 +47,7 @@ public class AIRobot : MonoBehaviour, IEnemy
     private Transform _playerTr;
 
     private bool _isAttacking = false;
+    private bool _isDie = false;
     private bool _isCoolingDown = false;
 
 
