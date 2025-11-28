@@ -15,23 +15,23 @@ public class PunchRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _attackRange = 3.0f;        // 공격 범위
     [SerializeField] private float _moveSpeed = 3.5f;
     [SerializeField] private float _lookAtTurnSpeed = 8.0f;
-    [SerializeField] private float _deathTime = 3.0f;
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 3;
     [SerializeField] private AudioSource _attackAudio;
     [SerializeField] private Player _player;
     
-    // ================== HP BAR UI ==================
     [Header("HP Bar UI")]
     [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
     [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
-    // =================================================
-
-    private bool _isAttacking = false;
-    private bool _isCoolingDown = false;
+    
+    [Header("Death")]
+    [SerializeField] private float _deathTime = 3.0f;
     private bool _isDead = false;
 
-
+    
+    private bool _isAttacking = false;
+    private bool _isCoolingDown = false;
+    
     private NavMeshAgent _agent;
     private Animator _animator;
     private Rigidbody _rb;
