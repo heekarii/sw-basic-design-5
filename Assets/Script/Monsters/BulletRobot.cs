@@ -534,15 +534,47 @@ public class BulletRobot : MonoBehaviour, IEnemy
     {
         if (_isDead) return;
         _isDead = true;
-        
-        
-        PlayDeath();
 
+        // 1) 진행 중인 모든 코루틴(총알 난사 공격 포함) 정지
+        StopAllCoroutines();
+        _isAttacking   = false;
+        _isCoolingDown = false;
+
+        // 2) 공격 이펙트 / 사운드 정리
+        SetShotFx(false);                     // 총구 이펙트 끄기
+
+        if (_attackAudio != null && _attackAudio.isPlaying)
+            _attackAudio.Stop();              // 공격 사운드 정지
+
+        // 3) NavMeshAgent 완전히 멈추기
+        if (_agent != null)
+        {
+            _agent.isStopped      = true;
+            _agent.velocity       = Vector3.zero;
+            _agent.ResetPath();
+            _agent.updateRotation = false;
+        }
+
+        // 4) 콜라이더 비활성화 (원하면 꺼두는 게 깔끔함)
+        Collider selfCol = GetComponent<Collider>();
+        if (selfCol != null)
+            selfCol.enabled = false;
+
+        // 5) 애니메이션 속도 0으로 (걷기 멈춘 모션 유지)
+        if (_anim != null)
+            _anim.SetFloat("Speed", 0f);
+
+        // 6) HP바 끄기
         if (_hpCanvas != null)
             _hpCanvas.gameObject.SetActive(false);
 
+        // 7) 죽음 이펙트 / 사운드 재생
+        PlayDeath();
+
+        // 8) 약간 딜레이 후 스크랩 드랍 + 삭제
         StartCoroutine(DieRoutine());
     }
+
 
     
     private IEnumerator DieRoutine()

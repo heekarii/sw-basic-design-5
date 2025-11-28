@@ -318,14 +318,49 @@ public class SpearRobot : MonoBehaviour, IEnemy
     {
         if (_isDead) return;
         _isDead = true;
-        _animator?.SetTrigger("isDie");
-        _animator?.SetBool("isWalking", false);
 
+        // 1) 진행 중인 코루틴(공격 등) 전부 정지 + 상태 플래그 초기화
+        StopAllCoroutines();
+        _isAttacking   = false;
+        _isCoolingDown = false;
+
+        // 2) NavMeshAgent 완전히 멈추기
+        if (_agent != null)
+        {
+            _agent.isStopped      = true;
+            _agent.velocity       = Vector3.zero;
+            _agent.ResetPath();
+            _agent.updateRotation = false;
+        }
+
+        // 3) 이동/공격 관련 사운드 정지
+        if (_electricAudioSource != null && _electricAudioSource.isPlaying)
+            _electricAudioSource.Stop();
+
+        if (_attackAudioSource != null && _attackAudioSource.isPlaying)
+            _attackAudioSource.Stop();
+
+        // 4) 애니메이션 정리 + 죽는 모션 강제
+        if (_animator != null)
+        {
+            _animator.ResetTrigger("isAttacking");  // 공격 트리거 리셋
+            _animator.SetBool("isWalking", false);  // 걷기 끄기
+            _animator.SetTrigger("isDie");          // 죽음 트리거
+        }
+
+        // 5) 콜라이더 비활성화 (시체에 부딪히는 것 방지)
+        Collider selfCol = GetComponent<Collider>();
+        if (selfCol != null)
+            selfCol.enabled = false;
+
+        // 6) HP바 끄기
         if (_hpCanvas != null)
             _hpCanvas.gameObject.SetActive(false);
 
+        // 7) 일정 시간 후 스크랩 드랍 + 오브젝트 삭제
         StartCoroutine(DieRoutine());
     }
+
     
     private IEnumerator DieRoutine()
     {

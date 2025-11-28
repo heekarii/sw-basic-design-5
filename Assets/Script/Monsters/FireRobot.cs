@@ -432,17 +432,39 @@ public class FireRobot : MonoBehaviour, IEnemy
     {
         if (_isDead) return;
         _isDead = true;
-        
-        
-        FxOff();
-        PlayDeath();
 
+        // 1) 진행 중인 모든 코루틴(불 공격 루틴 포함) 정지
+        StopAllCoroutines();
+        _isAttacking   = false;
+        _isCoolingDown = false;
+
+        // 2) 불 VFX / SFX 끄기
+        FxOff();   // 파티클 + 불 사운드 전부 정지
+
+        // 3) NavMeshAgent 완전히 멈추기
+        if (_agent != null)
+        {
+            _agent.isStopped      = true;
+            _agent.velocity       = Vector3.zero;
+            _agent.ResetPath();
+            _agent.updateRotation = false;
+        }
+
+        // 4) 콜라이더 비활성화 (시체에 부딪히는 거 방지)
+        Collider selfCol = GetComponent<Collider>();
+        if (selfCol != null)
+            selfCol.enabled = false;
+
+        // 5) HP바 끄기
         if (_hpCanvas != null)
             _hpCanvas.gameObject.SetActive(false);
 
+        // 6) 죽음 이펙트 / 사운드 재생
+        PlayDeath();
+
+        // 7) 약간 딜레이 후 스크랩 드랍 + 본체 삭제
         StartCoroutine(DieRoutine());
     }
-
     
     private IEnumerator DieRoutine()
     {
