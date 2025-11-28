@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;      // HP바 Image용
+using UnityEngine.UI;
+using System.Collections;
 
 public class PunchRobot : MonoBehaviour, IEnemy
 {
@@ -14,6 +15,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _attackRange = 3.0f;        // 공격 범위
     [SerializeField] private float _moveSpeed = 3.5f;
     [SerializeField] private float _lookAtTurnSpeed = 8.0f;
+    [SerializeField] private float _deathTime = 3.0f;
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 3;
     [SerializeField] private AudioSource _attackAudio;
@@ -27,6 +29,8 @@ public class PunchRobot : MonoBehaviour, IEnemy
 
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
+    private bool _isDead = false;
+
 
     private NavMeshAgent _agent;
     private Animator _animator;
@@ -287,7 +291,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
         StartCoroutine(AttackRoutine());
     }
 
-    private System.Collections.IEnumerator AttackRoutine()
+    private IEnumerator AttackRoutine()
     {
         Debug.Log("[PunchRobot] Start AttackCasting");
 
@@ -334,12 +338,12 @@ public class PunchRobot : MonoBehaviour, IEnemy
         _agent.isStopped = false;
     }
     
-    public void CancelAttack()
-    {
-        Debug.Log("[PunchRobot] Attack canceled");
-        _isAttacking    = false;
-        _agent.isStopped = false;
-    }
+    // public void CancelAttack()
+    // {
+    //     Debug.Log("[PunchRobot] Attack canceled");
+    //     _isAttacking    = false;
+    //     _agent.isStopped = false;
+    // }
     
     public void TakeDamage(float dmg)
     {
@@ -361,16 +365,27 @@ public class PunchRobot : MonoBehaviour, IEnemy
         _hpFillImage.fillAmount = Mathf.Clamp01(ratio);
     }
 
+
     private void Die()
     {
-        DropScrap(_scrapAmount);
+        if (_isDead) return;    // 여러 번 실행되는 것 방지
+        _isDead = true;
+        _animator?.SetTrigger("isDie");
+        _animator?.SetBool("isWalking", false);
 
         if (_hpCanvas != null)
             _hpCanvas.gameObject.SetActive(false);
 
-        Destroy(gameObject);
-        Debug.Log("[PunchRobot] has died.");
+        StartCoroutine(DieRoutine());
     }
+    
+    private IEnumerator DieRoutine()
+    {
+        yield return new WaitForSeconds(_deathTime);
+        DropScrap(_scrapAmount);               
+        Destroy(gameObject);                   // 삭제
+    }
+    
     
     public void DropScrap(int amount)
     {
