@@ -72,9 +72,11 @@ public class Player : MonoBehaviour
 
     private GameObject _currentWeaponModel;
 
-    [Header("Effects")]
+    [Header("Sound")]
     [SerializeField] private AudioClip _stunSound;
+    [SerializeField] private AudioClip _BGMSound;
     private AudioSource _stunAudioSource;
+    private AudioSource _BGMAudioSource;
 
     // Cached Components & Managers
     private Rigidbody _rb;
@@ -93,6 +95,8 @@ public class Player : MonoBehaviour
         CacheComponents();
         InitializeState();
         SetupStunAudio();
+        SetupBGMAudio();
+        _BGMAudioSource.Play();
 
         Cursor.visible = false;
     }
@@ -151,6 +155,14 @@ public class Player : MonoBehaviour
         _stunAudioSource.clip = _stunSound;
         _stunAudioSource.loop = false;
         _stunAudioSource.playOnAwake = false;
+    }
+    
+    private void SetupBGMAudio()
+    {
+        _BGMAudioSource = gameObject.AddComponent<AudioSource>();
+        _BGMAudioSource.clip = _BGMSound;
+        _BGMAudioSource.loop = true;
+        _BGMAudioSource.playOnAwake = true;
     }
 
     /// <summary>
