@@ -26,9 +26,9 @@ public class PunchRobot : MonoBehaviour, IEnemy
     
     [Header("Death")]
     [SerializeField] private float _deathTime = 3.0f;
-    private bool _isDead = false;
-
     
+    
+    private bool _isDead = false;
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
     
@@ -109,11 +109,15 @@ public class PunchRobot : MonoBehaviour, IEnemy
     {
         if (_playerTr == null || _agent == null)
             return;
-
-        // 죽었으면 정리
-        if (_curHp <= 0f)
+        if (_isDead)
         {
-            Die();
+            if (_agent != null)
+            {
+                _agent.isStopped = true;
+                _agent.velocity = Vector3.zero;
+                _agent.ResetPath();
+                _agent.updateRotation = false;
+            }
             return;
         }
 
@@ -368,16 +372,37 @@ public class PunchRobot : MonoBehaviour, IEnemy
 
     private void Die()
     {
-        if (_isDead) return;    // 여러 번 실행되는 것 방지
+        if (_isDead) return;
         _isDead = true;
-        _animator?.SetTrigger("isDie");
-        _animator?.SetBool("isWalking", false);
+        
+        StopAllCoroutines();
+        _isAttacking   = false;
+        _isCoolingDown = false;
+        
+        if (_agent != null)
+        {
+            _agent.isStopped      = true;
+            _agent.velocity       = Vector3.zero;
+            _agent.ResetPath();
+            _agent.updateRotation = false;
+        }
+        
+        if (_animator != null)
+        {
+            _animator.ResetTrigger("isAttacking");
+            _animator.SetBool("isWalking", false);
+            _animator.SetTrigger("isDie");
+        }
 
+        if (_attackAudio != null && _attackAudio.isPlaying)
+            _attackAudio.Stop();
+        
         if (_hpCanvas != null)
             _hpCanvas.gameObject.SetActive(false);
-
+        
         StartCoroutine(DieRoutine());
     }
+
     
     private IEnumerator DieRoutine()
     {

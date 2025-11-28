@@ -552,6 +552,7 @@ MonoBehaviour:
   _hitSound: {fileID: 8300000, guid: df62e59aa253a4c4ca386303352e257b, type: 3}
   _hpFillImage: {fileID: 7012910430367597019}
   _hpCanvas: {fileID: 6812823761902610152}
+  _deathTime: 4
 --- !u!54 &4395187175818644200
 Rigidbody:
   m_ObjectHideFlags: 0
