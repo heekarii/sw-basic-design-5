@@ -383,7 +383,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
     {
         yield return new WaitForSeconds(_deathTime);
         DropScrap(_scrapAmount);               
-        Destroy(gameObject);                   // 삭제
+        Destroy(gameObject);
     }
     
     

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;      // HP바 Image용
-
+using UnityEngine.UI;
+using System.Collections;
 
 public class SpearRobot : MonoBehaviour, IEnemy
 {
@@ -29,12 +29,15 @@ public class SpearRobot : MonoBehaviour, IEnemy
     private AudioSource _electricAudioSource;
     private AudioSource _attackAudioSource;
     
-    // ================== HP BAR UI ==================
     [Header("HP Bar UI")]
     [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
     [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
     
+    [Header("Death")]
+    [SerializeField] private float _deathTime = 3.0f;
+    
     private Animator _animator;
+    private bool _isDead = false;
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
     private NavMeshAgent _agent;
@@ -101,7 +104,19 @@ public class SpearRobot : MonoBehaviour, IEnemy
     void Update()
     {
         if (_player == null || _agent == null) return;
-
+        if (_isDead)
+        {
+            if (_agent != null)
+            {
+                _agent.isStopped = true;
+                _agent.velocity = Vector3.zero;
+                _agent.ResetPath();
+                _agent.updateRotation = false;
+            }
+            return;
+        }
+        
+        
         // NavMesh 이탈 복구
         if (!_agent.isOnNavMesh)
         {
@@ -241,12 +256,12 @@ public class SpearRobot : MonoBehaviour, IEnemy
     
     private void AttackPlayer()
     {
-        if (_isAttacking || _isCoolingDown) return;
+        if (_isAttacking || _isCoolingDown || !HasLineOfSight() || _isDead) return;
         _animator.SetTrigger("isAttacking");
         StartCoroutine(AttackRoutine());
     }
 
-    private System.Collections.IEnumerator AttackRoutine()
+    private IEnumerator AttackRoutine()
     {
         
         
@@ -301,10 +316,24 @@ public class SpearRobot : MonoBehaviour, IEnemy
     
     private void Die()
     {
-        DropScrap(_scrapAmount);
-        Destroy(gameObject);
-        Debug.Log("SpearRobot has died.");
+        if (_isDead) return;
+        _isDead = true;
+        _animator?.SetTrigger("isDie");
+        _animator?.SetBool("isWalking", false);
+
+        if (_hpCanvas != null)
+            _hpCanvas.gameObject.SetActive(false);
+
+        StartCoroutine(DieRoutine());
     }
+    
+    private IEnumerator DieRoutine()
+    {
+        yield return new WaitForSeconds(_deathTime);
+        DropScrap(_scrapAmount);               
+        Destroy(gameObject);
+    }
+
     
     public void DropScrap(int amount)
     {
