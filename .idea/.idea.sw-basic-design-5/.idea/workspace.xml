@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/LaserDrone.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/LaserDrone.cs" afterDir="false" />
-    </list>
+    <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -177,6 +175,7 @@
       <workItem from="1764164514379" duration="456000" />
       <workItem from="1764248234521" duration="636000" />
       <workItem from="1764249997573" duration="407000" />
+      <workItem from="1764328346293" duration="364000" />
     </task>
     <servers />
   </component>
