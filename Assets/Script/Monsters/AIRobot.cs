@@ -196,18 +196,26 @@ public class AIRobot : MonoBehaviour, IEnemy
         
         float elapsed      = 0f;
         float tickDuration = _damageInterval;
+        bool endedNaturally = true;   // true: 10초를 다 채우고 끝난 경우 / false: 중간에 플레이어가 나가서 끊긴 경우
 
         while (elapsed < _attackingTime)
         {
             if (_playerTr == null)
+            {
+                endedNaturally = false;
                 break;
+            }
 
-            // 다음 공격까지 대기 (→ 1초,2초,3초,... 타이밍 유지)
+            // 다음 번개까지 대기
             yield return new WaitForSeconds(_damageInterval);
             
             // 대기 후에도 여전히 "공격 범위 + 시야" 안인지 확인
             if (!IsPlayerInAttackRangeAndVisible())
+            {
+                // ▶ 여기서 끊기면 공격 중단 + 쿨타임 없음 (플레이어가 다시 들어오면 새로 10초 시작)
+                endedNaturally = false;
                 break;
+            }
 
             // 1) 번개 떨어질 위치 계산 + 실제 번개 프리팹 생성
             Vector3 strikePos = GetRandomStrikePosition();
@@ -239,8 +247,8 @@ public class AIRobot : MonoBehaviour, IEnemy
         // 공격 종료
         _isAttacking = false;
 
-        // 아직 "인식 범위 + 시야" 안이라면 쿨다운 진입
-        if (IsPlayerInDetectRangeAndVisible())
+        // ▷ 10초를 끝까지 쏜 경우에만 쿨타임 적용
+        if (endedNaturally && IsPlayerInDetectRangeAndVisible())
         {
             _isCoolingDown = true;
             yield return new WaitForSeconds(_attackCooldown);
@@ -248,9 +256,13 @@ public class AIRobot : MonoBehaviour, IEnemy
         }
         else
         {
-            // 범위 밖으로 나가 있으면 그냥 이펙트 다 끄고 끝
-            SetRed(false);
-            SetBlue(false);
+            // 중간에 끊긴 경우: 쿨타임 없이 끝. (플레이어가 다시 들어오면 새 공격 사이클 시작)
+            _isCoolingDown = false;
+            if (!IsPlayerInDetectRangeAndVisible())
+            {
+                SetRed(false);
+                SetBlue(false);
+            }
         }
     }
 
@@ -455,5 +467,4 @@ public class AIRobot : MonoBehaviour, IEnemy
             prev = next;
         }
     }
-
 }
