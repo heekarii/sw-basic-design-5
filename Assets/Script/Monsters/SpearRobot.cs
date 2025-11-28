@@ -6,7 +6,7 @@ using UnityEngine.UI;      // HP바 Image용
 public class SpearRobot : MonoBehaviour, IEnemy
 {
     [Header("Monster Status")]
-    [SerializeField] private float _maxHp = 150.0f;
+    [SerializeField] private float _maxHp = 200.0f;
     [SerializeField] private float _curHp;
     [SerializeField] private float _damage = 50.0f;
     [SerializeField] private float _Batterydamage = 1.0f;

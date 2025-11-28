@@ -551,16 +551,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackPower: 10
-  _moveSpeed: 3
-  _maxHealth: 500
+  _moveSpeed: 5
+  _maxHealth: 1000
   _currentHealth: 0
-  _isGrounded: 1
   _jumpForce: 5
-  _curBattery: 100
-  _curBullets: 0
-  _isStunned: 0
   _curSpeed: 0
+  _isGrounded: 1
+  _isShifting: 0
   _isSlowed: 0
+  _curBattery: 100
   _batteryReductionAmount:
   - 0.0002
   _batteryReductionTerm:
@@ -568,11 +567,10 @@ MonoBehaviour:
   _curPlayerStatus: 0
   _curHealthLevel: 1
   _curSpeedLevel: 1
-  _isShifting: 0
   _speedWithBoostPerLevel:
-  - 5
-  - 6
   - 7
+  - 8
+  - 9
   _attackRaycastMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -582,12 +580,14 @@ MonoBehaviour:
   - 0.5
   _castingTime: 1
   _isMeleeCasting: 0
+  _isStunned: 0
   _camera: {fileID: 973242834122530442}
   _mouseSensitivity: 2
   _cameraPitchTarget: {fileID: 5462974152216465657}
   _currentWeaponData: {fileID: 0}
   _currentWeaponIdx: 0
   _weaponSocket: {fileID: 8286933817016139198}
+  _meleeHitbox: {fileID: 0}
   _stunSound: {fileID: 8300000, guid: 30634e3dc33c1fd4eb1ca0e5cf0dec69, type: 3}
 --- !u!54 &8667542401998431201
 Rigidbody:

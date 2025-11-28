@@ -4,7 +4,7 @@ using UnityEngine.UI;      // HP바 Image용
 public class AIRobot : MonoBehaviour, IEnemy
 {
     [Header("Monster Status")]
-    [SerializeField] private float _maxHp = 100.0f;
+    [SerializeField] private float _maxHp = 150.0f;
     [SerializeField] private float _curHp;
     [SerializeField] private float _damage = 30.0f;
     [SerializeField] private float _damageInterval = 0.5f;   // 번개 떨어지는 간격

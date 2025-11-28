@@ -493,9 +493,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6845645277784552689}
+  - component: {fileID: 5521334334075341776}
   - component: {fileID: 4395187175818644200}
   - component: {fileID: -4312381607471391432}
-  - component: {fileID: 5521334334075341776}
   - component: {fileID: 5315567320004527438}
   m_Layer: 0
   m_Name: chainsawBot_ModelRoot
@@ -521,6 +521,37 @@ Transform:
   - {fileID: 6812823761902610152}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5521334334075341776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153351544232939528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac2a181686629a8489341d30a4565379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHp: 250
+  _curHp: 0
+  _damage: 70
+  _attackCastingTime: 0.5
+  _attackCooldown: 3
+  _attackingTime: 1
+  _aggravationRange: 14.25
+  _attackRange: 4.25
+  _moveSpeed: 4
+  _lookAtTurnSpeed: 8
+  _anim: {fileID: 0}
+  _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
+  _scrapAmount: 15
+  _player: {fileID: 0}
+  _sawSound: {fileID: 8300000, guid: 656f899ef532d5b46ad8926ef898d18a, type: 3}
+  _attackSound: {fileID: 8300000, guid: a92bcbdc84d116d41a63de4db9426c30, type: 3}
+  _hitSound: {fileID: 8300000, guid: df62e59aa253a4c4ca386303352e257b, type: 3}
+  _hpFillImage: {fileID: 7012910430367597019}
+  _hpCanvas: {fileID: 6812823761902610152}
 --- !u!54 &4395187175818644200
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -570,37 +601,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5521334334075341776
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1153351544232939528}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac2a181686629a8489341d30a4565379, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHp: 200
-  _curHp: 0
-  _damage: 70
-  _attackCastingTime: 0.5
-  _attackCooldown: 3
-  _attackingTime: 1
-  _aggravationRange: 14.25
-  _attackRange: 4.25
-  _moveSpeed: 4
-  _lookAtTurnSpeed: 8
-  _anim: {fileID: 0}
-  _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
-  _scrapAmount: 15
-  _player: {fileID: 0}
-  _sawSound: {fileID: 8300000, guid: 656f899ef532d5b46ad8926ef898d18a, type: 3}
-  _attackSound: {fileID: 8300000, guid: a92bcbdc84d116d41a63de4db9426c30, type: 3}
-  _hitSound: {fileID: 8300000, guid: df62e59aa253a4c4ca386303352e257b, type: 3}
-  _hpFillImage: {fileID: 7012910430367597019}
-  _hpCanvas: {fileID: 6812823761902610152}
 --- !u!95 &5315567320004527438
 Animator:
   serializedVersion: 7

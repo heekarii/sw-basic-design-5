@@ -84,7 +84,7 @@ MonoBehaviour:
   _attackCooldown: 3
   _aggravationRange: 15
   _attackRange: 6
-  _moveSpeed: 5
+  _moveSpeed: 4
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
   _lookAtTurnSpeed: 8
   _player: {fileID: 0}

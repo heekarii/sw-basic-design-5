@@ -11,7 +11,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _attackCastingTime = 2.0f;
     [SerializeField] private float _attackCooldown = 1.0f;
     [SerializeField] private float _aggravationRange = 6.9f;   // 인식 범위
-    [SerializeField] private float _attackRange = 2.0f;        // 공격 범위
+    [SerializeField] private float _attackRange = 3.0f;        // 공격 범위
     [SerializeField] private float _moveSpeed = 3.5f;
     [SerializeField] private float _lookAtTurnSpeed = 8.0f;
     [SerializeField] private ScrapData _scrapData;

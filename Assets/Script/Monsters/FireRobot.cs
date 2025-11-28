@@ -10,7 +10,7 @@ public class FireRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _attackCooldown = 3.0f;
     [SerializeField] private float _aggravationRange = 15.0f;
     [SerializeField] private float _attackRange = 6.0f;
-    [SerializeField] private float _moveSpeed = 5.0f;
+    [SerializeField] private float _moveSpeed = 4.0f;
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절
     [SerializeField] private Player _player;

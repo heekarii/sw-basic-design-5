@@ -6512,7 +6512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 677b8946db025cb45b97e2df97f4c9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHp: 100
+  _maxHp: 150
   _curHp: 0
   _damage: 30
   _damageInterval: 0.5
