@@ -1,10 +1,11 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class LaserDrone : MonoBehaviour, IEnemy
 {
-    [Header("섬광 로봇 기본 설정")]
+    [Header("Monster Status")]
     [SerializeField] private float _detectDistance = 13.7f;  // 시야 감지 거리
     [SerializeField] private float _attackDistance = 8.7f;   // 공격 거리
     [SerializeField] private float _moveSpeed = 6f;          // 이동 속도
@@ -15,21 +16,25 @@ public class LaserDrone : MonoBehaviour, IEnemy
     [SerializeField] private int _scrapAmount = 5;            // 드랍 스크랩 양
     [SerializeField] private float _flashMaintainTime = 3f;
     [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절
-
     
-    [Header("참조 오브젝트")]
+    [Header("Object")]
     [SerializeField] private Transform _player;              // ZERON
     [SerializeField] private Image _flashOverlay;            // 섬광 피격용 UI (Canvas Image)
     [SerializeField] private ScrapData _scrapData;          // 스크랩 데이터
     [SerializeField] private AudioSource _attackAudio;
     
-    // ================== HP BAR UI ==================
     [Header("HP Bar UI")]
     [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
     [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
     private Transform _camTr;                      // 카메라 Transform
-    // =================================================
 
+    [Header("Death")]
+    [SerializeField] private float _deathTime = 2f;
+    [SerializeField] private ParticleSystem _DeathEffect;
+    [SerializeField] private AudioSource _DeathAudio;
+    
+    
+    private bool _isDead = false;
     private bool _isActive = false;
     private bool _isAttacking = false;
     private float _lastAttackTime = -999f;
@@ -225,12 +230,56 @@ public class LaserDrone : MonoBehaviour, IEnemy
         _currentHealth -= Mathf.RoundToInt(damage);
         UpdateHpUI();
         if (_currentHealth <= 0)
+            Die();
+    }
+    
+    private void PlayDeath()
+    {
+        // 🔹 이펙트 실행
+        if (_DeathEffect != null)
         {
-            DropScrap(_scrapAmount);
-            Destroy(gameObject);
+            _DeathEffect.transform.SetParent(null); // 부모 떼기
+            _DeathEffect.Play();
+
+            float effectDuration =
+                _DeathEffect.main.duration +
+                _DeathEffect.main.startLifetime.constantMax;
+
+            Destroy(_DeathEffect.gameObject, effectDuration + 0.1f);
+        }
+
+        // 🔹 사운드 실행
+        if (_DeathAudio != null && _DeathAudio.clip != null)
+        {
+            _DeathAudio.transform.SetParent(null); // 부모 떼기
+            _DeathAudio.Play();
+
+            Destroy(_DeathAudio.gameObject, _DeathAudio.clip.length + 0.1f);
         }
     }
+    
+    private void Die()
+    {
+        if (_isDead) return;
+        _isDead = true;
+        
+        
+        PlayDeath();
 
+        if (_hpCanvas != null)
+            _hpCanvas.gameObject.SetActive(false);
+
+        StartCoroutine(DieRoutine());
+    }
+
+    
+    private IEnumerator DieRoutine()
+    {
+        yield return new WaitForSeconds(_deathTime);
+        DropScrap(_scrapAmount);     
+        Destroy(gameObject);                   // 삭제
+    }
+    
     public void DropScrap(int amount)
     {
         if (!_scrapData) return;
@@ -238,8 +287,9 @@ public class LaserDrone : MonoBehaviour, IEnemy
         GameObject scrap = Instantiate(_scrapData.ScrapPrefab, transform.position, Quaternion.identity);
         Scrap scrapComponent = scrap.AddComponent<Scrap>();
         scrapComponent.InitScrap(amount);
-        Debug.Log($"[LaserDrone] 스크랩 {amount} 드랍");
+        Debug.Log($"[AirRobot] 스크랩 {amount} 드랍");
     }
+    
     
     // 몬스터를 중심으로 인식 범위(_aggravationRange)를 흰 원으로 시각화
     private void DrawAggroRadiusGizmo()
