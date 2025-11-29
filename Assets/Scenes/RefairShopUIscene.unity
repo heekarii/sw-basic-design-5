@@ -128,6 +128,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 451676250}
+  - component: {fileID: 451676251}
   m_Layer: 0
   m_Name: TransitionManager
   m_TagString: Untagged
@@ -150,6 +151,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &451676251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 451676249}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f012c978a78e884a916ff2638d85511, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CurStationManager: {fileID: 0}
 --- !u!1 &1001257068
 GameObject:
   m_ObjectHideFlags: 0
@@ -517,6 +531,64 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2088395802
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2088395804}
+  - component: {fileID: 2088395803}
+  m_Layer: 0
+  m_Name: StationManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2088395803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088395802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e9562baeee5fe8418dda45dcb7b0c00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bgoff: {fileID: 5994376115931974029}
+  _bgon: {fileID: 6327391105420290446}
+  _selectRunImage: {fileID: 6525048566642669356}
+  _selectUpgradeImage: {fileID: 9222012377989996409}
+  _successImage: {fileID: 1565142894725551014}
+  _failureImage: {fileID: 8680024212233798530}
+  _runStation: {fileID: 4840634533218200042}
+  _exitStation: {fileID: 8434023788024837523}
+  _upgradeHealth: {fileID: 7489562434664000885}
+  _upgradeWeapon: {fileID: 5883200171548127253}
+  _upgradeMove: {fileID: 468077849032623787}
+  _level: {fileID: 2318628319643930323}
+  _amount: {fileID: 7929562943503309440}
+  UpgradeIdx: 0
+--- !u!4 &2088395804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088395802}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -87.29805, y: 24.901201, z: 226.50133}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -956,7 +1028,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1218697820563192317
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1418,7 +1490,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -2228,7 +2300,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &4083159442532538236
 GameObject:
   m_ObjectHideFlags: 0
@@ -3194,7 +3266,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &6233980680038092549
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3728,7 +3800,7 @@ GameObject:
   - component: {fileID: 873551609033949251}
   - component: {fileID: 218863969994265729}
   m_Layer: 5
-  m_Name: service center
+  m_Name: canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4223,7 +4295,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!222 &8239361938389860878
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4474,3 +4546,4 @@ SceneRoots:
   - {fileID: 1165411564}
   - {fileID: 2002554245}
   - {fileID: 451676250}
+  - {fileID: 2088395804}

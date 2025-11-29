@@ -128,40 +128,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 393394449}
-  - component: {fileID: 393394448}
   m_Layer: 0
   m_Name: StationManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &393394448
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 393394447}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e9562baeee5fe8418dda45dcb7b0c00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _bgoff: {fileID: 8252063253897696801}
-  _bgon: {fileID: 4824983558666262544}
-  _selectRunImage: {fileID: 6525048566642669356}
-  _selectUpgradeImage: {fileID: 9222012377989996409}
-  _successImage: {fileID: 1565142894725551014}
-  _failureImage: {fileID: 8680024212233798530}
-  _runStation: {fileID: 6063332912244244555}
-  _exitStation: {fileID: 666357773698922814}
-  _upgradeHealth: {fileID: 2166875614203917427}
-  _upgradeWeapon: {fileID: 1095658805525529334}
-  _upgradeMove: {fileID: 8462385023048953925}
-  _level: {fileID: 2318628319643930323}
-  _amount: {fileID: 1897546370}
-  UpgradeIdx: 0
+  m_IsActive: 0
 --- !u!4 &393394449
 Transform:
   m_ObjectHideFlags: 0
@@ -3039,7 +3012,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &6273504805078968183
 MonoBehaviour:
   m_ObjectHideFlags: 0

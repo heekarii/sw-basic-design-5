@@ -17,11 +17,11 @@ public class StationManager : MonoBehaviour
     [SerializeField] private Image _failureImage;
     
     [Header("Repair Main Station Buttons")] 
-    [SerializeField] private Image _runStation;
-    [SerializeField] private Image _exitStation;
-    [SerializeField] private Image _upgradeHealth;
-    [SerializeField] private Image _upgradeWeapon;
-    [SerializeField] private Image _upgradeMove;
+    [SerializeField] private Button _runStation;
+    [SerializeField] private Button _exitStation;
+    [SerializeField] private Button _upgradeHealth;
+    [SerializeField] private Button _upgradeWeapon;
+    [SerializeField] private Button _upgradeMove;
     [SerializeField] private TextMeshProUGUI _level;
     [SerializeField] private TextMeshProUGUI _amount;
 
@@ -36,7 +36,11 @@ public class StationManager : MonoBehaviour
 
     private void Awake()
     {
+        #if UNITY_2023_2_OR_NEWER
+        _transitionManager = UnityEngine.Object.FindFirstObjectByType<TransitionManager>();
+        #else
         _transitionManager = FindObjectOfType<TransitionManager>();
+        #endif
         _gameManager = GameManager.Instance;
 
         // StationManager가 열리기 직전(== 이 씬/오브젝트가 활성화되기 직전)에
@@ -50,14 +54,23 @@ public class StationManager : MonoBehaviour
             }
         }
 
-        _transitionManager.RegisterStationManager(this);
+        if (_transitionManager != null)
+        {
+            _transitionManager.RegisterStationManager(this);
+        }
+        else
+        {
+            Debug.LogWarning("[StationManager] TransitionManager를 찾을 수 없습니다. 등록을 건너뜁니다.");
+        }
         
-        // 이미지에 클릭 스크립트 붙이기
-        AddClick(_runStation, OnRunStationClick);
-        AddClick(_exitStation, OnExitStationClick);
-        AddClick(_upgradeHealth, OnUpgradeHealth);
-        AddClick(_upgradeWeapon, OnUpgradeWeapon);
-        AddClick(_upgradeMove, OnUpgradeMoveSpeed);
+        // 버튼에 클릭 리스너 연결
+        if (_runStation != null) _runStation.onClick.AddListener(OnRunStationClick);
+        if (_exitStation != null) _exitStation.onClick.AddListener(OnExitStationClick);
+        if (_upgradeHealth != null) _upgradeHealth.onClick.AddListener(OnUpgradeHealth);
+        if (_upgradeWeapon != null) _upgradeWeapon.onClick.AddListener(OnUpgradeWeapon);
+        if (_upgradeMove != null) _upgradeMove.onClick.AddListener(OnUpgradeMoveSpeed);
+
+        // 이미지(성공/실패)는 ClickableImage로 클릭 이벤트 연결
         AddClick(_successImage, OnClickSuccessImage);
         AddClick(_failureImage, OnClickFailureImage);
 
@@ -99,13 +112,19 @@ public class StationManager : MonoBehaviour
     private void OnExitStationClick()
     {
         Debug.Log("▶ 정비소 종료");
-        _transitionManager.ExitRepairStation();
+        if (_transitionManager != null)
+            _transitionManager.ExitRepairStation();
+        else
+            Debug.LogWarning("[StationManager] ExitRepairStation 호출 실패: TransitionManager가 없습니다.");
     }
 
     private void OnUpgradeHealth()
     {
         Debug.Log("▶ 체력 강화 선택");
-        _transitionManager.StartMiniGame("JumpMGame");
+        if (_transitionManager != null)
+            _transitionManager.StartMiniGame("JumpMGame");
+        else
+            Debug.LogWarning("[StationManager] StartMiniGame 호출 실패: TransitionManager가 없습니다.");
         if (_selectUpgradeImage != null) _selectUpgradeImage.gameObject.SetActive(false);
         UpgradeIdx = 1;
     }
@@ -113,14 +132,20 @@ public class StationManager : MonoBehaviour
     private void OnUpgradeWeapon()
     {
         Debug.Log("▶ 무기 강화 선택");
-        _transitionManager.StartMiniGame("MCardGame");
+        if (_transitionManager != null)
+            _transitionManager.StartMiniGame("MCardGame");
+        else
+            Debug.LogWarning("[StationManager] StartMiniGame 호출 실패: TransitionManager가 없습니다.");
         UpgradeIdx = 2;
     }
 
     private void OnUpgradeMoveSpeed()
     {
         Debug.Log("▶ 이동속도 강화 선택");
-        _transitionManager.StartMiniGame("MMazeGame");
+        if (_transitionManager != null)
+            _transitionManager.StartMiniGame("MMazeGame");
+        else
+            Debug.LogWarning("[StationManager] StartMiniGame 호출 실패: TransitionManager가 없습니다.");
         UpgradeIdx = 3;
     }
 
@@ -174,11 +199,17 @@ public class StationManager : MonoBehaviour
     
     private void OnClickSuccessImage()
     {
-        _transitionManager.ExitRepairStation();
+        if (_transitionManager != null)
+            _transitionManager.ExitRepairStation();
+        else
+            Debug.LogWarning("[StationManager] ExitRepairStation 호출 실패: TransitionManager가 없습니다.");
     }
     
     private void OnClickFailureImage()
     {
-        _transitionManager.ExitRepairStation();
+        if (_transitionManager != null)
+            _transitionManager.ExitRepairStation();
+        else
+            Debug.LogWarning("[StationManager] ExitRepairStation 호출 실패: TransitionManager가 없습니다.");
     }
 }
