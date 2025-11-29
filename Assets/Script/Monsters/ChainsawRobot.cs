@@ -13,7 +13,7 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _attackCooldown = 3.0f;
     [SerializeField] private float _attackingTime = 1.0f;
     [SerializeField] private float _aggravationRange = 14.25f;
-    [SerializeField] private float _attackRange = 4.25f;
+    [SerializeField] private float _attackRange = 5.0f;
     [SerializeField] private float _moveSpeed = 4.0f;
     [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절
     [SerializeField] private Animator _anim;   // 인스펙터 비워두면 Start에서 찾아줌
@@ -34,6 +34,7 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     
     [Header("Death")]
     [SerializeField] private float _deathTime = 3.0f;
+    [SerializeField] private AudioSource _deathAudio;
     
     private AudioSource _sawAudioSource;
     private AudioSource _attackAudioSource;
@@ -412,6 +413,7 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     
     private IEnumerator DieRoutine()
     {
+        _deathAudio.Play();
         yield return new WaitForSeconds(_deathTime);
         DropScrap(_scrapAmount);               
         Destroy(gameObject);

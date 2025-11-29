@@ -168,7 +168,27 @@ public class AIRobot : MonoBehaviour, IEnemy
                 SetBlue(false);
             }
         }
+
+        UpdateHpBarFacing();
     }
+    
+    private void UpdateHpBarFacing()
+    {
+        if (_hpCanvas == null) return;
+
+        Transform target = _playerTr;  // 플레이어를 바라보게
+
+        if (target == null) return;
+
+        // HP바 위치에서 플레이어 방향
+        Vector3 dir = target.position - _hpCanvas.position;
+        dir.y = 0f; // 위아래 기울어지는 거 싫으면 y 고정
+
+        if (dir.sqrMagnitude < 0.0001f) return;
+
+        _hpCanvas.rotation = Quaternion.LookRotation(dir);
+    }
+
 
     private void OnDrawGizmos()
     {

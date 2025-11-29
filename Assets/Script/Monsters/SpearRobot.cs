@@ -15,7 +15,7 @@ public class SpearRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _attackingTime = 1.0f;
     [SerializeField] private float _stunTime = 1.0f;
     [SerializeField] private float _aggravationRange = 15.25f;
-    [SerializeField] private float _attackRange = 5.25f;
+    [SerializeField] private float _attackRange = 5.75f;
     [SerializeField] private float _moveSpeed = 5.0f;
     [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절
     [SerializeField] private ScrapData _scrapData;
@@ -35,6 +35,7 @@ public class SpearRobot : MonoBehaviour, IEnemy
     
     [Header("Death")]
     [SerializeField] private float _deathTime = 3.0f;
+    [SerializeField] private AudioSource _deathAudio;
     
     private Animator _animator;
     private bool _isDead = false;
@@ -364,6 +365,7 @@ public class SpearRobot : MonoBehaviour, IEnemy
     
     private IEnumerator DieRoutine()
     {
+        _deathAudio.Play();
         yield return new WaitForSeconds(_deathTime);
         DropScrap(_scrapAmount);               
         Destroy(gameObject);
