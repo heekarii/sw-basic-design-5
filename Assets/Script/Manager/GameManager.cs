@@ -244,16 +244,25 @@ public class GameManager : Singleton<GameManager>
         if (!isSuccess) return;
         if (Player == null) return;
 
-        Player.UpdateHealth();
+        // Player에 추가한 공개 업그레이드 API 사용
+        Player.ApplyHealthUpgrade();
+        
+        // 즉시 상태/ UI를 최신화
+        UpdateStatusFromPlayer();
+        UpdateUI();
     }
 
-    /// <summary>
-    /// TODO: 탐사 관련 매니저 구현 후, 탐사 목표 UI를 표기하는 로직 추가 예정.
-    /// </summary>
-    public void ShowTargetUI()
+    public void DecreaseBattery(float amount)
     {
-        // TODO: 탐사 관련 매니저 연동 시 구현
+        _curBattery -= amount;
     }
-
+    
+    public void DecreaseScrap(int amount)
+    {
+        _curScrap -= amount;
+    }
+    
+    public int GetScrapAmount => _curScrap;
+    
     #endregion
 }

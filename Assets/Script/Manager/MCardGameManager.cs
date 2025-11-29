@@ -124,22 +124,25 @@ public class MCardGameManager : MonoBehaviour
     }
 
 
-    void EndGame(bool success)
+    void EndGame(bool isSuccess)
     {
         if (!gameActive) return;
         gameActive = false;
 
-        textPhase.text = success ? "SUCCESS" : "FAILED";
+        textPhase.text = isSuccess ? "SUCCESS" : "FAILED";
         if (textResult)
-            textResult.text = success ? "SUCCESS!" : "FAILED!";
+            textResult.text = isSuccess ? "SUCCESS!" : "FAILED!";
 
         resultPanel.SetActive(true);
 
-        if (success)
+        if (isSuccess)
             SendPlayer_Weapon();
-
+        Debug.Log(isSuccess ? "게임 성공!" : "게임 실패!");
+        TransitionManager.Instance.EndMiniGame("MCardGame", isSuccess);
+        
+        
         // 실패나 성공 둘 다 잠깐 후 종료 시킬 수도 있음 (선택사항)
-        StartCoroutine(AutoClose());
+        //StartCoroutine(AutoClose());
     }
 
     IEnumerator AutoClose()
