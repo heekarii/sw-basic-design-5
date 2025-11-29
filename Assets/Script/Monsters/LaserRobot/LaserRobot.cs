@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;      // HP바 Image용
+using UnityEngine.UI;
+using System.Collections;
 
 public class LaserRobot : MonoBehaviour, IEnemy
 {
@@ -26,17 +27,23 @@ public class LaserRobot : MonoBehaviour, IEnemy
     [SerializeField] private int _burstCount = 2;
     [SerializeField] private float _betweenShotDelay = 0.3f;
 
+    [Header("HP Bar UI")]
+    [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
+    [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
+    
+    [Header("Death")]
+    [SerializeField] private float _deathTime = 2f;
+    [SerializeField] private ParticleSystem _DeathEffect;
+    [SerializeField] private AudioSource _DeathAudio;
+    
+    
+    private bool _isDead = false;
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
     private NavMeshAgent _agent;
     private Transform _tr;
     private Transform _playerTr;
-
-    // ================== HP BAR UI ==================
-    [Header("HP Bar UI")]
-    [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
-    [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
-    // ==============================================
+    
 
     private void Awake()
     {
@@ -98,6 +105,15 @@ public class LaserRobot : MonoBehaviour, IEnemy
     {
         if (_playerTr == null || _agent == null)
             return;
+        
+        if (_isDead)
+        {
+            _agent.isStopped = true;
+            _agent.velocity = Vector3.zero;
+            _agent.ResetPath();
+            _agent.updateRotation = false;
+            return;
+        }
 
         // NavMesh 이탈 복구
         if (!_agent.isOnNavMesh)
@@ -207,7 +223,7 @@ public class LaserRobot : MonoBehaviour, IEnemy
         StartCoroutine(AttackRoutine());
     }
 
-    private System.Collections.IEnumerator AttackRoutine()
+    private IEnumerator AttackRoutine()
     {
         _isAttacking = true;
         _agent.isStopped = true;
@@ -318,13 +334,68 @@ public class LaserRobot : MonoBehaviour, IEnemy
         _hpFillImage.fillAmount = Mathf.Clamp01(ratio);
     }
 
+    private void PlayDeath()
+    {
+        // 🔹 이펙트 실행
+        if (_DeathEffect != null)
+        {
+            _DeathEffect.transform.SetParent(null); // 부모 떼기
+            _DeathEffect.Play();
+
+            float effectDuration =
+                _DeathEffect.main.duration +
+                _DeathEffect.main.startLifetime.constantMax;
+
+            Destroy(_DeathEffect.gameObject, effectDuration + 0.1f);
+        }
+
+        // 🔹 사운드 실행
+        if (_DeathAudio != null && _DeathAudio.clip != null)
+        {
+            _DeathAudio.transform.SetParent(null); // 부모 떼기
+            _DeathAudio.Play();
+
+            Destroy(_DeathAudio.gameObject, _DeathAudio.clip.length + 0.1f);
+        }
+    }
+    
     private void Die()
     {
-        DropScrap(_scrapAmount);
-        Destroy(gameObject);
-        Debug.Log("[LaserRobot] has died.");
+        if (_isDead) return;
+        _isDead = true;
+        
+        StopAllCoroutines();
+        _isAttacking   = false;
+        _isCoolingDown = false;
+        
+        if (_agent != null)
+        {
+            _agent.isStopped      = true;
+            _agent.velocity       = Vector3.zero;
+            _agent.ResetPath();
+            _agent.updateRotation = false;
+        }
+        
+        Collider selfCol = GetComponent<Collider>();
+        if (selfCol != null)
+            selfCol.enabled = false;
+        
+        if (_hpCanvas != null)
+            _hpCanvas.gameObject.SetActive(false);
+        
+        PlayDeath();
+
+        StartCoroutine(DieRoutine());
     }
 
+    
+    private IEnumerator DieRoutine()
+    {
+        yield return new WaitForSeconds(_deathTime);
+        DropScrap(_scrapAmount);               
+        Destroy(gameObject);                   // 삭제
+    }
+    
     public void DropScrap(int amount)
     {
         if (!_scrapData) return;

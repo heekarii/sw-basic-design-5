@@ -1,12 +1,12 @@
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;      // HP바 Image용
-
+using UnityEngine.UI;
+using System.Collections;
 
 public class SpearRobot : MonoBehaviour, IEnemy
 {
     [Header("Monster Status")]
-    [SerializeField] private float _maxHp = 150.0f;
+    [SerializeField] private float _maxHp = 200.0f;
     [SerializeField] private float _curHp;
     [SerializeField] private float _damage = 50.0f;
     [SerializeField] private float _Batterydamage = 1.0f;
@@ -29,12 +29,15 @@ public class SpearRobot : MonoBehaviour, IEnemy
     private AudioSource _electricAudioSource;
     private AudioSource _attackAudioSource;
     
-    // ================== HP BAR UI ==================
     [Header("HP Bar UI")]
     [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
     [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
     
+    [Header("Death")]
+    [SerializeField] private float _deathTime = 3.0f;
+    
     private Animator _animator;
+    private bool _isDead = false;
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
     private NavMeshAgent _agent;
@@ -101,7 +104,19 @@ public class SpearRobot : MonoBehaviour, IEnemy
     void Update()
     {
         if (_player == null || _agent == null) return;
-
+        if (_isDead)
+        {
+            if (_agent != null)
+            {
+                _agent.isStopped = true;
+                _agent.velocity = Vector3.zero;
+                _agent.ResetPath();
+                _agent.updateRotation = false;
+            }
+            return;
+        }
+        
+        
         // NavMesh 이탈 복구
         if (!_agent.isOnNavMesh)
         {
@@ -241,12 +256,12 @@ public class SpearRobot : MonoBehaviour, IEnemy
     
     private void AttackPlayer()
     {
-        if (_isAttacking || _isCoolingDown) return;
+        if (_isAttacking || _isCoolingDown || !HasLineOfSight() || _isDead) return;
         _animator.SetTrigger("isAttacking");
         StartCoroutine(AttackRoutine());
     }
 
-    private System.Collections.IEnumerator AttackRoutine()
+    private IEnumerator AttackRoutine()
     {
         
         
@@ -301,10 +316,59 @@ public class SpearRobot : MonoBehaviour, IEnemy
     
     private void Die()
     {
-        DropScrap(_scrapAmount);
-        Destroy(gameObject);
-        Debug.Log("SpearRobot has died.");
+        if (_isDead) return;
+        _isDead = true;
+
+        // 1) 진행 중인 코루틴(공격 등) 전부 정지 + 상태 플래그 초기화
+        StopAllCoroutines();
+        _isAttacking   = false;
+        _isCoolingDown = false;
+
+        // 2) NavMeshAgent 완전히 멈추기
+        if (_agent != null)
+        {
+            _agent.isStopped      = true;
+            _agent.velocity       = Vector3.zero;
+            _agent.ResetPath();
+            _agent.updateRotation = false;
+        }
+
+        // 3) 이동/공격 관련 사운드 정지
+        if (_electricAudioSource != null && _electricAudioSource.isPlaying)
+            _electricAudioSource.Stop();
+
+        if (_attackAudioSource != null && _attackAudioSource.isPlaying)
+            _attackAudioSource.Stop();
+
+        // 4) 애니메이션 정리 + 죽는 모션 강제
+        if (_animator != null)
+        {
+            _animator.ResetTrigger("isAttacking");  // 공격 트리거 리셋
+            _animator.SetBool("isWalking", false);  // 걷기 끄기
+            _animator.SetTrigger("isDie");          // 죽음 트리거
+        }
+
+        // 5) 콜라이더 비활성화 (시체에 부딪히는 것 방지)
+        Collider selfCol = GetComponent<Collider>();
+        if (selfCol != null)
+            selfCol.enabled = false;
+
+        // 6) HP바 끄기
+        if (_hpCanvas != null)
+            _hpCanvas.gameObject.SetActive(false);
+
+        // 7) 일정 시간 후 스크랩 드랍 + 오브젝트 삭제
+        StartCoroutine(DieRoutine());
     }
+
+    
+    private IEnumerator DieRoutine()
+    {
+        yield return new WaitForSeconds(_deathTime);
+        DropScrap(_scrapAmount);               
+        Destroy(gameObject);
+    }
+
     
     public void DropScrap(int amount)
     {

@@ -622,7 +622,7 @@ MonoBehaviour:
   _attackCastingTime: 2
   _attackCooldown: 1
   _aggravationRange: 6.9
-  _attackRange: 2
+  _attackRange: 3
   _moveSpeed: 3.5
   _lookAtTurnSpeed: 8
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
@@ -631,6 +631,7 @@ MonoBehaviour:
   _player: {fileID: 0}
   _hpFillImage: {fileID: 5594321777131256392}
   _hpCanvas: {fileID: 7875709371403077189}
+  _deathTime: 4
 --- !u!54 &5283858588543057049
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -656,7 +657,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
-  m_Constraints: 112
+  m_Constraints: 0
   m_CollisionDetection: 1
 --- !u!195 &-6449940375766318193
 NavMeshAgent:

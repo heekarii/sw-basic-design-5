@@ -1,11 +1,12 @@
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;      // HP바 Image용
+using UnityEngine.UI;
+using System.Collections;
 
 public class ChainsawRobot : MonoBehaviour, IEnemy
 {
     [Header("Monster Status")]
-    [SerializeField] private float _maxHp = 200.0f;
+    [SerializeField] private float _maxHp = 250.0f;
     [SerializeField] private float _curHp;
     [SerializeField] private float _damage = 70.0f;
     [SerializeField] private float _attackCastingTime = 0.5f;
@@ -26,12 +27,13 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     [SerializeField] private AudioClip _attackSound;
     [SerializeField] private AudioClip _hitSound;
     
-    // ================== HP BAR UI ==================
     [Header("HP Bar UI")]
     [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
     [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
     private Transform _camTr;                      // 카메라 Transform
-    // =================================================
+    
+    [Header("Death")]
+    [SerializeField] private float _deathTime = 3.0f;
     
     private AudioSource _sawAudioSource;
     private AudioSource _attackAudioSource;
@@ -40,8 +42,8 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
 // Animator Parameters (Animator 창에 동일한 이름으로 만들어야 함)
     private static readonly int HashIsMoving = Animator.StringToHash("IsMoving"); // bool
     private static readonly int HashAttack   = Animator.StringToHash("Attack");   // trigger
-
     
+    private bool _isDead = false;
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
     private NavMeshAgent _agent;
@@ -122,7 +124,18 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     void Update()
     {
         if (_player == null || _agent == null) return;
-
+        if (_isDead)
+        {
+            if (_agent != null)
+            {
+                _agent.isStopped = true;
+                _agent.velocity = Vector3.zero;
+                _agent.ResetPath();
+                _agent.updateRotation = false;
+            }
+            return;
+        }
+        
         // 이동 애니메이션 on/off (공격 중에는 false)
         if (_anim != null)
         {
@@ -273,12 +286,12 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     
     private void AttackPlayer()
     {
-        if (_isAttacking || _isCoolingDown) return;
+        if (_isAttacking || _isCoolingDown || !HasLineOfSight() || _isDead) return;
         // Debug.Log("[ChainsawRobot] AttackPlayer() called");
         StartCoroutine(AttackRoutine());
     }
 
-    private System.Collections.IEnumerator AttackRoutine()
+    private IEnumerator AttackRoutine()
     {
         _isAttacking = true;
 
@@ -353,9 +366,55 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     
     private void Die()
     {
-        DropScrap(_scrapAmount);
+        if (_isDead) return;
+        _isDead = true;
+
+        // 1) 코루틴/상태 정리
+        StopAllCoroutines();        // 공격 코루틴 등 전부 정지
+        _isAttacking = false;
+        _isCoolingDown = false;
+
+        // 2) NavMeshAgent 정지
+        if (_agent != null)
+        {
+            _agent.isStopped = true;
+            _agent.velocity = Vector3.zero;
+            _agent.ResetPath();
+            _agent.updateRotation = false;
+        }
+
+        // 3) 체인소 사운드도 정지
+        if (_sawAudioSource != null && _sawAudioSource.isPlaying)
+            _sawAudioSource.Stop();
+
+        // 4) HP 바 비활성화
+        if (_hpCanvas != null)
+            _hpCanvas.gameObject.SetActive(false);
+
+        // 5) 애니메이션: 이동/공격 끄고 죽는 모션 강제 재생
+        if (_anim != null)
+        {
+            // 공격 트리거/이동 bool 정리
+            _anim.ResetTrigger(HashAttack);
+            _anim.SetBool(HashIsMoving, false);
+
+            // 애니메이션 레이어 0에서 "Die" 상태로 바로 크로스페이드
+            // Animator 안에 있는 죽는 모션 상태 이름이 "Die"가 아니면 그 이름으로 바꿔줘
+            _anim.CrossFade("Die", 0.05f, 0, 0f);
+            // 또는
+            // _anim.Play("Die", 0, 0f);
+        }
+
+        // 6) 이후 파괴
+        StartCoroutine(DieRoutine());
+    }
+
+    
+    private IEnumerator DieRoutine()
+    {
+        yield return new WaitForSeconds(_deathTime);
+        DropScrap(_scrapAmount);               
         Destroy(gameObject);
-        Debug.Log("ChainsawRobot has died.");
     }
     
     public void DropScrap(int amount)

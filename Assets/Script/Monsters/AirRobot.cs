@@ -1,7 +1,8 @@
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.UI;      // HP바 Image용
+using UnityEngine.UI;
+using System.Collections;
 
 public class AirRobot : MonoBehaviour, IEnemy
 {
@@ -26,10 +27,15 @@ public class AirRobot : MonoBehaviour, IEnemy
     private Transform _playerTr;
     private Transform _tr;
     
-    // ================== HP BAR UI ==================
     [Header("HP Bar UI")]
     [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
     [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
+    
+    [Header("Death")]
+    [SerializeField] private float _deathTime = 2f;
+    [SerializeField] private ParticleSystem _DeathEffect;
+    [SerializeField] private AudioSource _DeathAudio;
+    private bool _isDead = false;
     
     private void Start()
     { 
@@ -69,6 +75,8 @@ public class AirRobot : MonoBehaviour, IEnemy
 
     private void Update()
     {
+        if (_isDead)
+            return;
         if (_zeron == null || _player == null) return;
         bool hasLOS = HasLineOfSight();
         
@@ -228,11 +236,75 @@ public class AirRobot : MonoBehaviour, IEnemy
         _hpFillImage.fillAmount = Mathf.Clamp01(ratio);
     }
     
+    private void PlayDeath()
+    {
+        // 🔹 이펙트 실행
+        if (_DeathEffect != null)
+        {
+            _DeathEffect.transform.SetParent(null); // 부모 떼기
+            _DeathEffect.Play();
+
+            float effectDuration =
+                _DeathEffect.main.duration +
+                _DeathEffect.main.startLifetime.constantMax;
+
+            Destroy(_DeathEffect.gameObject, effectDuration + 0.1f);
+        }
+
+        // 🔹 사운드 실행
+        if (_DeathAudio != null && _DeathAudio.clip != null)
+        {
+            _DeathAudio.transform.SetParent(null); // 부모 떼기
+            _DeathAudio.Play();
+
+            Destroy(_DeathAudio.gameObject, _DeathAudio.clip.length + 0.1f);
+        }
+    }
+    
     private void Die()
     {
-        DropScrap(_scrapAmount);
+        if (_isDead) return;    // 여러 번 실행되는 것 방지
+        _isDead = true;
+
+        // 1) 바람/슬로우 상태 정리
+        _isActive = false;
+
+        if (_player != null)
+            _player.ApplyWindSlow(false);  // 슬로우 효과 해제
+
+        // 2) 바람 이펙트 / 사운드 정지
+        if (_activeWindFX != null)
+        {
+            Destroy(_activeWindFX);
+            _activeWindFX = null;
+            Debug.Log("[AirRobot] WindEffect 해제 (사망)");
+        }
+
+        if (_attackAudio != null && _attackAudio.isPlaying)
+            _attackAudio.Stop();
+
+        // 3) 콜라이더 비활성화 (원하는 경우)
+        Collider selfCol = GetComponent<Collider>();
+        if (selfCol != null)
+            selfCol.enabled = false;
+
+        // 4) HP바 끄기
+        if (_hpCanvas != null)
+            _hpCanvas.gameObject.SetActive(false);
+
+        // 5) 죽음 이펙트 / 사운드 재생
+        PlayDeath();
+
+        // 6) 딜레이 후 스크랩 드랍 + 삭제
+        StartCoroutine(DieRoutine());
+    }
+
+    
+    private IEnumerator DieRoutine()
+    {
+        yield return new WaitForSeconds(_deathTime);
+        DropScrap(_scrapAmount);               
         Destroy(gameObject);
-        Debug.Log("[AirRobot] 파괴됨");
     }
 
     public void DropScrap(int amount)

@@ -9,8 +9,8 @@ public class Player : MonoBehaviour
 {
     [Header("Player Status")]
     [SerializeField] private float _attackPower = 10f;   // 공격력
-    [SerializeField] private float _moveSpeed = 3f;      // 이동 속도
-    [SerializeField] private float _maxHealth = 500f;    // 최대 체력
+    [SerializeField] private float _moveSpeed = 5f;      // 이동 속도
+    [SerializeField] private float _maxHealth = 1000f;    // 최대 체력
     [SerializeField] private float _currentHealth;       // 현재 체력
 
     [Header("Movement")]
@@ -36,9 +36,9 @@ public class Player : MonoBehaviour
     [FormerlySerializedAs("_speedPerLevel")] [SerializeField]
     private float[] _speedWithBoostPerLevel =
     {
-        5f,
-        6f,
-        7f
+        7f,
+        8f,
+        9f
     };
 
     [Header("Combat")]
@@ -73,9 +73,11 @@ public class Player : MonoBehaviour
 
     private GameObject _currentWeaponModel;
 
-    [Header("Effects")]
+    [Header("Sound")]
     [SerializeField] private AudioClip _stunSound;
+    [SerializeField] private AudioClip _BGMSound;
     private AudioSource _stunAudioSource;
+    private AudioSource _BGMAudioSource;
 
     // Cached Components & Managers
     private Rigidbody _rb;
@@ -95,7 +97,9 @@ public class Player : MonoBehaviour
         CacheComponents();
         InitializeState();
         SetupStunAudio();
-        
+        SetupBGMAudio();
+        _BGMAudioSource.Play();
+
         Cursor.visible = false;
     }
 
@@ -153,6 +157,14 @@ public class Player : MonoBehaviour
         _stunAudioSource.clip = _stunSound;
         _stunAudioSource.loop = false;
         _stunAudioSource.playOnAwake = false;
+    }
+    
+    private void SetupBGMAudio()
+    {
+        _BGMAudioSource = gameObject.AddComponent<AudioSource>();
+        _BGMAudioSource.clip = _BGMSound;
+        _BGMAudioSource.loop = true;
+        _BGMAudioSource.playOnAwake = true;
     }
 
     /// <summary>
@@ -647,15 +659,15 @@ public class Player : MonoBehaviour
         switch (_curHealthLevel)
         {
             case 2:
-                _maxHealth = 700f;
+                _maxHealth = 1200f;
                 _currentHealth = Mathf.Min(_currentHealth + 200f, _maxHealth);
                 break;
             case 3:
-                _maxHealth = 1000f;
+                _maxHealth = 1500f;
                 _currentHealth = Mathf.Min(_currentHealth + 300f, _maxHealth);
                 break;
             case 4:
-                _maxHealth = 1300f;
+                _maxHealth = 1800f;
                 _currentHealth = Mathf.Min(_currentHealth + 300f, _maxHealth);
                 break;
             default:

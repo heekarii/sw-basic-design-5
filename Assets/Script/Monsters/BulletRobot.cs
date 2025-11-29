@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;      // HP바 Image용
+using UnityEngine.UI;
+using System.Collections;
 
 public class BulletRobot : MonoBehaviour, IEnemy
 {
@@ -15,7 +16,7 @@ public class BulletRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _lookAtTurnSpeed = 8f;
     [SerializeField] private Player _player;
     [SerializeField] private Animator _anim;
-    [SerializeField] private int _scarpAmount = 7;
+    [SerializeField] private int _scrapAmount = 7;
 
     [Header("Bolt Setting")]
     [SerializeField] private Transform _muzzleVisual;
@@ -31,14 +32,17 @@ public class BulletRobot : MonoBehaviour, IEnemy
     [SerializeField] private AudioSource _attackAudio;
     [SerializeField] private GameObject _shotLeftFx;
     [SerializeField] private GameObject _shotRightFx;
-
     
-    // ================== HP BAR UI ==================
     [Header("HP Bar UI")]
     [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
     [SerializeField] private Transform _hpCanvas;  // HpBarCanvas (World Space Canvas)
     private Transform _camTr;                      // 카메라 Transform
-    // =================================================
+    
+    [Header("Death")]
+    [SerializeField] private float _deathTime = 2.0f;
+    [SerializeField] private ParticleSystem _DeathEffect;
+    [SerializeField] private AudioSource _DeathAudio;
+    
     
     // ===== 내부 캐시 =====
     private Collider _playerCol;    // 플레이어 콜라이더
@@ -50,6 +54,7 @@ public class BulletRobot : MonoBehaviour, IEnemy
 
     private bool _isAttacking = false;
     private bool _isCoolingDown = false;
+    private bool _isDead = false;
 
     // 이동 판정용 상수
     private const float STOP_VEL_SQR = 0.1f;
@@ -115,7 +120,18 @@ public class BulletRobot : MonoBehaviour, IEnemy
     {
         if (_agent == null || _playerTr == null)
             return;
-
+        if (_isDead)
+        {
+            if (_agent != null)
+            {
+                _agent.isStopped = true;
+                _agent.velocity = Vector3.zero;
+                _agent.ResetPath();
+                _agent.updateRotation = false;
+            }
+            return;
+        }
+        
         // 애니메이션 Speed 파라미터 갱신
         if (_anim != null)
             _anim.SetFloat("Speed", _agent.velocity.magnitude);
@@ -196,7 +212,7 @@ public class BulletRobot : MonoBehaviour, IEnemy
     // 항상 수평으로 플레이어 바라보기
     private void LookAtPlayer()
     {
-        if (_player == null || !HasLineOfSight()) return;
+        if (_player == null || !HasLineOfSight() || _isDead) return;
 
         Vector3 lockedDir = (_player != null)
             ? (_player.transform.position - transform.position)
@@ -216,7 +232,7 @@ public class BulletRobot : MonoBehaviour, IEnemy
         }
     }
 
-    private System.Collections.IEnumerator AttackRoutine()
+    private IEnumerator AttackRoutine()
     {
         _isAttacking = true;
 
@@ -241,7 +257,7 @@ public class BulletRobot : MonoBehaviour, IEnemy
 
         while (elapsed < _attackingTime)
         {
-            if (_playerTr == null || !HasLineOfSight())
+            if (_playerTr == null || !HasLineOfSight() || _isDead) 
                 break;
 
             // 공격 중에도 플레이어 바라보기
@@ -489,11 +505,83 @@ public class BulletRobot : MonoBehaviour, IEnemy
             Die();
     }
     
+    private void PlayDeath()
+    {
+        // 🔹 이펙트 실행
+        if (_DeathEffect != null)
+        {
+            _DeathEffect.transform.SetParent(null); // 부모 떼기
+            _DeathEffect.Play();
+
+            float effectDuration =
+                _DeathEffect.main.duration +
+                _DeathEffect.main.startLifetime.constantMax;
+
+            Destroy(_DeathEffect.gameObject, effectDuration + 0.1f);
+        }
+
+        // 🔹 사운드 실행
+        if (_DeathAudio != null && _DeathAudio.clip != null)
+        {
+            _DeathAudio.transform.SetParent(null); // 부모 떼기
+            _DeathAudio.Play();
+
+            Destroy(_DeathAudio.gameObject, _DeathAudio.clip.length + 0.1f);
+        }
+    }
+    
     private void Die()
     {
-        SetShotFx(false);
-        DropScrap(_scarpAmount);
-        Destroy(gameObject);
+        if (_isDead) return;
+        _isDead = true;
+
+        // 1) 진행 중인 모든 코루틴(총알 난사 공격 포함) 정지
+        StopAllCoroutines();
+        _isAttacking   = false;
+        _isCoolingDown = false;
+
+        // 2) 공격 이펙트 / 사운드 정리
+        SetShotFx(false);                     // 총구 이펙트 끄기
+
+        if (_attackAudio != null && _attackAudio.isPlaying)
+            _attackAudio.Stop();              // 공격 사운드 정지
+
+        // 3) NavMeshAgent 완전히 멈추기
+        if (_agent != null)
+        {
+            _agent.isStopped      = true;
+            _agent.velocity       = Vector3.zero;
+            _agent.ResetPath();
+            _agent.updateRotation = false;
+        }
+
+        // 4) 콜라이더 비활성화 (원하면 꺼두는 게 깔끔함)
+        Collider selfCol = GetComponent<Collider>();
+        if (selfCol != null)
+            selfCol.enabled = false;
+
+        // 5) 애니메이션 속도 0으로 (걷기 멈춘 모션 유지)
+        if (_anim != null)
+            _anim.SetFloat("Speed", 0f);
+
+        // 6) HP바 끄기
+        if (_hpCanvas != null)
+            _hpCanvas.gameObject.SetActive(false);
+
+        // 7) 죽음 이펙트 / 사운드 재생
+        PlayDeath();
+
+        // 8) 약간 딜레이 후 스크랩 드랍 + 삭제
+        StartCoroutine(DieRoutine());
+    }
+
+
+    
+    private IEnumerator DieRoutine()
+    {
+        yield return new WaitForSeconds(_deathTime);
+        DropScrap(_scrapAmount);               
+        Destroy(gameObject);                   // 삭제
     }
     
     public void DropScrap(int amount)

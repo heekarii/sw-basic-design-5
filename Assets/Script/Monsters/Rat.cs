@@ -261,6 +261,7 @@ public class Rat : MonoBehaviour, IEnemy
     
     private void Die()
     {
+        PlayExplosion();
         DropScrap(_scrapAmount);
         Destroy(gameObject);
         Debug.Log("Rat has died.");
