@@ -244,7 +244,12 @@ public class GameManager : Singleton<GameManager>
         if (!isSuccess) return;
         if (Player == null) return;
 
-        Player.UpdateHealth();
+        // Player에 추가한 공개 업그레이드 API 사용
+        Player.ApplyHealthUpgrade();
+        
+        // 즉시 상태/ UI를 최신화
+        UpdateStatusFromPlayer();
+        UpdateUI();
     }
 
     /// <summary>

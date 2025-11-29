@@ -571,11 +571,11 @@ MonoBehaviour:
   _selectUpgradeImage: {fileID: 9222012377989996409}
   _successImage: {fileID: 1565142894725551014}
   _failureImage: {fileID: 8680024212233798530}
-  _runStation: {fileID: 4840634533218200042}
-  _exitStation: {fileID: 8434023788024837523}
-  _upgradeHealth: {fileID: 7489562434664000885}
-  _upgradeWeapon: {fileID: 5883200171548127253}
-  _upgradeMove: {fileID: 468077849032623787}
+  _runStation: {fileID: 4675261662866224182}
+  _exitStation: {fileID: 4319969246623585765}
+  _upgradeHealth: {fileID: 3046602379356300662}
+  _upgradeWeapon: {fileID: 5973685503478212035}
+  _upgradeMove: {fileID: 2707358015757942975}
   _level: {fileID: 2318628319643930323}
   _amount: {fileID: 7929562943503309440}
   UpgradeIdx: 0

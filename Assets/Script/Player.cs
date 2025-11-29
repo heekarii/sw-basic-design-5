@@ -635,9 +635,15 @@ public class Player : MonoBehaviour
         _curBattery -= reduction;
     }
 
-    public void UpdateHealth()
+    #endregion
+
+    #region Upgrade APIs
+
+    // StationManager 등의 외부에서 호출 가능한 업그레이드 적용 메서드
+    public void ApplyHealthUpgrade()
     {
-        _curHealthLevel++;
+        // 현재 레벨을 증가시키고 레벨에 따른 최대체력/현재체력 보정을 적용
+        _curHealthLevel = Mathf.Min(_curHealthLevel + 1, 4); // 최대 레벨 제한(예시)
         switch (_curHealthLevel)
         {
             case 2:
@@ -655,6 +661,31 @@ public class Player : MonoBehaviour
             default:
                 break;
         }
+        Debug.Log($"[Player] 체력 레벨 업그레이드 적용: 레벨 {_curHealthLevel}");
+    }
+
+    public void ApplyWeaponUpgrade()
+    {
+        // WeaponManager에 무기 강화 요청 (공격력 증가 등은 WeaponManager에서 처리)
+        if (_wm == null) _wm = WeaponManager.Instance;
+        if (_wm != null)
+        {
+            _wm.UpgradeWeapon(10f); // 예시 값으로 공격력 증가량 전달
+            Debug.Log("[Player] 무기 업그레이드 적용 요청 전송");
+        }
+        else
+        {
+            Debug.LogWarning("[Player] WeaponManager가 없습니다. 무기 업그레이드 실패");
+        }
+    }
+
+    public void ApplySpeedUpgrade()
+    {
+        _curSpeedLevel = Mathf.Min(_curSpeedLevel + 1, _speedWithBoostPerLevel.Length);
+        // 속도 증가 로직: 간단히 MoveSpeed에 보정 적용
+        var boost = _speedWithBoostPerLevel[Mathf.Clamp(_curSpeedLevel - 1, 0, _speedWithBoostPerLevel.Length - 1)];
+        _moveSpeed = boost;
+        Debug.Log($"[Player] 이동속도 업그레이드 적용: 레벨 {_curSpeedLevel}, 속도 {_moveSpeed}");
     }
 
     #endregion

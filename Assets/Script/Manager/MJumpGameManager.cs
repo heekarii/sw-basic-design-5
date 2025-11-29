@@ -57,10 +57,9 @@ public class MJumpGameManager : MonoBehaviour
         _BGAudio.Stop();
         if (isSuccess) 
             _successAudio.Play();
-        GameManager.Instance.ApplyHealthMiniGame(isSuccess);
+        // 업그레이드 적용은 StationManager.ShowEndingPage에서 처리하도록 단일화합니다.
         Debug.Log(isSuccess ? "게임 성공!" : "게임 실패!");
-        TransitionManager.Instance.EndMiniGame("JumpMGame");
-        TransitionManager.Instance.CurStationManager.ShowEndingPage(isSuccess);
+        TransitionManager.Instance.EndMiniGame("JumpMGame", isSuccess);
     }
     
 

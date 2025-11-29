@@ -122,7 +122,7 @@ public class StationManager : MonoBehaviour
     {
         Debug.Log("▶ 체력 강화 선택");
         if (_transitionManager != null)
-            _transitionManager.StartMiniGame("JumpMGame");
+            _transitionManager.StartMiniGame("MCardGame");
         else
             Debug.LogWarning("[StationManager] StartMiniGame 호출 실패: TransitionManager가 없습니다.");
         if (_selectUpgradeImage != null) _selectUpgradeImage.gameObject.SetActive(false);
@@ -143,7 +143,7 @@ public class StationManager : MonoBehaviour
     {
         Debug.Log("▶ 이동속도 강화 선택");
         if (_transitionManager != null)
-            _transitionManager.StartMiniGame("MMazeGame");
+            _transitionManager.StartMiniGame("MCardGame");
         else
             Debug.LogWarning("[StationManager] StartMiniGame 호출 실패: TransitionManager가 없습니다.");
         UpgradeIdx = 3;
@@ -167,15 +167,65 @@ public class StationManager : MonoBehaviour
                 return;
             }
 
-            if (UpgradeIdx == 1)
-            {
-                // 체력 강화: 레벨 +1 / 증가량 안내
-                if (_level != null)
-                    _level.text = $"{_enterStationStatus.CurrentHealthLevel + 1}";
+            // 실제로 플레이어의 스탯을 강화하도록 Player API 호출
+            Player player;
+             #if UNITY_2023_2_OR_NEWER
+             player = UnityEngine.Object.FindFirstObjectByType<Player>();
+             #else
+             player = FindObjectOfType<Player>();
+             #endif
+             if (player == null)
+             {
+                 Debug.LogWarning("[StationManager] Player를 찾을 수 없어 업그레이드를 적용하지 못했습니다.");
+             }
+             else
+             {
+                 if (UpgradeIdx == 1)
+                 {
+                     player.ApplyHealthUpgrade();
+                 }
+                 else if (UpgradeIdx == 2)
+                 {
+                     player.ApplyWeaponUpgrade();
+                 }
+                 else if (UpgradeIdx == 3)
+                 {
+                     player.ApplySpeedUpgrade();
+                 }
 
-                if (_amount != null)
-                    _amount.text = (_enterStationStatus.CurrentHealthLevel == 1) ? "+200" : "+300";
-            }
+                // 업그레이드 적용 직후 최신 상태를 받아 UI에 반영
+                var newStatus = player.GetStatus();
+                if (newStatus != null)
+                {
+                    if (_level != null)
+                    {
+                        if (UpgradeIdx == 1) _level.text = $"{newStatus.CurrentHealthLevel}";
+                        else if (UpgradeIdx == 2) _level.text = $"{newStatus.CurrentWeaponLevel}";
+                        else if (UpgradeIdx == 3) _level.text = $"{newStatus.CurrentSpeedLevel}";
+                    }
+
+                    if (_amount != null)
+                    {
+                        if (UpgradeIdx == 1)
+                            _amount.text = $"+{(int)(newStatus.MaxHealth - _enterStationStatus.MaxHealth)}";
+                        else if (UpgradeIdx == 2)
+                            _amount.text = $"+{(int)(newStatus.AttackPower - _enterStationStatus.AttackPower)}";
+                        else if (UpgradeIdx == 3)
+                            _amount.text = $"+{(newStatus.MoveSpeed - _enterStationStatus.MoveSpeed):F2}";
+                    }
+                }
+             }
+
+            // (구) _enterStationStatus 기반 텍스트 업데이트는 위 newStatus 업데이트로 대체됨
+            // if (UpgradeIdx == 1)
+            // {
+            //     // 체력 강화: 레벨 +1 / 증가량 안내
+            //     if (_level != null)
+            //         _level.text = $"{_enterStationStatus.CurrentHealthLevel + 1}";
+            //
+            //     if (_amount != null)
+            //         _amount.text = (_enterStationStatus.CurrentHealthLevel == 1) ? "+200" : "+300";
+            // }
             // TODO: 나중에 업그레이드 시스템 구현 시 주석 해제 및 Player/PlayerStatus 연동
             // else if (UpgradeIdx == 2)
             // {
