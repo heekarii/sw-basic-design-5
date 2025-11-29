@@ -505,30 +505,30 @@ public class BulletRobot : MonoBehaviour, IEnemy
             Die();
     }
     
-    private void PlayDeath()
-    {
-        // 🔹 이펙트 실행
-        if (_DeathEffect != null)
-        {
-            _DeathEffect.transform.SetParent(null); // 부모 떼기
-            _DeathEffect.Play();
-
-            float effectDuration =
-                _DeathEffect.main.duration +
-                _DeathEffect.main.startLifetime.constantMax;
-
-            Destroy(_DeathEffect.gameObject, effectDuration + 0.1f);
-        }
-
-        // 🔹 사운드 실행
-        if (_DeathAudio != null && _DeathAudio.clip != null)
-        {
-            _DeathAudio.transform.SetParent(null); // 부모 떼기
-            _DeathAudio.Play();
-
-            Destroy(_DeathAudio.gameObject, _DeathAudio.clip.length + 0.1f);
-        }
-    }
+    // private void PlayDeath()
+    // {
+    //     // 🔹 이펙트 실행
+    //     if (_DeathEffect != null)
+    //     {
+    //         _DeathEffect.transform.SetParent(null); // 부모 떼기
+    //         _DeathEffect.Play();
+    //
+    //         float effectDuration =
+    //             _DeathEffect.main.duration +
+    //             _DeathEffect.main.startLifetime.constantMax;
+    //
+    //         Destroy(_DeathEffect.gameObject, effectDuration + 0.1f);
+    //     }
+    //
+    //     // 🔹 사운드 실행
+    //     if (_DeathAudio != null && _DeathAudio.clip != null)
+    //     {
+    //         _DeathAudio.transform.SetParent(null); // 부모 떼기
+    //         _DeathAudio.Play();
+    //
+    //         Destroy(_DeathAudio.gameObject, _DeathAudio.clip.length + 0.1f);
+    //     }
+    // }
     
     private void Die()
     {
@@ -562,14 +562,17 @@ public class BulletRobot : MonoBehaviour, IEnemy
 
         // 5) 애니메이션 속도 0으로 (걷기 멈춘 모션 유지)
         if (_anim != null)
+        {
             _anim.SetFloat("Speed", 0f);
+            _anim.SetTrigger("isDie");
+        }
 
         // 6) HP바 끄기
         if (_hpCanvas != null)
             _hpCanvas.gameObject.SetActive(false);
 
         // 7) 죽음 이펙트 / 사운드 재생
-        PlayDeath();
+        // PlayDeath();
 
         // 8) 약간 딜레이 후 스크랩 드랍 + 삭제
         StartCoroutine(DieRoutine());
@@ -579,6 +582,7 @@ public class BulletRobot : MonoBehaviour, IEnemy
     
     private IEnumerator DieRoutine()
     {
+        _DeathAudio.Play();
         yield return new WaitForSeconds(_deathTime);
         DropScrap(_scrapAmount);               
         Destroy(gameObject);                   // 삭제
