@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;      // HP바 Image용
@@ -239,6 +240,7 @@ public class Rat : MonoBehaviour, IEnemy
             Debug.Log($"Rat attacked player for {_damage} damage!");
         }
         PlayExplosion();
+        DropScrap(_scrapAmount);
         Destroy(gameObject);
     }
 
