@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: CloseLevel2
   m_EditorClassIdentifier: 
   WeaponName: CloseLevel2
-  ModelPrefab: {fileID: 1496330789214534379, guid: 4f40d764cdc8d1b4ca53b9de0cfee0c4, type: 3}
+  Type: 0
+  ModelPrefab: {fileID: 4844560226616983633, guid: 399ea0cfca05c3e4dae527feea5fe7f5, type: 3}
   AnimatorController: {fileID: 0}
   AttackAnimation: 
   baseAttackPower: 30

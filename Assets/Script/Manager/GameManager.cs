@@ -252,23 +252,17 @@ public class GameManager : Singleton<GameManager>
         UpdateUI();
     }
 
-    /// <summary>
-    /// TODO: 탐사 관련 매니저 구현 후, 탐사 목표 UI를 표기하는 로직 추가 예정.
-    /// </summary>
-    public void ShowTargetUI()
+    public void DecreaseBattery(float amount)
     {
-        // TODO: 탐사 관련 매니저 연동 시 구현
+        _curBattery -= amount;
     }
-
-    public void EnterStation()
-    {
-        
-    }
-
+    
     public void DecreaseScrap(int amount)
     {
         _curScrap -= amount;
     }
+    
+    public int GetScrapAmount => _curScrap;
     
     #endregion
 }

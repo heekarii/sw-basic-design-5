@@ -7,15 +7,11 @@
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Resources/font/Korail M SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/font/Korail M SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/RefairShopUIscene.unity" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/RefairShopUIscene.unity.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/RepairShopUIscene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/RepairShopUIscene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/MCardGameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/MCardGameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/MJumpGameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/MJumpGameManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/StationManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/StationManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/TransitionManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/TransitionManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/EditorBuildSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/CloseLevel2.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/CloseLevel2.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/CloseLevel3.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/CloseLevel3.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -155,7 +151,7 @@
       <workItem from="1763996169194" duration="4714000" />
       <workItem from="1764168827293" duration="1977000" />
       <workItem from="1764172716120" duration="500000" />
-      <workItem from="1764345385747" duration="6747000" />
+      <workItem from="1764345385747" duration="12621000" />
     </task>
     <servers />
   </component>
