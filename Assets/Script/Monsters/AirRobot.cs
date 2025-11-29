@@ -96,7 +96,7 @@ public class AirRobot : MonoBehaviour, IEnemy
         }
 
         // 🔹 감지 범위 이탈 시 비활성화 처리 + 즉시 해제
-        if (_isActive && distance > _detectDistance || !hasLOS) 
+        if (_isActive && distance > _detectDistance) 
         {
             _isActive = false;
             Debug.Log("[AirRobot] 비활성화됨");
@@ -205,7 +205,7 @@ public class AirRobot : MonoBehaviour, IEnemy
             {
                 Vector3 toPlayer = (col.transform.position - origin).normalized;
                 float dot = Vector3.Dot(dir, toPlayer);
-                if (dot > 0.95f) // 정면 ±45도
+                if (dot > 0.7f) // 정면 ±45도
                 {
                     Debug.Log("[AirRobot] 플레이어가 바람 범위 내에 있음");
                     playerInWind = true;
