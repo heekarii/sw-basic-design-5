@@ -6,6 +6,7 @@ public class TransitionManager : Singleton<TransitionManager>
 {
     private Player _player;
     public StationManager CurStationManager;
+    private Repair _lastRepairSource;
     protected override void Awake()
     {
         base.Awake();
@@ -19,11 +20,25 @@ public class TransitionManager : Singleton<TransitionManager>
     public void RegisterStationManager(StationManager manager)
     {
         CurStationManager = manager;
+        // StationManager 등록 시 마지막으로 EnterRepairStation을 호출한 오브젝트 정보를 전달
+        if (_lastRepairSource != null && CurStationManager != null)
+        {
+            CurStationManager.SetRepairSource(_lastRepairSource);
+        }
     }
     
     // ▣ Map → Repair 이동
     public void EnterRepairStation()
     {
+        EnterRepairStation((Repair)null);
+    }
+
+    // 호출한 Repair 컴포넌트를 전달받아 추적합니다.
+    public void EnterRepairStation(Repair source)
+    {
+        // 호출 출처(Repair 컴포넌트)를 저장
+        _lastRepairSource = source;
+
         // 1) Repair_main 로드
         SceneManager.LoadScene("RepairShopUIscene", LoadSceneMode.Additive);
         Cursor.visible = true;

@@ -11,7 +11,11 @@ public class Repair : MonoBehaviour
 
     private void Start()
     {
+        #if UNITY_2023_2_OR_NEWER
+        _transitionManager = UnityEngine.Object.FindFirstObjectByType<TransitionManager>();
+        #else
         _transitionManager = FindObjectOfType<TransitionManager>();
+        #endif
     }
     
     void OnCollisionEnter(Collision collision)
@@ -19,8 +23,13 @@ public class Repair : MonoBehaviour
         Debug.Log("Collision Detected");
         if (collision.gameObject.CompareTag("Player") && !_isEntered)
         {
-            _transitionManager.EnterRepairStation();
+            _transitionManager.EnterRepairStation(this);
             _isEntered = true;
         }
+    }
+    
+    public void SetEnter(bool state)
+    {
+        _isEntered = state;
     }
 }

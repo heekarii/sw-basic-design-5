@@ -8,7 +8,8 @@ public class StationManager : MonoBehaviour
 {
     private TransitionManager _transitionManager;
     private GameManager _gameManager;
-
+    private Repair _repairSource;
+    
     [Header("Station Manager images")] 
     [SerializeField] private Image _bgoff;
     [SerializeField] private Image _bgon;
@@ -120,6 +121,7 @@ public class StationManager : MonoBehaviour
     {
         Debug.Log("▶ 정비 기능 실행");
         GameManager.Instance.DecreaseBattery(2.0f);
+        _repairSource.SetEnter(true);
         if (_bgoff != null) _bgoff.gameObject.SetActive(false);
         if (_bgon != null) _bgon.gameObject.SetActive(true);
         if (_selectRunImage != null) _selectRunImage.gameObject.SetActive(false);
@@ -130,7 +132,9 @@ public class StationManager : MonoBehaviour
     {
         Debug.Log("▶ 정비소 종료");
         if (_transitionManager != null)
+        {
             _transitionManager.ExitRepairStation();
+        }
         else
             Debug.LogWarning("[StationManager] ExitRepairStation 호출 실패: TransitionManager가 없습니다.");
     }
@@ -413,5 +417,21 @@ public class StationManager : MonoBehaviour
         {
             Debug.Log("[StationManager] OnEnable: PlayerStatus를 가져오지 못했습니다.");
         }
+
+        if (_repairSource != null)
+        {
+            Debug.Log($"[StationManager] Repair 진입 출처(컴포넌트): {_repairSource.gameObject.name}");
+        }
+        else
+        {
+            Debug.Log("[StationManager] Repair 진입 출처가 설정되지 않음");
+        }
+    }
+
+    // TransitionManager가 어떤 Repair 컴포넌트에서 진입했는지 전달할 때 호출
+    public void SetRepairSource(Repair source)
+    {
+        _repairSource = source;
+        Debug.Log($"[StationManager] Repair 진입 출처 설정: {_repairSource?.gameObject.name ?? "(null)"}");
     }
 }
