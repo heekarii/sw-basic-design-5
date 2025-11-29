@@ -34,6 +34,7 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     
     [Header("Death")]
     [SerializeField] private float _deathTime = 3.0f;
+    [SerializeField] private AudioSource _deathAudio;
     
     private AudioSource _sawAudioSource;
     private AudioSource _attackAudioSource;
@@ -412,6 +413,7 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     
     private IEnumerator DieRoutine()
     {
+        _deathAudio.Play();
         yield return new WaitForSeconds(_deathTime);
         DropScrap(_scrapAmount);               
         Destroy(gameObject);
