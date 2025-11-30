@@ -1662,7 +1662,7 @@ MonoBehaviour:
   _electricSound: {fileID: 8300000, guid: d62b3fe489344bd4093d078a9253c968, type: 3}
   _hpFillImage: {fileID: 6345717438424493989}
   _hpCanvas: {fileID: 106294844904688450}
-  _deathTime: 3
+  _deathTime: 1.3
   _deathAudio: {fileID: 2821374915001301401}
 --- !u!195 &4759883682071654549
 NavMeshAgent:
