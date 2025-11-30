@@ -8,6 +8,7 @@ TagManager:
   - Goal
   - Ground
   - FlashOverlay
+  - StunOverlay
   layers:
   - Default
   - TransparentFX
