@@ -38,15 +38,22 @@ public class EndingBuilding : MonoBehaviour
 
     private void OnEscapeButton()
     {
-        if (_gm.HasKey) TransitionManager.Instance.UnloadGameScenes();
+        if (_gm.HasKey && _isActivated)
+        {
+            Debug.Log("Escape Key");
+            TransitionManager.Instance.UnloadGameScenes();
+        }
     }
     
     private void OnBackButton()
     {
-        _checkImage.gameObject.SetActive(false);
-        _player.ExitStationaryState();
-        Debug.Log("Player Exit Stationary State");
-        Cursor.visible = false;
+        if (_isActivated)
+        {
+            _checkImage.gameObject.SetActive(false);
+            _player.ExitStationaryState();
+            Debug.Log("Player Exit Stationary State");
+            Cursor.visible = false;
+        }
     }
     
     public void SetActivate(bool state, int index)

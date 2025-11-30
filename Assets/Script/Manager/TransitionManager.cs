@@ -28,13 +28,9 @@ public class TransitionManager : Singleton<TransitionManager>
     #region SceneLoad
     private void LoadSceneWithLoading(string targetScene, LoadSceneMode mode)
     {
-        // 로딩씬에서 참고할 값 저장
         PlayerPrefs.SetString("LOAD_SCENE_NAME", targetScene);
         PlayerPrefs.SetInt("LOAD_SCENE_MODE", (int)mode);
-
-        // 로딩 화면을 추가로 띄움(오버레이)
-        // NOTE: Single로 로드하면 현재 씬이 언로드되어 GameManager/Player 등이 파괴되어 NullReference가 발생할 수 있습니다.
-        //       따라서 LoadingScene은 Additive로 띄워 기존 씬을 유지한 상태에서 로딩 UX만 보여주도록 합니다.
+        
         SceneManager.LoadScene("LoadingScene", LoadSceneMode.Additive);
     }
 
@@ -57,9 +53,7 @@ public class TransitionManager : Singleton<TransitionManager>
 
     public void UnloadGameScenes()
     {
-        // Map_SCENE 언로드
         SceneManager.UnloadSceneAsync("Map_SCENE");
-        // MainUIScene 언로드
         LoadSceneWithLoading("Escape Scene", LoadSceneMode.Additive);
     }
 
@@ -80,28 +74,22 @@ public class TransitionManager : Singleton<TransitionManager>
     // 호출한 Repair 컴포넌트를 전달받아 추적합니다.
     public void EnterRepairStation(Repair source)
     {
-        // 호출 출처(Repair 컴포넌트)를 저장
         _lastRepairSource = source;
-
-        // 1) 로딩 씬을 Additive로 불러서 로딩 UX를 보여주고 이후에 목적 씬을 로드하게 합니다.
-        //    이렇게 하면 현재 Map 씬이 즉시 언로드되지 않으므로 GameManager/Player가 파괴되어 발생하는 NRE를 방지합니다.
+        
         LoadSceneWithLoading("RepairShopUIscene", LoadSceneMode.Additive);
         Cursor.visible = true;
 
-        // 만약 StationManager가 이미 등록되어 있으면 즉시 출처 전달
+
         if (CurStationManager != null && _lastRepairSource != null)
         {
             CurStationManager.SetRepairSource(_lastRepairSource);
         }
 
-        // Map_SCENE은 로딩이 끝나고 목적 씬이 활성화된 뒤 비활성화하는 것이 안전하지만,
-        // 게임플레이상 즉시 비활성화가 필요하면 EnterStationaryState를 먼저 호출합니다.
         if (_player != null)
             _player.EnterStationaryState();
         else
             Debug.LogWarning("[TransitionManager] EnterRepairStation: Player가 할당되지 않았습니다.");
-
-        // SetSceneActive("Map_SCENE", false); // 언로드/비활성화는 Loading->Repair 로드 완료 후 처리하는 로직(로더)에 맡기는 것이 안정적입니다.
+        
     }
 
     // ▣ Repair → 미니게임
