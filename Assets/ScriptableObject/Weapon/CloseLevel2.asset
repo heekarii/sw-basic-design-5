@@ -17,7 +17,7 @@ MonoBehaviour:
   ModelPrefab: {fileID: 4844560226616983633, guid: 399ea0cfca05c3e4dae527feea5fe7f5, type: 3}
   AnimatorController: {fileID: 0}
   AttackAnimation: 
-  baseAttackPower: 30
+  baseAttackPower: 25
   BatteryUsage: 0.2
   Bullets: 0
   range: 1.5

@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: CloseLevel4
   m_EditorClassIdentifier: 
   WeaponName: CloseLevel4
+  Type: 0
   ModelPrefab: {fileID: 7929532819254633968, guid: f916961fccb31f64e8d3ac265886e669, type: 3}
   AnimatorController: {fileID: 0}
   AttackAnimation: 
-  baseAttackPower: 150
+  baseAttackPower: 100
   BatteryUsage: 1
   Bullets: 0
   range: 3.5
