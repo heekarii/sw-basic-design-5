@@ -28,7 +28,7 @@ public class WeaponManager : Singleton<WeaponManager>
     }
 
     // 무기 강화
-    public void UpgradeWeapon(float powerDelta)
+    public void UpgradeWeapon()
     {
         if (_player == null)
             return;
@@ -39,7 +39,7 @@ public class WeaponManager : Singleton<WeaponManager>
             _player.InitWeapon(weaponList[_curWeaponIndex]);
         }
         
-        Debug.Log($"[WeaponManager] 공격력 +{powerDelta} 강화됨");
+        Debug.Log($"[WeaponManager] 공격력 강화됨");
     }
 
     public int GetWeaponLevel()

@@ -118,9 +118,9 @@ public class StationManager : MonoBehaviour
 
             2 => _enterStationStatus.CurrentWeaponLevel switch
             {
-                1 => 10,
-                2 => 30,
-                3 => 50,
+                1 => 20,
+                2 => 50,
+                3 => 80,
                 _ => 0
             },
 

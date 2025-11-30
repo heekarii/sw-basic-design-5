@@ -685,7 +685,7 @@ public class Player : MonoBehaviour
     public void ApplyHealthUpgrade()
     {
         // 현재 레벨을 증가시키고 레벨에 따른 최대체력/현재체력 보정을 적용
-        _curHealthLevel = Mathf.Min(_curHealthLevel + 1, 4); // 최대 레벨 제한(예시)
+        _curHealthLevel = Mathf.Min(_curHealthLevel + 1, 4);
         switch (_curHealthLevel)
         {
             case 2:
@@ -712,7 +712,8 @@ public class Player : MonoBehaviour
         if (_wm == null) _wm = WeaponManager.Instance;
         if (_wm != null)
         {
-            _wm.UpgradeWeapon(10f); // 예시 값으로 공격력 증가량 전달
+            _wm.UpgradeWeapon(); // 예시 값으로 공격력 증가량 전달
+            _currentWeaponIdx++;
             Debug.Log("[Player] 무기 업그레이드 적용 요청 전송");
         }
         else
