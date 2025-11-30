@@ -806,7 +806,7 @@ MonoBehaviour:
   _attackAudio: {fileID: 6337862846215028221}
   _hpFillImage: {fileID: 4512110661869498013}
   _hpCanvas: {fileID: 4531008295785264489}
-  _deathTime: 2
+  _deathTime: 1
   _DeathEffect: {fileID: 5723079198732422263}
   _DeathAudio: {fileID: 1529552236976651476}
 --- !u!1001 &4690360200954086332

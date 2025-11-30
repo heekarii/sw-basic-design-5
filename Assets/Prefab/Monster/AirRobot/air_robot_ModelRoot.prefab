@@ -996,7 +996,7 @@ MonoBehaviour:
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
   _hpFillImage: {fileID: 1559307968779777198}
   _hpCanvas: {fileID: 4596209186962541404}
-  _deathTime: 2
+  _deathTime: 1
   _DeathEffect: {fileID: 4652350343950854368}
   _DeathAudio: {fileID: 8822173099313077380}
 --- !u!1 &7749859764735200053
