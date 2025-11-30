@@ -973,7 +973,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgmSource: {fileID: 131886327}
   sfxSource: {fileID: 106645621}
-  mainBGM: {fileID: 8300000, guid: dbda2289818dbba4585083d90962fbc0, type: 3}
+  mainBGM: {fileID: 0}
   mcardStartClip: {fileID: 8300000, guid: 2c9266c4d0899a34198b9cabaa2993a2, type: 3}
   mcardClickClip: {fileID: 8300000, guid: a3ebf5c3c09a34244b6927e0f15d74d3, type: 3}
   mcardSuccessClip: {fileID: 8300000, guid: d64f7e126fe92f14791e0b81e00cc308, type: 3}
