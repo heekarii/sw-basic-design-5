@@ -39,6 +39,19 @@ public class TransitionManager : Singleton<TransitionManager>
 
     #endregion
 
+    #region Lobby Management
+
+    public void StartGame(int weaponType)
+    {
+        SetSceneActive("MainUIScene", false);
+        LoadSceneWithLoading("Map_SCENE", LoadSceneMode.Single);
+        
+        GameManager.Instance.SetWeaponType(weaponType);
+        
+    }
+
+    #endregion
+
     #region Repair Station Management
     
     public void RegisterStationManager(StationManager manager)

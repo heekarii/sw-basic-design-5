@@ -261,6 +261,11 @@ public class GameManager : Singleton<GameManager>
     {
         _curScrap -= amount;
     }
+
+    public void SetWeaponType(int type)
+    {
+        WeaponType = type;
+    }
     
     public int GetScrapAmount => _curScrap;
     

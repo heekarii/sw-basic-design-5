@@ -16,7 +16,13 @@ public class LoadingScreen : MonoBehaviour
     {
         _targetScene = PlayerPrefs.GetString("LOAD_SCENE_NAME");
         _loadMode    = (LoadSceneMode)PlayerPrefs.GetInt("LOAD_SCENE_MODE", 0);
+        StartCoroutine(LoadScene());
+    }
 
+    private IEnumerator LoadScene()
+    {
+        yield return null;
+        yield return null;
         StartCoroutine(LoadSceneProcess());
     }
 
@@ -25,22 +31,30 @@ public class LoadingScreen : MonoBehaviour
         AsyncOperation op = SceneManager.LoadSceneAsync(_targetScene, _loadMode);
         op.allowSceneActivation = false;
 
+        float displayed = 0f;
+
         while (!op.isDone)
         {
-            float progress = Mathf.Clamp01(op.progress / 0.9f);
-            loadingBar.value = progress;
-            loadingText.text = $"Loading.. {progress * 100:F0}%";
+            // 실제 로딩 progress (0 ~ 0.9)
+            float target = Mathf.Clamp01(op.progress / 0.9f);
 
-            if (op.progress >= 0.9f)
+            // 로딩바가 갑자기 점프하지 않도록 부드럽게 증가시키기
+            displayed = Mathf.MoveTowards(displayed, target, Time.deltaTime * 0.5f);
+
+            loadingBar.value = displayed;
+            loadingText.text = $"Loading.. {(displayed * 100f):F0}%";
+
+            // 실제 로딩 완료됐고, 표시된 로딩바도 100% 도달
+            if (displayed >= 1f && op.progress >= 0.9f)
             {
                 op.allowSceneActivation = true;
 
                 Debug.Log($"[LoadingScreen] allowSceneActivation true -> target={_targetScene}, mode={_loadMode}");
 
-                // 🔥 다음 프레임에서 Additive로 로드된 RepairShopUIscene을 Active로 설정
-                // 한 프레임 이상 여유를 주어 Awake/Start/OnEnable이 실행되도록 합니다.
+                // 다음 프레임에서 Additive 로드된 씬을 활성화하기 위해 1~2프레임 대기
                 yield return null;
                 yield return null;
+
                 Scene loadedScene = SceneManager.GetSceneByName(_targetScene);
                 if (loadedScene.IsValid())
                 {
@@ -48,7 +62,7 @@ public class LoadingScreen : MonoBehaviour
                     Debug.Log($"[LoadingScreen] SetActiveScene -> {_targetScene}");
                 }
 
-                // Map 씬을 비활성화해 Repair UI가 상호작용을 가로막지 않도록 한다.
+                // Map_SCENE 비활성화
                 var mapScene = SceneManager.GetSceneByName("Map_SCENE");
                 if (mapScene.IsValid())
                 {
@@ -56,16 +70,15 @@ public class LoadingScreen : MonoBehaviour
                     {
                         try { root.SetActive(false); } catch { }
                     }
-                    Debug.Log("[LoadingScreen] Map_SCENE의 루트 오브젝트들을 비활성화했습니다.");
+                    Debug.Log("[LoadingScreen] Map_SCENE 비활성화");
                 }
 
-                // (선택) 로딩 씬 언로드
                 SceneManager.UnloadSceneAsync("LoadingScene");
                 Debug.Log("[LoadingScreen] Unload LoadingScene 호출");
             }
 
-
             yield return null;
         }
     }
+
 }
