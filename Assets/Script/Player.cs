@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -54,6 +55,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float _castingTime = 1f;
     [SerializeField] private bool _isMeleeCasting = false;
     [SerializeField] private bool _isStunned = false;
+    [SerializeField] private Image _flashOverlay;
 
     private float _lastAttackTime = float.NegativeInfinity;
     private bool _isReloading = false;
@@ -553,6 +555,19 @@ public class Player : MonoBehaviour
             _isSlowed = false;
             Debug.Log("[Player] 바람 감속 해제");
         }
+    }
+    
+    public void ApplyFlash(float duration)
+    {
+        StartCoroutine(FlashRoutine(duration));
+    }
+    
+    private IEnumerator FlashRoutine(float duration)
+    {
+        _flashOverlay.gameObject.SetActive(true);
+        _flashOverlay.color = new Color(1f, 1f, 0.7f, 0.8f);
+        yield return new WaitForSeconds(3f);
+        _flashOverlay.gameObject.SetActive(false);
     }
 
     #endregion

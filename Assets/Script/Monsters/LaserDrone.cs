@@ -126,13 +126,14 @@ public class LaserDrone : MonoBehaviour, IEnemy
     {
         _isAttacking = true;
         _lastAttackTime = Time.time;
-
+        Player player = FindObjectOfType<Player>();
         if (_attackAudio != null && !_attackAudio.isPlaying)
             _attackAudio.Play();
         
         // 피해 즉시 적용 (내구도 영향 X, 섬광 효과만)
         if (_flashOverlay != null)
-            StartCoroutine(ApplyFlashEffect());
+            //StartCoroutine(ApplyFlashEffect());
+            player.ApplyFlash(3f);
         else
             Debug.LogWarning("[AirRobot] FlashOverlay 연결되지 않음");
 

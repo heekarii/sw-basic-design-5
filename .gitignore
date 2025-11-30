@@ -12,7 +12,8 @@
 /[Uu]ser[Ss]ettings/
 *.log
 
-/.idea/*
+.idea/*
+.idea/
 
 /Assets/Art/*
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
