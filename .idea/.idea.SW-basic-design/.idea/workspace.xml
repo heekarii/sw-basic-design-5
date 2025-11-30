@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Player.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Player.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Resources/font/Korail M SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/font/Korail M SDF.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/CloseLevel2.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/CloseLevel2.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/CloseLevel4.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/CloseLevel4.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
