@@ -18,7 +18,9 @@ public class PlayerDamageEffect : MonoBehaviour
     {
         // 인스펙터에 안 넣어도 자동으로 자기 Image 가져오게
         if (damageImage == null)
+        {
             damageImage = GetComponent<Image>();
+        }
     }
 
     public void Play()
