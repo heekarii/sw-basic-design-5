@@ -8,6 +8,7 @@ public class ScoreManager : MonoBehaviour
 {
     [SerializeField] private Image _batteryFillbar;
     [SerializeField] private TextMeshProUGUI _batteryText;
+    [SerializeField] private TextMeshProUGUI _resultText;
 
     [SerializeField] private TextMeshProUGUI _durabilityLevel;
     [SerializeField] private TextMeshProUGUI _weaponLevel;
@@ -33,10 +34,18 @@ public class ScoreManager : MonoBehaviour
         
         _batteryFillbar.fillAmount = 0f;
 
-        _durabilityLevel.text = _playerStatus.CurrentHealthLevel.ToString();
-        _weaponLevel.text = _playerStatus.CurrentWeaponLevel.ToString();
-        _boostLevel.text = _playerStatus.CurrentSpeedLevel.ToString();
-        StartCoroutine(UpdateBatteryUI());
+        if (_playerStatus != null)
+        {
+            if (_playerStatus.BatteryRemaining <= 0f || _playerStatus.CurrentHealth <= 0f)
+            {
+                _resultText.text = "Failure";
+            }
+            _durabilityLevel.text = _playerStatus.CurrentHealthLevel.ToString();
+            _weaponLevel.text = _playerStatus.CurrentWeaponLevel.ToString();
+            _boostLevel.text = _playerStatus.CurrentSpeedLevel.ToString();
+            StartCoroutine(UpdateBatteryUI());
+        }
+        
         
     }
     
