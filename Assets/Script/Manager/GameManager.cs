@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -37,6 +38,11 @@ public class GameManager : Singleton<GameManager>
     [Header("References")]
     public Player Player;          // 씬에 존재하는 플레이어 참조
     public int WeaponType;        // 0 : 근거리, 1 : 원거리 (플레이어 초기 무기 선택용)
+
+    [Header("Game Start Settings")] 
+    public List<GameObject> Buildings;
+    public List<GameObject> BuildingOutlines;
+    [SerializeField] private int _buildingToActivate = 0;
     
     protected override void Awake()
     {
@@ -46,6 +52,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
+        ActivateBuildingOnStart();
         CachePlayerIfNeeded();
         InitUIVisibility();
         _initialized = true;
@@ -92,6 +99,13 @@ public class GameManager : Singleton<GameManager>
 
         if (_curBulletText != null)
             _curBulletText.gameObject.SetActive(true);
+    }
+    
+    private void ActivateBuildingOnStart()
+    {
+        _buildingToActivate = Random.Range(0, Buildings.Count);
+        
+        BuildingOutlines[_buildingToActivate].SetActive(true);
     }
 
     #endregion
