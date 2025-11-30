@@ -984,7 +984,7 @@ MonoBehaviour:
   _currentHealth: 0
   _detectDistance: 19.4
   _windLength: 19.4
-  _windRadius: 1.5
+  _windRadius: 2.2
   _windEffectPrefab: {fileID: 3911287590610637130, guid: 3a62f4d5e1ecdbe4391dd59fe94eb957, type: 3}
   _windOrigin: {fileID: 0}
   _attackAudio: {fileID: 4790027928465039533}
@@ -1164,7 +1164,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: d257b7acc2a95304788af798cf305a9d, type: 3}
+  m_Resource: {fileID: 8300000, guid: ee314ffa6378ec5478beb77cc621a55e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

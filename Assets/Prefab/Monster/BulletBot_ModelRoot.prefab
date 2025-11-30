@@ -180,7 +180,7 @@ MonoBehaviour:
   _shotRightFx: {fileID: 1647233783158733961}
   _hpFillImage: {fileID: 5376972177099707301}
   _hpCanvas: {fileID: 4809099797243437832}
-  _deathTime: 2
+  _deathTime: 1.2
   _DeathEffect: {fileID: 1437150632900711896}
   _DeathAudio: {fileID: 3850247202104000507}
 --- !u!54 &131594499521485639
@@ -751,7 +751,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: d257b7acc2a95304788af798cf305a9d, type: 3}
+  m_Resource: {fileID: 8300000, guid: ee314ffa6378ec5478beb77cc621a55e, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
