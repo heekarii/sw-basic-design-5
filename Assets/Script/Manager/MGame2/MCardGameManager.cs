@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,17 +6,17 @@ using System.Collections.Generic;
 public class MCardGameManager : MonoBehaviour
 {
     [Header("Settings")]
-    public float memorizeTime = 20f;      // 외울 시간
-    public float limitTime = 20f;        // 실제 플레이 제한 시간
-    public int totalCards = 10;          // 카드 개수
+    public float memorizeTime = 10f;   // 외울 시간
+    public float limitTime = 5f;       // 실제 플레이 제한 시간
+    public int totalCards = 6;         // 카드 개수
 
     [Header("References")]
-    public Transform gridArea;           // 카드 배치 부모
-    public GameObject cardPrefab;        // 카드 프리팹
-    public TextMeshProUGUI textTimer;    // 상단 타이머
-    public TextMeshProUGUI textPhase;    // 상단 상태 텍스트
-    public GameObject resultPanel;       // 결과 패널
-    public TextMeshProUGUI textResult;   // 결과 텍스트
+    public Transform gridArea;         // 카드 배치 부모
+    public GameObject cardPrefab;      // 카드 프리팹
+    public TextMeshProUGUI textTimer;  // 상단 타이머
+    public TextMeshProUGUI textPhase;  // 상단 상태 텍스트
+    public GameObject resultPanel;     // 결과 패널
+    public TextMeshProUGUI textResult; // 결과 텍스트
 
     private List<CardNumber> cards = new List<CardNumber>();
     private int currentTarget = 1;
@@ -27,17 +26,20 @@ public class MCardGameManager : MonoBehaviour
 
     void Start()
     {
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlayMainBGM();
+        
+        resultPanel.SetActive(false);
         StartCoroutine(GameFlow());
     }
 
     IEnumerator GameFlow()
     {
         // 초기화
-        resultPanel.SetActive(false);
         textPhase.text = "Memorize";
         InitCards();
 
-        // 🔹 Memorize 타이머 시작
+        // Memorize 타이머
         timeLeft = memorizeTime;
         while (timeLeft > 0f)
         {
@@ -46,11 +48,15 @@ public class MCardGameManager : MonoBehaviour
             yield return null;
         }
 
-        // 🔹 암기 끝나면 카드 숫자 숨기기
+        // 암기 끝 → 숫자 숨기기
         foreach (var c in cards)
             c.ShowNumber(false);
 
-        // 🔹 플레이 시작
+        // 맞추기 시작 (플레이 단계 진입 SFX)
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlayMCardStart();
+
+        // 플레이 시작
         textPhase.text = "Play";
         timeLeft = limitTime;
         gameActive = true;
@@ -96,6 +102,10 @@ public class MCardGameManager : MonoBehaviour
     {
         if (!gameActive || inputLocked) return;
 
+        // 카드 클릭 SFX
+        if (AudioManager.Instance != null)
+            AudioManager.Instance.PlayMCardClick();
+
         // ✅ 정답 카드
         if (selected.number == currentTarget)
         {
@@ -119,15 +129,24 @@ public class MCardGameManager : MonoBehaviour
     {
         inputLocked = true;
         wrongCard.ShowWrong();  // 카드 자체에서 색상 변경
-        yield return new WaitForSeconds(0.3f); // 0.3초 기다림
+        yield return new WaitForSeconds(0.3f);
         EndGame(false);
     }
-
 
     void EndGame(bool isSuccess)
     {
         if (!gameActive) return;
         gameActive = false;
+
+        // 성공/실패 SFX
+        if (AudioManager.Instance != null)
+        {
+            if (isSuccess) AudioManager.Instance.PlayMCardSuccess();
+            else           AudioManager.Instance.PlayMCardFail();
+
+            // ★ 성공/실패하면 BGM 끄기
+            AudioManager.Instance.StopBGM();
+        }
 
         textPhase.text = isSuccess ? "SUCCESS" : "FAILED";
         if (textResult)
@@ -137,14 +156,11 @@ public class MCardGameManager : MonoBehaviour
 
         if (isSuccess)
             SendPlayer_Weapon();
+
         Debug.Log(isSuccess ? "게임 성공!" : "게임 실패!");
         TransitionManager.Instance.EndMiniGame("MCardGame", isSuccess);
-        
-        
-        // 실패나 성공 둘 다 잠깐 후 종료 시킬 수도 있음 (선택사항)
-        //StartCoroutine(AutoClose());
     }
-
+    
     IEnumerator AutoClose()
     {
         yield return new WaitForSeconds(2.0f);
@@ -153,10 +169,7 @@ public class MCardGameManager : MonoBehaviour
 
     void SendPlayer_Weapon()
     {
-        // // 보상 전달 (프로젝트에 맞게 수정 가능)
-        // var player = FindObjectOfType<Player>();
-        // if (player != null)
-        //     player.SendMessage("AddAttackPower", 10f, SendMessageOptions.DontRequireReceiver);
+        // 보상 전달 (필요하면 여기 채우기)
     }
 
     void Shuffle(List<int> list)
