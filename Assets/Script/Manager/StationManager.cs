@@ -45,11 +45,16 @@ public class StationManager : MonoBehaviour
         _transitionManager = TransitionManager.Instance;
         _gameManager = GameManager.Instance;
 
-        _transitionManager?.RegisterStationManager(this);
-
         InitButtonEvents();
         InitUIState();
     }
+
+// 🔥 RegisterStationManager는 Start()에서 호출해야 한다
+    private void Start()
+    {
+        _transitionManager?.RegisterStationManager(this);
+    }
+
 
     private void OnEnable()
     {
@@ -289,3 +294,11 @@ public class StationManager : MonoBehaviour
     private void OnClickSuccessImage() => _transitionManager.ExitRepairStation();
     private void OnClickFailureImage() => _transitionManager.ExitRepairStation();
 }
+
+
+
+
+
+
+
+
