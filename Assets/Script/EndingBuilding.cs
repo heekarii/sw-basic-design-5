@@ -1,27 +1,52 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EndingBuilding : MonoBehaviour
 {
+    [Header("Status")]
     [SerializeField] private bool _isActivated = false;
     [SerializeField] private GameObject _key;
+
+    [Header("UI Elements")] 
+    [SerializeField] private Image _checkImage;
+
+    [SerializeField] private Button _escapeButton;
+    [SerializeField] private Button _backButton;
+    
     private int _index = 0;
+    private Player _player;
     private GameManager _gm;
     private Vector3 _keyPos = new Vector3(0, 0, 0);
 
     private void Start()
     {
         _gm = GameManager.Instance;
+        _player = FindAnyObjectByType<Player>();
+        _escapeButton?.onClick.AddListener(OnEscapeButton);
+        _backButton?.onClick.AddListener(OnBackButton);
     }
     
     private void OnCollisionEnter(Collision col)
     {
-        if (_isActivated)
+        if (_isActivated && col.gameObject.CompareTag("Player"))
         {
-            if (col.gameObject.CompareTag("Player") && _gm.HasKey == true)
-            {
-                Debug.Log("탈출 성공 !");
-            }
+            _player.EnterStationaryState();
+            Cursor.visible = true;
+            _checkImage.gameObject.SetActive(true);
         }
+    }
+
+    private void OnEscapeButton()
+    {
+        if (_gm.HasKey) TransitionManager.Instance.UnloadGameScenes();
+    }
+    
+    private void OnBackButton()
+    {
+        _checkImage.gameObject.SetActive(false);
+        _player.ExitStationaryState();
+        Debug.Log("Player Exit Stationary State");
+        Cursor.visible = false;
     }
     
     public void SetActivate(bool state, int index)

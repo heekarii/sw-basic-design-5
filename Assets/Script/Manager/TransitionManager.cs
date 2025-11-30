@@ -7,6 +7,7 @@ public class TransitionManager : Singleton<TransitionManager>
     private Player _player;
     public StationManager CurStationManager;
     private Repair _lastRepairSource;
+    
     protected override void Awake()
     {
         base.Awake();
@@ -52,6 +53,18 @@ public class TransitionManager : Singleton<TransitionManager>
 
     #endregion
 
+    #region GameEnd Management
+
+    public void UnloadGameScenes()
+    {
+        // Map_SCENE 언로드
+        SceneManager.UnloadSceneAsync("Map_SCENE");
+        // MainUIScene 언로드
+        LoadSceneWithLoading("Escape Scene", LoadSceneMode.Additive);
+    }
+
+    #endregion
+    
     #region Repair Station Management
     
     public void RegisterStationManager(StationManager manager)

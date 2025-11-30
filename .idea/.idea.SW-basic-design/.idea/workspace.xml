@@ -6,8 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/RepairShopUIscene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/RepairShopUIscene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/StationManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/StationManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scenes/Escape Scene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/Escape Scene.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/EndingBuilding.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/EndingBuilding.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/TransitionManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/TransitionManager.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,7 +49,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "hotfix/station",
+    "git-widget-placeholder": "feat/EndingSequence",
     "junie.onboarding.icon.badge.shown": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -152,6 +153,7 @@
       <workItem from="1764168827293" duration="1977000" />
       <workItem from="1764172716120" duration="500000" />
       <workItem from="1764345385747" duration="12621000" />
+      <workItem from="1764508743803" duration="3409000" />
     </task>
     <servers />
   </component>
