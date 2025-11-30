@@ -12,8 +12,15 @@ public class LoadingScreen : MonoBehaviour
     private string _targetScene;
     private LoadSceneMode _loadMode;
 
+    private Player _player;
+
     void Start()
     {
+#if UNITY_2023_2_OR_NEWER
+        _player = UnityEngine.Object.FindFirstObjectByType<Player>();
+#else
+        _player = FindObjectOfType<Player>();
+#endif
         _targetScene = PlayerPrefs.GetString("LOAD_SCENE_NAME");
         _loadMode    = (LoadSceneMode)PlayerPrefs.GetInt("LOAD_SCENE_MODE", 0);
         StartCoroutine(LoadScene());
@@ -28,6 +35,7 @@ public class LoadingScreen : MonoBehaviour
 
     IEnumerator LoadSceneProcess()
     {
+        if (_player != null) _player.StopBatteryReduction();
         AsyncOperation op = SceneManager.LoadSceneAsync(_targetScene, _loadMode);
         op.allowSceneActivation = false;
 
@@ -79,6 +87,7 @@ public class LoadingScreen : MonoBehaviour
 
             yield return null;
         }
+        if (_player != null) _player.StartBatteryReduction();
     }
 
 }

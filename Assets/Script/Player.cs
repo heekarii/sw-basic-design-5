@@ -32,6 +32,8 @@ public class Player : MonoBehaviour
     {
         1f
     };
+
+    private Coroutine _batteryReductionCo;
     [FormerlySerializedAs("_curStatus")] [SerializeField] private int _curPlayerStatus;
     [SerializeField] private int _curHealthLevel = 1;
     [SerializeField] private int _curSpeedLevel = 1;
@@ -136,7 +138,7 @@ public class Player : MonoBehaviour
             }
         }
         InitWeaponByGameManager();
-        StartCoroutine(BatteryReduction());
+        _batteryReductionCo = StartCoroutine(BatteryReduction());
     }
 
     private void FixedUpdate()
@@ -694,7 +696,21 @@ public class Player : MonoBehaviour
             _curBattery -= reductionAmount;
         }
     }
-
+    
+    public void StartBatteryReduction()
+    {
+        if (_batteryReductionCo == null) 
+            _batteryReductionCo = StartCoroutine(BatteryReduction());
+    }
+    public void StopBatteryReduction()
+    {
+        if (_batteryReductionCo != null)
+        {
+            StopCoroutine(_batteryReductionCo);
+            _batteryReductionCo = null;
+        }
+    }
+    
     /// <summary>
     /// 배터리의 percent%만큼 즉시 감소 (예: 1 -> 전체의 1%)
     /// </summary>
