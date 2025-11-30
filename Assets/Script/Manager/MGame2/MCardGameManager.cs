@@ -2,6 +2,8 @@ using UnityEngine;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using System;
+using UnityEngine.UI;
 
 public class MCardGameManager : MonoBehaviour
 {
@@ -17,6 +19,7 @@ public class MCardGameManager : MonoBehaviour
     public TextMeshProUGUI textPhase;  // 상단 상태 텍스트
     public GameObject resultPanel;     // 결과 패널
     public TextMeshProUGUI textResult; // 결과 텍스트
+    public Image GameMethod;
 
     private List<CardNumber> cards = new List<CardNumber>();
     private int currentTarget = 1;
@@ -30,9 +33,18 @@ public class MCardGameManager : MonoBehaviour
             AudioManager.Instance.PlayMainBGM();
         
         resultPanel.SetActive(false);
-        StartCoroutine(GameFlow());
+        
+        AddClick(GameMethod, OnMethodClick);
+        
     }
 
+    private void OnMethodClick()
+    {
+        // 게임 방법 이미지 클릭 시 닫기
+        GameMethod.gameObject.SetActive(false);
+        StartCoroutine(GameFlow());
+    }
+    
     IEnumerator GameFlow()
     {
         // 초기화
@@ -176,8 +188,18 @@ public class MCardGameManager : MonoBehaviour
     {
         for (int i = 0; i < list.Count; i++)
         {
-            int r = Random.Range(i, list.Count);
+            int r = UnityEngine.Random.Range(i, list.Count);
             (list[i], list[r]) = (list[r], list[i]);
         }
+    }
+    
+    private void AddClick(Image img, Action callback)
+    {
+        if (img == null) return;
+
+        var clickable = img.GetComponent<ClickableImage>() ??
+                        img.gameObject.AddComponent<ClickableImage>();
+
+        clickable.onClick = callback;
     }
 }
