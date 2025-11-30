@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using System.Collections;
 using UnityEngine.Serialization;
 
 public class StationManager : MonoBehaviour
@@ -17,10 +18,12 @@ public class StationManager : MonoBehaviour
     [SerializeField] private Image _selectUpgradeImage;
     [SerializeField] private Image _successImage;
     [SerializeField] private Image _failureImage;
+    [SerializeField] private Image _notEnoughScrapImage;
 
     [Header("Repair Main Station Buttons")] 
     [SerializeField] private Button _runStation;
     [SerializeField] private Button _exitStation;
+    [SerializeField] private Button _exitButton;
     [SerializeField] private Button _upgradeHealth;
     [SerializeField] private Button _upgradeWeapon;
     [SerializeField] private Button _upgradeMove;
@@ -77,6 +80,7 @@ public class StationManager : MonoBehaviour
     {
         _runStation?.onClick.AddListener(OnRunStationClick);
         _exitStation?.onClick.AddListener(OnExitStationClick);
+        _exitButton?.onClick.AddListener(OnExitStationClick);
 
         AddClick(_successImage, OnClickSuccessImage);
         AddClick(_failureImage, OnClickFailureImage);
@@ -154,10 +158,16 @@ public class StationManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[StationManager] 스크랩 부족");
+            StartCoroutine(ShowNotEnoughScrap());
         }
     }
 
+    private IEnumerator ShowNotEnoughScrap()
+    {
+        _notEnoughScrapImage?.gameObject.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        _notEnoughScrapImage?.gameObject.SetActive(false);
+    }
 
     /* ──────────────────────────────────────────────────────────────────────── */
     /* 7) 미니게임 종료 후 결과 화면 처리 */
@@ -247,6 +257,7 @@ public class StationManager : MonoBehaviour
     {
         _bgoff?.gameObject.SetActive(true);
         _bgon?.gameObject.SetActive(false);
+        _notEnoughScrapImage?.gameObject.SetActive(false);
         _selectRunImage?.gameObject.SetActive(true);
         _selectUpgradeImage?.gameObject.SetActive(false);
         _successImage?.gameObject.SetActive(false);
