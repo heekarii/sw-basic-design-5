@@ -23,7 +23,6 @@ public class SpearRobot : MonoBehaviour, IEnemy
 
     [Header("others")]
     [SerializeField] private Player _player;
-
     [SerializeField] private AudioClip _attackSound;
     [SerializeField] private AudioClip _electricSound;
     private AudioSource _electricAudioSource;
@@ -56,7 +55,8 @@ public class SpearRobot : MonoBehaviour, IEnemy
             _hpFillImage.fillMethod = Image.FillMethod.Horizontal;
             _hpFillImage.fillOrigin = (int)Image.OriginHorizontal.Left; // 왼쪽 고정, 오른쪽이 줄어듦
         }
-        UpdateHpUI();   // 데미지 받을 때마다 HP바 갱신
+        UpdateHpUI();
+        
         
         _electricAudioSource = gameObject.AddComponent<AudioSource>();
         _electricAudioSource.clip = _electricSound;
@@ -264,12 +264,11 @@ public class SpearRobot : MonoBehaviour, IEnemy
 
     private IEnumerator AttackRoutine()
     {
-        
-        
         _isAttacking = true;
         _agent.isStopped = true;
         if (_attackAudioSource != null)
             _attackAudioSource.Play();
+        
 
         yield return new WaitForSeconds(0.5f);
         

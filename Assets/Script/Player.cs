@@ -59,6 +59,8 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isMeleeCasting = false;
     [SerializeField] private bool _isStunned = false;
     [SerializeField] private Image _flashOverlay;
+    [SerializeField] private Image _stunOverlay;
+    [SerializeField] private PlayerDamageEffect damageOverlay;
 
     private float _lastAttackTime = float.NegativeInfinity;
     private bool _isReloading = false;
@@ -106,6 +108,8 @@ public class Player : MonoBehaviour
         _BGMAudioSource.Play();
 
         Cursor.visible = false;
+        if (damageOverlay == null)
+            damageOverlay = FindObjectOfType<PlayerDamageEffect>();
     }
 
     private void Start()
@@ -118,6 +122,17 @@ public class Player : MonoBehaviour
                 if (img.CompareTag("FlashOverlay"))
                 {
                     _flashOverlay = img;
+                    break;
+                }
+            }
+        }
+        if (_stunOverlay == null)
+        {
+            foreach (var img in Resources.FindObjectsOfTypeAll<Image>())
+            {
+                if (img.CompareTag("StunOverlay"))
+                {
+                    _stunOverlay = img;
                     break;
                 }
             }
@@ -544,8 +559,9 @@ public class Player : MonoBehaviour
         _rb.linearVelocity = Vector3.zero;   // 관성 즉시 제거
         _moveDirection = Vector3.zero;       // 입력 방향 초기화
 
+        _stunOverlay.gameObject.SetActive(true);
         _stunAudioSource.Play();
-
+        
         Debug.Log("[Player] isStunned");
         SetStunAnimation(true);
 
@@ -553,7 +569,8 @@ public class Player : MonoBehaviour
 
         SetStunAnimation(false);
         Debug.Log("[Player] release Stun");
-
+        _stunOverlay.gameObject.SetActive(false);
+        
         _isStunned = false;
         _stunCo = null;
     }
@@ -597,6 +614,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(3f);
         _flashOverlay.gameObject.SetActive(false);
     }
+
     
     #endregion
 

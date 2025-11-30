@@ -526,7 +526,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 71608beabbf7b6248a7017cee8a22e05, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e42c72ffceb238d4da2b579f91ca1f64, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -762,7 +762,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -240, y: -320}
+  m_SizeDelta: {x: -320, y: -240}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &857688770
 MonoBehaviour:
@@ -973,7 +973,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bgmSource: {fileID: 131886327}
   sfxSource: {fileID: 106645621}
-  mainBGM: {fileID: 8300000, guid: dbda2289818dbba4585083d90962fbc0, type: 3}
+  mainBGM: {fileID: 0}
   mcardStartClip: {fileID: 8300000, guid: 2c9266c4d0899a34198b9cabaa2993a2, type: 3}
   mcardClickClip: {fileID: 8300000, guid: a3ebf5c3c09a34244b6927e0f15d74d3, type: 3}
   mcardSuccessClip: {fileID: 8300000, guid: d64f7e126fe92f14791e0b81e00cc308, type: 3}
@@ -1473,8 +1473,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Memorize
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 61059b8e0880a5241b72de0170f38eae, type: 2}
+  m_sharedMaterial: {fileID: -7776940348721504150, guid: 61059b8e0880a5241b72de0170f38eae, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
