@@ -301,7 +301,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &470305732
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1583,8 +1583,10 @@ MonoBehaviour:
   _selectUpgradeImage: {fileID: 9222012377989996409}
   _successImage: {fileID: 1565142894725551014}
   _failureImage: {fileID: 8680024212233798530}
+  _notEnoughScrapImage: {fileID: 470305733}
   _runStation: {fileID: 4675261662866224182}
   _exitStation: {fileID: 4319969246623585765}
+  _exitButton: {fileID: 230598944}
   _upgradeHealth: {fileID: 3046602379356300662}
   _upgradeWeapon: {fileID: 5973685503478212035}
   _upgradeMove: {fileID: 2707358015757942975}
