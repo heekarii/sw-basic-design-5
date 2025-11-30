@@ -58,6 +58,7 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isStunned = false;
     [SerializeField] private Image _flashOverlay;
     [SerializeField] private Image _stunOverlay;
+    [SerializeField] private PlayerDamageEffect damageOverlay;
 
     private float _lastAttackTime = float.NegativeInfinity;
     private bool _isReloading = false;
@@ -105,6 +106,8 @@ public class Player : MonoBehaviour
         _BGMAudioSource.Play();
 
         Cursor.visible = false;
+        if (damageOverlay == null)
+            damageOverlay = FindObjectOfType<PlayerDamageEffect>();
     }
 
     private void Start()

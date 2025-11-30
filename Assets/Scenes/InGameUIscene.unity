@@ -1242,10 +1242,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 800353680}
+  - component: {fileID: 800353683}
   - component: {fileID: 800353682}
   - component: {fileID: 800353681}
   m_Layer: 5
-  m_Name: DamagedEffect
+  m_Name: DamagedOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1283,7 +1284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1308,6 +1309,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 800353679}
   m_CullTransparentMesh: 1
+--- !u!114 &800353683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 800353679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 183ef58f612b018438f4783cb5e5d78e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageImage: {fileID: 0}
+  fadeInTime: 0.05
+  holdTime: 0.1
+  fadeOutTime: 0.3
+  maxAlpha: 0.7
 --- !u!1 &926434207
 GameObject:
   m_ObjectHideFlags: 0
@@ -2153,12 +2171,12 @@ GameObject:
   - component: {fileID: 1424436688}
   - component: {fileID: 1424436687}
   m_Layer: 5
-  m_Name: StunEffect
+  m_Name: StunOverlay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1424436686
 RectTransform:
   m_ObjectHideFlags: 0
