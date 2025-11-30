@@ -230,7 +230,12 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public PlayerStatus SendStatus => _playerStatus;
     
-    public bool hasKey => _hasKey;
+    public bool HasKey => _hasKey;
+    
+    public void SetHasKey(bool value)
+    {
+        _hasKey = value;
+    }
 
     /// <summary>
     /// StationManager 등에서 "지금 이 시점의 스냅샷"이 필요할 때 호출.

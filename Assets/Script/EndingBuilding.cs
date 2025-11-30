@@ -17,9 +17,9 @@ public class EndingBuilding : MonoBehaviour
     {
         if (_isActivated)
         {
-            if (col.gameObject.CompareTag("Player") && _gm.hasKey == true)
+            if (col.gameObject.CompareTag("Player") && _gm.HasKey == true)
             {
-                
+                Debug.Log("탈출 성공 !");
             }
         }
     }
