@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Materials/SpearRobot.meta
+guid: 030bf358612a20c4d99a04a80647caea
+========
+guid: d39fd0a9b2fed6b43bf5236363219ac0
+>>>>>>>> develop:Assets/Materials/LaserRobot.meta
+folderAsset: yes
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,68 @@
+using UnityEngine;
+using TMPro;
+
+public class MJumpGameManager : MonoBehaviour
+{
+    [Header("UI")]
+    public TMP_Text timerText; // ← 타이머 UI 연결용
+
+    [Header("Rule")]
+    public float gameTime = 30f;
+    [SerializeField] private AudioSource _successAudio;
+    [SerializeField] private AudioSource _BGAudio;
+
+    
+    float timeLeft;
+    bool playing = false;
+
+    void Start() => StartGame();
+
+    void Update()
+    {
+        if (!playing) return;
+
+        timeLeft -= Time.deltaTime;
+        UpdateTimerUI();
+
+        if (timeLeft <= 0f)
+        {
+            EndGame(true);
+        }
+    }
+
+    void UpdateTimerUI()
+    {
+        if (timerText != null)
+            timerText.text = $"Time: {timeLeft:F1}";
+    }
+
+    public void StartGame()
+    {
+        _successAudio.Stop();
+        timeLeft = gameTime;
+        playing = true;
+        Time.timeScale = 1f;
+        UpdateTimerUI();
+        Debug.Log("게임 시작!");
+    }
+
+    public void OnPlayerHitObstacle() => EndGame(false);
+
+    public void EndGame(bool isSuccess)
+    {
+        if (!playing) return;
+        playing = false;
+
+        Time.timeScale = 0f;
+        _BGAudio.Stop();
+        if (isSuccess) 
+            _successAudio.Play();
+        // 업그레이드 적용은 StationManager.ShowEndingPage에서 처리하도록 단일화합니다.
+        Debug.Log(isSuccess ? "게임 성공!" : "게임 실패!");
+        TransitionManager.Instance.EndMiniGame("JumpMGame", isSuccess);
+    }
+    
+
+    public bool IsPlaying => playing;
+    public float TimeLeft => timeLeft;
+}

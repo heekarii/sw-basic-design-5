@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 9c77b06ec206a7b47be4f9d7742b89f6
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 266226
+  packageName: Free Fire VFX - URP
+  packageVersion: 1.0.2023.1
+  assetPath: Assets/Vefects/Free Fire VFX URP/Shaders/SH_Vefects_VFX_URP_Heat_Haze_01.shader
+  uploadId: 732705

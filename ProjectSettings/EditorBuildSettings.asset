@@ -6,8 +6,35 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scenes/MainUIScene.unity
+    guid: 7a7e889f389f71f4286e8f463b3209d6
+  - enabled: 1
+    path: Assets/Art/map_/scene/Map_SCENE/Map_SCENE.unity
+    guid: 72cda7047f42b0048be829c4be455afa
+  - enabled: 1
+    path: Assets/Scenes/RepairShopUIscene.unity
+    guid: 407d06b587d66f549b88b8a6750495a5
+  - enabled: 1
+    path: Assets/Scenes/MCardGame.unity
+    guid: 2afb4cfbd74ff90489f0f7925ed45dd0
+  - enabled: 1
+    path: Assets/Scenes/LoadingScene.unity
+    guid: 4403e3ac72ad07648b38f07b1d5e4833
+  - enabled: 1
+    path: Assets/Scenes/Escape Scene.unity
+    guid: c2ec9108269efbe45876e5c2b7acfa48
+  - enabled: 0
+    path: Assets/Scenes/PlayerTestScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 0
+    path: Assets/Scenes/Repair_main.unity
+    guid: 85fb9d6194c120c43af761c386e8bb60
+  - enabled: 0
+    path: Assets/Scenes/JumpMGame.unity
+    guid: 0243dbeb035616c46a1080751992b077
+  - enabled: 0
+    path: Assets/Scenes/MMazeGame.unity
+    guid: 1ac825991946b32429f1b167d8faf131
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
