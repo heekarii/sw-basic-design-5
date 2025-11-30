@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/LaserDrone.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/LaserDrone.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/font/Korail M SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/font/Korail M SDF.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/StationManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/StationManager.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -45,7 +45,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "feat/EndSequence",
+    "git-widget-placeholder": "hotfix/station",
     "junie.onboarding.icon.badge.shown": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",

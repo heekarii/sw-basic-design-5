@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isGrounded = true;
     [SerializeField] private bool _isShifting = false;
     [SerializeField] private bool _isSlowed = false;
+    [SerializeField] private bool _isStationary = false;
 
     [Header("Battery & Upgrade")]
     [SerializeField] private float _curBattery = 100;
@@ -363,15 +364,29 @@ public class Player : MonoBehaviour
     
     public void EnterStationaryState()
     {
+        _isStationary = true;
         _isShifting = false;
-        _moveDirection = Vector3.zero;
-        UpdateMoveAnimation(isMoving: false);
         _rb.useGravity = false;
+        _isStunned = true;
+        StartCoroutine(StationRoutine());
+    }
+
+    private IEnumerator StationRoutine()
+    {
+        while (_isStationary)
+        {
+            _rb.linearVelocity = Vector3.zero;   // 관성 즉시 제거
+            _moveDirection = Vector3.zero;       // 입력 방향 초기화
+            UpdateMoveAnimation(isMoving: false);
+            yield return null;
+        }
     }
 
     public void ExitStationaryState()
     {
         _rb.useGravity = true;
+        _isStationary = false;
+        _isStunned = false;
     }
 
     #endregion
@@ -569,7 +584,7 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(3f);
         _flashOverlay.gameObject.SetActive(false);
     }
-
+    
     #endregion
 
     #region Weapon Init & Status
@@ -709,10 +724,6 @@ public class Player : MonoBehaviour
     public void ApplySpeedUpgrade()
     {
         _curSpeedLevel = Mathf.Min(_curSpeedLevel + 1, _speedWithBoostPerLevel.Length);
-        // 속도 증가 로직: 간단히 MoveSpeed에 보정 적용
-        var boost = _speedWithBoostPerLevel[Mathf.Clamp(_curSpeedLevel - 1, 0, _speedWithBoostPerLevel.Length - 1)];
-        _moveSpeed = boost;
-        Debug.Log($"[Player] 이동속도 업그레이드 적용: 레벨 {_curSpeedLevel}, 속도 {_moveSpeed}");
     }
 
     #endregion
