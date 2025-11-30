@@ -8,6 +8,7 @@ public class GameManager : Singleton<GameManager>
     [Header("Game Status")] 
     [SerializeField] private int _curScrap;
     [SerializeField] private float _curBattery;
+    [SerializeField] private bool _hasKey = false;
 
     private PlayerStatus _playerStatus;  // 항상 마지막으로 계산된 스냅샷
     private bool _initialized;
@@ -104,7 +105,9 @@ public class GameManager : Singleton<GameManager>
     private void ActivateBuildingOnStart()
     {
         _buildingToActivate = Random.Range(0, Buildings.Count);
-        
+        EndingBuilding buildingComponent = Buildings[_buildingToActivate].GetComponent<EndingBuilding>();
+        if (buildingComponent != null)
+            buildingComponent.SetActivate(true, _buildingToActivate);
         BuildingOutlines[_buildingToActivate].SetActive(true);
     }
 
@@ -226,6 +229,8 @@ public class GameManager : Singleton<GameManager>
     /// 항상 가장 마지막으로 계산된 상태를 반환한다.
     /// </summary>
     public PlayerStatus SendStatus => _playerStatus;
+    
+    public bool hasKey => _hasKey;
 
     /// <summary>
     /// StationManager 등에서 "지금 이 시점의 스냅샷"이 필요할 때 호출.
