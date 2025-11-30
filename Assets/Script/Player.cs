@@ -109,6 +109,17 @@ public class Player : MonoBehaviour
     private void Start()
     {
         CacheManagers();
+        if (_flashOverlay == null)
+        {
+            foreach (var img in Resources.FindObjectsOfTypeAll<Image>())
+            {
+                if (img.CompareTag("FlashOverlay"))
+                {
+                    _flashOverlay = img;
+                    break;
+                }
+            }
+        }
         InitWeaponByGameManager();
         StartCoroutine(BatteryReduction());
     }
