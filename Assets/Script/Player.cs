@@ -709,10 +709,6 @@ public class Player : MonoBehaviour
     public void ApplySpeedUpgrade()
     {
         _curSpeedLevel = Mathf.Min(_curSpeedLevel + 1, _speedWithBoostPerLevel.Length);
-        // 속도 증가 로직: 간단히 MoveSpeed에 보정 적용
-        var boost = _speedWithBoostPerLevel[Mathf.Clamp(_curSpeedLevel - 1, 0, _speedWithBoostPerLevel.Length - 1)];
-        _moveSpeed = boost;
-        Debug.Log($"[Player] 이동속도 업그레이드 적용: 레벨 {_curSpeedLevel}, 속도 {_moveSpeed}");
     }
 
     #endregion

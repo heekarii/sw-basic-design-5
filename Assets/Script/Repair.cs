@@ -24,7 +24,6 @@ public class Repair : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && !_isEntered)
         {
             _transitionManager.EnterRepairStation(this);
-            _isEntered = true;
         }
     }
     
