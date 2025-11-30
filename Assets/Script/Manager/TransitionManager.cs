@@ -17,6 +17,9 @@ public class TransitionManager : Singleton<TransitionManager>
 #endif
     }
 
+
+    #region Repair Station Management
+    
     public void RegisterStationManager(StationManager manager)
     {
         CurStationManager = manager;
@@ -25,12 +28,6 @@ public class TransitionManager : Singleton<TransitionManager>
         {
             CurStationManager.SetRepairSource(_lastRepairSource);
         }
-    }
-    
-    // ▣ Map → Repair 이동
-    public void EnterRepairStation()
-    {
-        EnterRepairStation((Repair)null);
     }
 
     // 호출한 Repair 컴포넌트를 전달받아 추적합니다.
@@ -89,6 +86,7 @@ public class TransitionManager : Singleton<TransitionManager>
             Debug.LogWarning("[TransitionManager] ExitRepairStation: Player가 할당되지 않았습니다.");
     }
 
+    #endregion
     // 씬 활성/비활성화 도우미
     private void SetSceneActive(string sceneName, bool active)
     {
