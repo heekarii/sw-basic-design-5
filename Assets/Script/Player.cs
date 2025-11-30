@@ -540,6 +540,7 @@ public class Player : MonoBehaviour
     public void TakeDamage(float damage)
     {
         _currentHealth = Mathf.Max(0, _currentHealth - damage);
+        damageOverlay.Play();
         Debug.Log($"[Player] 피격됨: {damage}, 남은 체력: {_currentHealth}");
     }
 
