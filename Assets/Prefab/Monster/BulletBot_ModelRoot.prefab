@@ -180,7 +180,7 @@ MonoBehaviour:
   _shotRightFx: {fileID: 1647233783158733961}
   _hpFillImage: {fileID: 5376972177099707301}
   _hpCanvas: {fileID: 4809099797243437832}
-  _deathTime: 1.2
+  _deathTime: 1.5
   _DeathEffect: {fileID: 1437150632900711896}
   _DeathAudio: {fileID: 3850247202104000507}
 --- !u!54 &131594499521485639

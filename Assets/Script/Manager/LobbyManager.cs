@@ -9,8 +9,11 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private Button _startButton;
     [SerializeField] private TextMeshProUGUI _playerNameText;
     [SerializeField] private Button _tutorialButton;
+    [SerializeField] private Button _tutorialExitButton;
     [SerializeField] private Button _rankingButton;
     [SerializeField] private Button _settingsButton;
+
+    [SerializeField] private Image _tutorialImage;
 
     [Header("Game Settings")] 
     [SerializeField] private int _weaponType = 0;
@@ -37,8 +40,13 @@ public class LobbyManager : MonoBehaviour
     private void OnTutorialButtonClicked()
     {
         Debug.Log("Tutorial Button Clicked - Load Tutorial Scene");
-        // Load the tutorial scene
-        // SceneManager.LoadScene("TutorialScene");
+        _tutorialImage.gameObject.SetActive(true);
+        _tutorialExitButton.onClick.AddListener(() =>
+            {
+                _tutorialImage.gameObject.SetActive(false);
+            }
+        );
+
     }
     private void OnRankingButtonClicked()
     {

@@ -632,7 +632,7 @@ MonoBehaviour:
   _player: {fileID: 0}
   _hpFillImage: {fileID: 5594321777131256392}
   _hpCanvas: {fileID: 7875709371403077189}
-  _deathTime: 4
+  _deathTime: 2.5
   _deathAudio: {fileID: 85989220813653211}
 --- !u!54 &5283858588543057049
 Rigidbody:

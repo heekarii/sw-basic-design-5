@@ -463,7 +463,7 @@ MonoBehaviour:
   _betweenShotDelay: 0.5
   _hpFillImage: {fileID: 8354211716078927549}
   _hpCanvas: {fileID: 8494135827722296511}
-  _deathTime: 3
+  _deathTime: 1
   _DeathEffect: {fileID: 5199767425337224177}
   _DeathAudio: {fileID: 2921795319681492854}
 --- !u!54 &-2426646934839334387

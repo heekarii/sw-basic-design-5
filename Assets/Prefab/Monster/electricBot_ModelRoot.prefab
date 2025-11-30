@@ -6531,7 +6531,7 @@ MonoBehaviour:
   _player: {fileID: 0}
   _hpFillImage: {fileID: 7261066709112733394}
   _hpCanvas: {fileID: 8319086359232008016}
-  _deathTime: 2
+  _deathTime: 1
   _DeathEffect: {fileID: 5666537565060611851}
   _DeathAudio: {fileID: 414559321790396088}
 --- !u!54 &-1506428972124410046
