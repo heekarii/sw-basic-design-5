@@ -151,7 +151,7 @@ public class GameManager : Singleton<GameManager>
             _maxHPText.text = _playerStatus.MaxHealth.ToString();
 
         if (_curHealthText != null)
-            _curHealthText.text = _playerStatus.CurrentHealth.ToString();
+            _curHealthText.text = _playerStatus.CurrentHealth.ToString("F0");
     }
 
     private void UpdateAttackUI()
