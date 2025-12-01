@@ -5,11 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Effect/attack_effect/zeron/zeron_attack_success.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Effect/attack_effect/zeron/zeron_attack_success.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/punch_robot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/punch_robot_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/spear_robot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/spear_robot_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/SpearRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/SpearRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/FireBot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/FireBot_ModelRoot.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/FireRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/FireRobot.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -195,7 +192,7 @@
       <workItem from="1764514535184" duration="1459000" />
       <workItem from="1764516020493" duration="247000" />
       <workItem from="1764516282938" duration="5000" />
-      <workItem from="1764606221171" duration="1433000" />
+      <workItem from="1764606221171" duration="1794000" />
     </task>
     <servers />
   </component>
