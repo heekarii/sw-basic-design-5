@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MCardGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MCardGame.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/RepairShopUIscene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/RepairShopUIscene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/MGame2/MCardGameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/MGame2/MCardGameManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/PlayerDamageEffect.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/PlayerDamageEffect.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +46,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultAutoModeForALLUsers.v1": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "hotfix/minigame",
+    "git-widget-placeholder": "develop",
     "junie.onboarding.icon.badge.shown": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -156,6 +153,7 @@
       <workItem from="1764508743803" duration="4482000" />
       <workItem from="1764515141152" duration="69000" />
       <workItem from="1764515259624" duration="2130000" />
+      <workItem from="1764600610916" duration="325000" />
     </task>
     <servers />
   </component>
