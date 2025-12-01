@@ -25,8 +25,8 @@ public class SpearRobot : MonoBehaviour, IEnemy
     [SerializeField] private Player _player;
     [SerializeField] private AudioClip _attackSound;
     [SerializeField] private AudioClip _electricSound;
-    [SerializeField] private ParticleSystem _hitEffect;
-    [SerializeField] private AudioSource _hitSound;
+    [SerializeField] private ParticleSystem _damagedEffect;
+    [SerializeField] private AudioSource _damagedSound;
     private AudioSource _electricAudioSource;
     private AudioSource _attackAudioSource;
     
@@ -303,8 +303,8 @@ public class SpearRobot : MonoBehaviour, IEnemy
     public void TakeDamage(float dmg)
     {
         _curHp -= dmg;
-        _hitEffect.Play();
-        _hitSound.Play();
+        _damagedEffect.Play();
+        _damagedSound.Play();
         UpdateHpUI();   // 데미지 받을 때마다 HP바 갱신
         if (_curHp <= 0f) Die();
         Debug.Log($"SpearRobot took {dmg} damage, current HP: {_curHp}");

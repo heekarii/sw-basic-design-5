@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Prefab/Monster/BulletBot_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/Monster/BulletBot_ModelRoot.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/BulletRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/BulletRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/AIRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/AIRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/FireRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/FireRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/LaserDrone.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/LaserDrone.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/PunchRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/PunchRobot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/Rat.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/Rat.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Monsters/SpearRobot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Monsters/SpearRobot.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -192,7 +196,7 @@
       <workItem from="1764514535184" duration="1459000" />
       <workItem from="1764516020493" duration="247000" />
       <workItem from="1764516282938" duration="5000" />
-      <workItem from="1764606221171" duration="2119000" />
+      <workItem from="1764606221171" duration="2433000" />
     </task>
     <servers />
   </component>

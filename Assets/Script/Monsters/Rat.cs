@@ -15,8 +15,8 @@ public class Rat : MonoBehaviour, IEnemy
     [SerializeField] private float _moveSpeed = 8f;
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 2;
-    [SerializeField] private ParticleSystem _hitEffect;
-    [SerializeField] private AudioSource _hitSound;
+    [SerializeField] private ParticleSystem _damagedEffect;
+    [SerializeField] private AudioSource _damagedSound;
     [SerializeField] private Player _player;
     [SerializeField] private ParticleSystem _explosionEffect;
     [SerializeField] private AudioSource _explosionAudio;
@@ -249,8 +249,8 @@ public class Rat : MonoBehaviour, IEnemy
     {
         _curHp -= dmg;
         UpdateHpUI();   // 데미지 받을 때마다 HP바 갱신
-        _hitEffect.Play();
-        _hitSound.Play();
+        _damagedEffect.Play();
+        _damagedSound.Play();
         if (_curHp <= 0f) Die();
         Debug.Log($"Rat took {dmg} damage, current HP: {_curHp}");
     }
