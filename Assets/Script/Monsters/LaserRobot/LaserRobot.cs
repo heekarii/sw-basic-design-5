@@ -15,6 +15,8 @@ public class LaserRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _attackRange = 12.9f;
     [SerializeField] private float _lookAtTurnSpeed = 8f;
     [SerializeField] private float _moveSpeed = 5.0f;
+    [SerializeField] private ParticleSystem _damagedEffect;
+    [SerializeField] private AudioSource _damagedSound;
 
     [Header("Refs")]
     [SerializeField] private Player _player;
@@ -321,6 +323,8 @@ public class LaserRobot : MonoBehaviour, IEnemy
     {
         _curHp -= dmg;
         UpdateHpUI();
+        _damagedEffect.Play();
+        _damagedSound.Play();
         Debug.Log($"[LaserRobot] took {dmg} damage, current HP: {_curHp}");
         if (_curHp <= 0f)
             Die();
