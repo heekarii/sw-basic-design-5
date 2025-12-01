@@ -249,9 +249,13 @@ public class Rat : MonoBehaviour, IEnemy
     {
         _curHp -= dmg;
         UpdateHpUI();   // 데미지 받을 때마다 HP바 갱신
+        if (_curHp <= 0f)
+        {
+            Die();
+            return;
+        }
         _damagedEffect.Play();
         _damagedSound.Play();
-        if (_curHp <= 0f) Die();
         Debug.Log($"Rat took {dmg} damage, current HP: {_curHp}");
     }
 

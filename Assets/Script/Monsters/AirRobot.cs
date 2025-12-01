@@ -245,10 +245,13 @@ public class AirRobot : MonoBehaviour, IEnemy
     {
         _currentHealth -= dmg;
         UpdateHpUI();
+        if (_currentHealth <= 0)
+        {
+            Die();
+            return;
+        }
         _damagedEffect.Play();
         _damagedSound.Play();
-        if (_currentHealth <= 0)
-            Die();
     }
 
     private void UpdateHpUI()
