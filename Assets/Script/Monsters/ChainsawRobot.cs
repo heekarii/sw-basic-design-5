@@ -26,6 +26,8 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     [SerializeField] private AudioClip _sawSound;
     [SerializeField] private AudioClip _attackSound;
     [SerializeField] private AudioClip _hitSound;
+    [SerializeField] private ParticleSystem _damagedEffect;
+    [SerializeField] private AudioSource _damagedSound;
     
     [Header("HP Bar UI")]
     [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
@@ -352,6 +354,8 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     {
         _curHp -= dmg;
         UpdateHpUI();
+        _damagedEffect.Play();
+        _damagedSound.Play();
         if (_curHp <= 0f) Die();
         Debug.Log($"ChainsawRobot took {dmg} damage, current HP: {_curHp}");
     }
