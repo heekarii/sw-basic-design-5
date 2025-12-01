@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/Assets/Script/PlayerDamageEffect.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/PlayerDamageEffect.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefab/weapon/hammer/hammer_ModelRoot.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefab/weapon/hammer/hammer_ModelRoot.prefab" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -153,7 +153,7 @@
       <workItem from="1764508743803" duration="4482000" />
       <workItem from="1764515141152" duration="69000" />
       <workItem from="1764515259624" duration="2130000" />
-      <workItem from="1764600610916" duration="325000" />
+      <workItem from="1764600610916" duration="904000" />
     </task>
     <servers />
   </component>
