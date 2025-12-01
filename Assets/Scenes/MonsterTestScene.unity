@@ -150,6 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _curScrap: 0
   _curBattery: 0
+  _hasKey: 0
   _batteryFillbar: {fileID: 0}
   _batteryText: {fileID: 0}
   _healthLevel: {fileID: 0}
@@ -165,6 +166,9 @@ MonoBehaviour:
   _curScrapText: {fileID: 0}
   Player: {fileID: 0}
   WeaponType: 0
+  Buildings: []
+  BuildingOutlines: []
+  _buildingToActivate: 0
 --- !u!4 &845973697
 Transform:
   m_ObjectHideFlags: 0
@@ -783,6 +787,18 @@ PrefabInstance:
     - target: {fileID: 531114282787810951, guid: df33ba8c26bbf884fb64ed3b3554a6ad, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 973242834122530442, guid: df33ba8c26bbf884fb64ed3b3554a6ad, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.08114314
+      objectReference: {fileID: 0}
+    - target: {fileID: 973242834122530442, guid: df33ba8c26bbf884fb64ed3b3554a6ad, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.962129
+      objectReference: {fileID: 0}
+    - target: {fileID: 973242834122530442, guid: df33ba8c26bbf884fb64ed3b3554a6ad, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.012743
       objectReference: {fileID: 0}
     - target: {fileID: 6656068081135105484, guid: df33ba8c26bbf884fb64ed3b3554a6ad, type: 3}
       propertyPath: m_Name
