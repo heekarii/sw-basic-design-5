@@ -20,6 +20,8 @@ public class AIRobot : MonoBehaviour, IEnemy
     [SerializeField] private GameObject _redFx;              // vfx_Lightning_red (몸에 붙은 경고 이펙트)
     [SerializeField] private GameObject _blueFx;             // vfx_Lightning_blue (공격 중 이펙트)
     [SerializeField] private AudioSource _attackStartSource; // 공격 시작 사운드 (별도 AudioSource)
+    [SerializeField] private ParticleSystem _hitEffect;
+    [SerializeField] private AudioSource _hitSound;
     
     [Header("Drop")]
     [SerializeField] private ScrapData _scrapData;
@@ -417,6 +419,8 @@ public class AIRobot : MonoBehaviour, IEnemy
     {
         _curHp -= dmg;
         UpdateHpUI();
+        _hitEffect.Play();
+        _hitSound.Play();
         Debug.Log($"[AIRobot] took {dmg} damage, current HP: {_curHp}");
 
         if (_curHp <= 0f)
