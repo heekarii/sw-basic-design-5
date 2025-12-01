@@ -18,6 +18,8 @@ public class PunchRobot : MonoBehaviour, IEnemy
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 3;
     [SerializeField] private AudioSource _attackAudio;
+    [SerializeField] private ParticleSystem _hitEffect;
+    [SerializeField] private AudioSource _hitSound;
     [SerializeField] private Player _player;
     
     [Header("HP Bar UI")]
@@ -353,7 +355,8 @@ public class PunchRobot : MonoBehaviour, IEnemy
     {
         _curHp = Mathf.Max(0f, _curHp - dmg);
         UpdateHpUI();
-
+        _hitEffect.Play();
+        _hitSound.Play();
         Debug.Log($"[PunchRobot] took {dmg} damage, current HP: {_curHp}");
 
         if (_curHp <= 0f)

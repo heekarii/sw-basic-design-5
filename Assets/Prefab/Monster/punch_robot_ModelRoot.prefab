@@ -630,6 +630,8 @@ MonoBehaviour:
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
   _scrapAmount: 3
   _attackAudio: {fileID: 6054745271407629037}
+  _hitEffect: {fileID: 4296477803153114968}
+  _hitSound: {fileID: 4956298481588867912}
   _player: {fileID: 0}
   _hpFillImage: {fileID: 5594321777131256392}
   _hpCanvas: {fileID: 7875709371403077189}
@@ -1941,6 +1943,11 @@ PrefabInstance:
       addedObject: {fileID: 8908999029684084050}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abc97dd0f8da9b94695e9b0de098b41f, type: 3}
+--- !u!198 &4296477803153114968 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6716839194047192281, guid: abc97dd0f8da9b94695e9b0de098b41f, type: 3}
+  m_PrefabInstance: {fileID: 7392419526518791041}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6269078307689365598 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3573355503901662175, guid: abc97dd0f8da9b94695e9b0de098b41f, type: 3}
