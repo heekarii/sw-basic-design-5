@@ -63,7 +63,7 @@ public class EndingBuilding : MonoBehaviour
         SetkeyPos();
         if (_isActivated)
         {
-            Instantiate(_key, _keyPos, _key.transform.rotation);
+            Instantiate(_key, _keyPos, _key.transform.rotation, null);
         }
     }
 
