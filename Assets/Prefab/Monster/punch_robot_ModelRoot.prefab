@@ -630,8 +630,8 @@ MonoBehaviour:
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
   _scrapAmount: 3
   _attackAudio: {fileID: 6054745271407629037}
-  _hitEffect: {fileID: 4296477803153114968}
-  _hitSound: {fileID: 4956298481588867912}
+  _damagedEffect: {fileID: 4296477803153114968}
+  _damagedSound: {fileID: 4956298481588867912}
   _player: {fileID: 0}
   _hpFillImage: {fileID: 5594321777131256392}
   _hpCanvas: {fileID: 7875709371403077189}

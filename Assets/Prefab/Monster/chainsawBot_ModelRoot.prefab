@@ -553,7 +553,7 @@ MonoBehaviour:
   _attackSound: {fileID: 8300000, guid: a92bcbdc84d116d41a63de4db9426c30, type: 3}
   _hitSound: {fileID: 8300000, guid: df62e59aa253a4c4ca386303352e257b, type: 3}
   _damagedEffect: {fileID: 4124805659151981978}
-  _damagedSound: {fileID: 0}
+  _damagedSound: {fileID: 3369393833030194704}
   _hpFillImage: {fileID: 7012910430367597019}
   _hpCanvas: {fileID: 6672090561743474475}
   _deathTime: 4

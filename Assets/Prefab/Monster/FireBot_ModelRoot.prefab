@@ -87,8 +87,8 @@ MonoBehaviour:
   _aggravationRange: 15
   _attackRange: 6
   _moveSpeed: 4
-  _hitEffect: {fileID: 3468996895881764533}
-  _hitSound: {fileID: 5804168050751804405}
+  _damagedEffect: {fileID: 3468996895881764533}
+  _damagedSound: {fileID: 5804168050751804405}
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
   _lookAtTurnSpeed: 8
   _player: {fileID: 0}
