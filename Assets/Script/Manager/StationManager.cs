@@ -212,7 +212,7 @@ public class StationManager : MonoBehaviour
             else if (UpgradeIdx == 2)
                 _amount.text = $"+{(int)(newStatus.AttackPower - _enterStationStatus.AttackPower)}";
             else if (UpgradeIdx == 3)
-                _amount.text = $"+{(newStatus.MoveSpeed - _enterStationStatus.MoveSpeed):F0}";
+                _amount.text = $"+{(newStatus.SpeedWithBoost - _enterStationStatus.SpeedWithBoost):F0}";
         }
     }
 
