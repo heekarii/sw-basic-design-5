@@ -83,8 +83,10 @@ public class Player : MonoBehaviour
     [Header("Sound")]
     [SerializeField] private AudioClip _stunSound;
     [SerializeField] private AudioClip _BGMSound;
+    [SerializeField] private AudioClip _damagedSound;
     private AudioSource _stunAudioSource;
     private AudioSource _BGMAudioSource;
+    private AudioSource _damagedAudioSource;
 
     // Cached Components & Managers
     private Rigidbody _rb;
@@ -105,6 +107,7 @@ public class Player : MonoBehaviour
         InitializeState();
         SetupStunAudio();
         SetupBGMAudio();
+        SetupDamagedAudio();
         _BGMAudioSource.Play();
 
         Cursor.visible = false;
@@ -196,6 +199,13 @@ public class Player : MonoBehaviour
         _BGMAudioSource.clip = _BGMSound;
         _BGMAudioSource.loop = true;
         _BGMAudioSource.playOnAwake = true;
+    }
+    private void SetupDamagedAudio()
+    {
+        _damagedAudioSource = gameObject.AddComponent<AudioSource>();
+        _damagedAudioSource.clip = _damagedSound;
+        _damagedAudioSource.loop = false;
+        _damagedAudioSource.playOnAwake = false;
     }
 
     /// <summary>
@@ -541,6 +551,7 @@ public class Player : MonoBehaviour
     {
         _currentHealth = Mathf.Max(0, _currentHealth - damage);
         damageOverlay.Play();
+        _damagedAudioSource.Play();
         Debug.Log($"[Player] 피격됨: {damage}, 남은 체력: {_currentHealth}");
     }
 
