@@ -135,8 +135,8 @@ MonoBehaviour:
   _moveSpeed: 8
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
   _scrapAmount: 2
-  _hitEffect: {fileID: 3403547969713855587}
-  _hitSound: {fileID: 5164004839516051736}
+  _damagedEffect: {fileID: 3403547969713855587}
+  _damagedSound: {fileID: 5164004839516051736}
   _player: {fileID: 0}
   _explosionEffect: {fileID: 6484073930798983013}
   _explosionAudio: {fileID: 8890327279721248500}

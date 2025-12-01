@@ -934,8 +934,8 @@ MonoBehaviour:
   _flashOverlay: {fileID: 0}
   _scrapData: {fileID: 11400000, guid: 0144ec421188ab049ac380591959ac98, type: 2}
   _attackAudio: {fileID: 6337862846215028221}
-  _hitEffect: {fileID: 2458393077786229308}
-  _hitSound: {fileID: 2293564555476733789}
+  _damagedEffect: {fileID: 2458393077786229308}
+  _damagedSound: {fileID: 2293564555476733789}
   _hpFillImage: {fileID: 4512110661869498013}
   _hpCanvas: {fileID: 4531008295785264489}
   _deathTime: 1

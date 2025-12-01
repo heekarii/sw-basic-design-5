@@ -1790,8 +1790,8 @@ MonoBehaviour:
   _player: {fileID: 0}
   _attackSound: {fileID: 8300000, guid: 4a29036ae39db4542a359df921500fb2, type: 3}
   _electricSound: {fileID: 8300000, guid: d62b3fe489344bd4093d078a9253c968, type: 3}
-  _hitEffect: {fileID: 7926280334020534486}
-  _hitSound: {fileID: 2593335476347885885}
+  _damagedEffect: {fileID: 7926280334020534486}
+  _damagedSound: {fileID: 2593335476347885885}
   _hpFillImage: {fileID: 6345717438424493989}
   _hpCanvas: {fileID: 4978422643652914878}
   _deathTime: 1.3
