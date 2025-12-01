@@ -503,10 +503,13 @@ public class BulletRobot : MonoBehaviour, IEnemy
     {
         _curHp -= dmg;
         UpdateHpUI();
+        if (_curHp <= 0f)
+        {
+            Die();
+            return;
+        }
         _damagedEffect.Play();
         _damagedSound.Play();
-        if (_curHp <= 0f)
-            Die();
     }
     
     // private void PlayDeath()

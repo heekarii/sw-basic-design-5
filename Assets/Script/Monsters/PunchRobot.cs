@@ -355,12 +355,15 @@ public class PunchRobot : MonoBehaviour, IEnemy
     {
         _curHp = Mathf.Max(0f, _curHp - dmg);
         UpdateHpUI();
-        _damagedEffect.Play();
-        _damagedSound.Play();
         Debug.Log($"[PunchRobot] took {dmg} damage, current HP: {_curHp}");
 
         if (_curHp <= 0f)
+        {
             Die();
+            return;
+        }
+        _damagedEffect.Play();
+        _damagedSound.Play();
     }
 
     // 체력바 채우기 갱신

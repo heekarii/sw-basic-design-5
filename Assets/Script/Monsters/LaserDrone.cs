@@ -232,10 +232,13 @@ public class LaserDrone : MonoBehaviour, IEnemy
     {
         _currentHealth -= Mathf.RoundToInt(damage);
         UpdateHpUI();
+        if (_currentHealth <= 0)
+        {
+            Die();
+            return;
+        }
         _damagedEffect.Play();
         _damagedSound.Play();
-        if (_currentHealth <= 0)
-            Die();
     }
     
     private void PlayDeath()

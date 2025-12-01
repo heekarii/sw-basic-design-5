@@ -419,12 +419,15 @@ public class AIRobot : MonoBehaviour, IEnemy
     {
         _curHp -= dmg;
         UpdateHpUI();
-        _damagedEffect.Play();
-        _damagedSound.Play();
         Debug.Log($"[AIRobot] took {dmg} damage, current HP: {_curHp}");
 
         if (_curHp <= 0f)
+        {
             Die();
+            return;
+        }
+        _damagedEffect.Play();
+        _damagedSound.Play();
     }
 
     private void UpdateHpUI()

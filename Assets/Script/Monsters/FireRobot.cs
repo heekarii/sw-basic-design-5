@@ -401,9 +401,13 @@ public class FireRobot : MonoBehaviour, IEnemy
     {
         _curHp -= dmg;
         UpdateHpUI();
+        if (_curHp <= 0f)
+        {
+            Die();
+            return;
+        }
         _damagedEffect.Play();
         _damagedSound.Play();
-        if (_curHp <= 0f) Die();
         Debug.Log($"FireRobot took {dmg} damage, current HP: {_curHp}");
     }
 

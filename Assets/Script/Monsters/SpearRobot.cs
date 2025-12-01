@@ -303,10 +303,14 @@ public class SpearRobot : MonoBehaviour, IEnemy
     public void TakeDamage(float dmg)
     {
         _curHp -= dmg;
+        UpdateHpUI();   // 데미지 받을 때마다 HP바 갱신
+        if (_curHp <= 0f)
+        {
+            Die();
+            return;
+        }
         _damagedEffect.Play();
         _damagedSound.Play();
-        UpdateHpUI();   // 데미지 받을 때마다 HP바 갱신
-        if (_curHp <= 0f) Die();
         Debug.Log($"SpearRobot took {dmg} damage, current HP: {_curHp}");
     }
 
