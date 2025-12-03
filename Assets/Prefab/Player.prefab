@@ -595,6 +595,7 @@ MonoBehaviour:
   _stunSound: {fileID: 8300000, guid: 30634e3dc33c1fd4eb1ca0e5cf0dec69, type: 3}
   _BGMSound: {fileID: 8300000, guid: a73f47bf966da1e4c8ba0617ca4fc423, type: 3}
   _damagedSound: {fileID: 8300000, guid: 8afc3cb263b8d7746b7b063f87079b23, type: 3}
+  _boostSound: {fileID: 8300000, guid: 634e5caaa5cf6b94da453b052f5c4f5b, type: 3}
 --- !u!54 &8667542401998431201
 Rigidbody:
   m_ObjectHideFlags: 0

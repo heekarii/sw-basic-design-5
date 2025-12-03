@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isShifting = false;
     [SerializeField] private bool _isSlowed = false;
     [SerializeField] private bool _isStationary = false;
-
+    
     [Header("Battery & Upgrade")]
     [SerializeField] private float _curBattery = 100;
     [SerializeField] private float[] _batteryReductionAmount =
@@ -84,9 +84,11 @@ public class Player : MonoBehaviour
     [SerializeField] private AudioClip _stunSound;
     [SerializeField] private AudioClip _BGMSound;
     [SerializeField] private AudioClip _damagedSound;
+    [SerializeField] private AudioClip _boostSound;
     private AudioSource _stunAudioSource;
     private AudioSource _BGMAudioSource;
     private AudioSource _damagedAudioSource;
+    private AudioSource _boostAudioSource;
 
     // Cached Components & Managers
     private Rigidbody _rb;
@@ -108,6 +110,7 @@ public class Player : MonoBehaviour
         SetupStunAudio();
         SetupBGMAudio();
         SetupDamagedAudio();
+        SetupBoostAudio();
         _BGMAudioSource.Play();
 
         Cursor.visible = false;
@@ -158,6 +161,7 @@ public class Player : MonoBehaviour
         HandleCamera();
         HandleAttackInput();
         HandleReloadInput();
+        ControlBoostAudio();
     }
 
     #endregion
@@ -200,14 +204,31 @@ public class Player : MonoBehaviour
         _BGMAudioSource.loop = true;
         _BGMAudioSource.playOnAwake = true;
     }
+    
     private void SetupDamagedAudio()
     {
         _damagedAudioSource = gameObject.AddComponent<AudioSource>();
         _damagedAudioSource.clip = _damagedSound;
         _damagedAudioSource.loop = false;
         _damagedAudioSource.playOnAwake = false;
+    } 
+    
+    private void SetupBoostAudio()
+    {
+        _boostAudioSource = gameObject.AddComponent<AudioSource>();
+        _boostAudioSource.clip = _boostSound;
+        _boostAudioSource.loop = true;
+        _boostAudioSource.playOnAwake = false;
     }
-
+    
+    private void ControlBoostAudio()
+    {
+        if (_isShifting && !_boostAudioSource.isPlaying) 
+            _boostAudioSource.Play();
+        else if (!_isShifting && _boostAudioSource.isPlaying) 
+            _boostAudioSource.Stop();
+    }    
+    
     /// <summary>
     /// GameManager의 무기 타입에 따라 시작 무기 장착
     /// </summary>
