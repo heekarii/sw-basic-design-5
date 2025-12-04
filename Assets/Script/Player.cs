@@ -243,7 +243,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            _currentWeaponIdx = 4;
+            _currentWeaponIdx = 7;
             _wm.EquipWeapon(_currentWeaponIdx); // 원거리 무기 장착
         }
     }
