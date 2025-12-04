@@ -580,8 +580,8 @@ MonoBehaviour:
   _damage: 10
   _attackCastingTime: 0
   _attackCooldown: 2.5
-  _aggravationRange: 15.9
-  _attackRange: 12.9
+  _aggravationRange: 17.9
+  _attackRange: 14.4
   _lookAtTurnSpeed: 8
   _moveSpeed: 5
   _damagedEffect: {fileID: 2029329560318454451}

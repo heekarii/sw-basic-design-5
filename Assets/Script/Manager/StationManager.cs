@@ -128,8 +128,8 @@ public class StationManager : MonoBehaviour
             2 => _enterStationStatus.CurrentWeaponLevel switch
             {
                 1 => 20,
-                2 => 50,
-                3 => 80,
+                2 => 40,
+                3 => 70,
                 _ => 0
             },
 
@@ -245,7 +245,7 @@ public class StationManager : MonoBehaviour
         _curMoveSpeed.text = $"Lv. {status.CurrentSpeedLevel}";
 
         _scrapForHealth.text = status.CurrentHealthLevel switch { 1 => "20", 2 => "30", 3 => "50", _ => "-" };
-        _scrapForWeapon.text = status.CurrentWeaponLevel switch { 1 => "20", 2 => "50", 3 => "80", _ => "-" };
+        _scrapForWeapon.text = status.CurrentWeaponLevel switch { 1 => "20", 2 => "40", 3 => "70", _ => "-" };
         _scrapForMoveSpeed.text = status.CurrentSpeedLevel switch { 1 => "20", 2 => "40", _ => "-" };
     }
 
