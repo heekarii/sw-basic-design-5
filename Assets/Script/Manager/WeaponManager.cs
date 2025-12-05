@@ -1,54 +1,17 @@
 using UnityEngine;
 
-public class WeaponManager : Singleton<WeaponManager>
+public class WeaponManager
 {
-    [SerializeField] private WeaponData[] weaponList;
-    private int _curWeaponIndex;
-    private Player _player;
+    public WeaponData[] WeaponList;
 
-    protected override void Awake()
+    public WeaponManager(WeaponData[] list)
     {
-        base.Awake();
-        _player = FindObjectOfType<Player>();
+        WeaponList = list;
     }
 
-    // 무기 장착
-    public void EquipWeapon(int index)
+    public WeaponData GetWeapon(int level)
     {
-        // _player가 null일 수 있으므로 안전하게 재조회
-        if (_player == null)
-            _player = FindObjectOfType<Player>();
-
-        if (_player == null || index < 0 || index >= weaponList.Length)
-            return;
-        
-        _player.InitWeapon(weaponList[index]);
-        _curWeaponIndex = index;
-        Debug.Log($"[WeaponManager] {weaponList[index].WeaponName} 장착 완료");
-    }
-
-    // 무기 강화
-    public void UpgradeWeapon()
-    {
-        if (_player == null)
-            return;
-
-        if (_curWeaponIndex is >= 0 and < 3)
-        {
-            _curWeaponIndex++;
-            _player.InitWeapon(weaponList[_curWeaponIndex]);
-        }
-        
-        Debug.Log($"[WeaponManager] 공격력 강화됨");
-    }
-
-    public int GetWeaponLevel()
-    {
-        return _curWeaponIndex;
-    }
-    
-    public void DropScrap(int amount)
-    {
-        
+        return WeaponList[Mathf.Clamp(level, 0, WeaponList.Length - 1)];
     }
 }
+

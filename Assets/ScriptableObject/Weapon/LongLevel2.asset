@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LongLevel2
   m_EditorClassIdentifier: 
   WeaponName: 
-  Type: 0
+  Type: 1
   ModelPrefab: {fileID: 1077846268362437235, guid: 5df588738e86871488660b51bc2ca49b, type: 3}
   AnimatorController: {fileID: 0}
   AttackAnimation: 
