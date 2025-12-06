@@ -1507,7 +1507,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8968508236874967932}
-  - component: {fileID: 2906692878316297221}
+  - component: {fileID: 7359421792277793031}
   m_Layer: 0
   m_Name: punch_robot_collider
   m_TagString: Untagged
@@ -1524,14 +1524,14 @@ Transform:
   m_GameObject: {fileID: 5738137842360234680}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.42, y: 1.46, z: 0.19}
-  m_LocalScale: {x: 0.38, y: 0.38, z: 0.38}
+  m_LocalPosition: {x: 0.15, y: 2.96, z: 0}
+  m_LocalScale: {x: 2.432158, y: 2.6672702, z: 1.7814}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6086102472864419933}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &2906692878316297221
-MeshCollider:
+--- !u!65 &7359421792277793031
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1548,10 +1548,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 1704707116578636988, guid: beddbf98b0db81e40aa471628ee86bf1, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &7033737377822348943
 GameObject:
   m_ObjectHideFlags: 0
