@@ -6,16 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="2086644f-7cdd-484c-9422-28df0d8c7854" name="변경" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SW-basic-design/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MainUIScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MainUIScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/RepairShopUIscene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/RepairShopUIscene.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/StationManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/StationManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/WeaponManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/WeaponManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/LongLevel1.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/LongLevel1.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/LongLevel2.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/LongLevel2.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/LongLevel3.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/LongLevel3.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/LongLevel4.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/ScriptableObject/Weapon/LongLevel4.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/Singleton.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/Singleton.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/770Balsa-Regular SDF.asset" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/TextMesh Pro/Resources/Fonts &amp; Materials/770Balsa-Regular SDF.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -168,6 +160,7 @@
       <workItem from="1764600610916" duration="2216000" />
       <workItem from="1764859844760" duration="1055000" />
       <workItem from="1764947683142" duration="8894000" />
+      <workItem from="1765116676282" duration="1466000" />
     </task>
     <servers />
   </component>

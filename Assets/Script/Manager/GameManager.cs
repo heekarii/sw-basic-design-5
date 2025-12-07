@@ -66,13 +66,15 @@ public class GameManager : Singleton<GameManager>
 
     protected override void Awake()
     {
+        // 중복 인스턴스가 존재하면 데이터만 전달하고 씬 인스턴스는 제거
         if (Instance != null && Instance != this)
         {
             // 씬 GM → Persistent GM에게 데이터만 전달
             Instance.AbsorbSceneDataFrom(this);
 
-            // Destroy도 return도 하지 않는다.
-            // Scene GM은 그냥 둬도 Persistent Singleton을 절대 방해하지 않는다.
+            // 씬에 있는 중복 인스턴스는 파괴해서 Persistent Singleton이 유지되도록 함
+            Destroy(gameObject);
+            return;
         }
         else
         {
