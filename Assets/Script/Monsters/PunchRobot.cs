@@ -305,9 +305,10 @@ public class PunchRobot : MonoBehaviour, IEnemy
         yield return new WaitForSeconds(_attackCastingTime * 0.7f);
 
         _attackAudio?.Play();
+        
+        yield return new WaitForSeconds(0.2f);
 
         // 캐스팅 후반부
-        yield return new WaitForSeconds(2.7f);
 
         if (_playerTr == null)
         {
@@ -324,12 +325,14 @@ public class PunchRobot : MonoBehaviour, IEnemy
             Debug.Log($"[PunchRobot] Attack missed (dist={dist:F2})");
             _isAttacking    = false;
             _agent.isStopped = false;
+            yield return new WaitForSeconds(2.7f);
             yield break;
         }
 
         // 실제 타격
         _player.TakeDamage(_damage);
         Debug.Log($"[PunchRobot] Hit player for {_damage} damage!");
+        yield return new WaitForSeconds(2.7f);
 
         _isAttacking   = false;
         _isCoolingDown = true;
