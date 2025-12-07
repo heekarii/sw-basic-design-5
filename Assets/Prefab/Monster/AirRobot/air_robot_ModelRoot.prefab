@@ -1117,7 +1117,7 @@ MonoBehaviour:
   _windRadius: 2.2
   _damagedEffect: {fileID: 6402333592194005553}
   _damagedSound: {fileID: 1015177605712598568}
-  _windEffectPrefab: {fileID: 7209890526145171346}
+  _windEffectPrefab: {fileID: 3594357582680030118, guid: ce19eb01290cd794cadf4119c256e207, type: 3}
   _windOrigin: {fileID: 0}
   _attackAudio: {fileID: 4790027928465039533}
   _scrapAmount: 2
