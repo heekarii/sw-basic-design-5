@@ -701,7 +701,7 @@ public class Player : MonoBehaviour
     /// </summary>
     public PlayerStatus GetStatus()
     {
-        int displayWeaponLevel = (_currentWeaponIdx >= 0) ? _currentWeaponIdx + 1 : 0;
+        int displayWeaponLevel = (_currentWeaponIdx < 4) ? _currentWeaponIdx + 1 : _currentWeaponIdx - 3;
 
         float speedWithBoost =
             _speedWithBoostPerLevel[Mathf.Clamp(_curSpeedLevel - 1, 0, _speedWithBoostPerLevel.Length - 1)];
