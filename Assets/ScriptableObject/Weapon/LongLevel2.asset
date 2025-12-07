@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 576630c68aea96c4485923633bd37c88, type: 3}
   m_Name: LongLevel2
   m_EditorClassIdentifier: 
-  WeaponName: 
+  WeaponName: LongLevel2
   Type: 1
   ModelPrefab: {fileID: 1077846268362437235, guid: 5df588738e86871488660b51bc2ca49b, type: 3}
   AnimatorController: {fileID: 0}
