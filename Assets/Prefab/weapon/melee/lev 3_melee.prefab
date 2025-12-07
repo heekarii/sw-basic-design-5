@@ -219,7 +219,7 @@ GameObject:
   - component: {fileID: -8607355869392973282}
   - component: {fileID: 6567451981845536706}
   m_Layer: 0
-  m_Name: hammer_ModelRoot
+  m_Name: lev 3_melee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
