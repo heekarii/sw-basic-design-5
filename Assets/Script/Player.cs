@@ -244,7 +244,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            _currentWeaponIdx = 7;   // 원거리 계열 시작 인덱스
+            _currentWeaponIdx = 4;   // 원거리 계열 시작 인덱스
         }
 
         WeaponData data = _gm.WeaponDB.GetWeapon(_currentWeaponIdx);
