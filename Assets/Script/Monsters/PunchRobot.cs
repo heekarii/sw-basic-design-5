@@ -323,9 +323,9 @@ public class PunchRobot : MonoBehaviour, IEnemy
         if (dist > hitRange || !HasLineOfSight())
         {
             Debug.Log($"[PunchRobot] Attack missed (dist={dist:F2})");
+            yield return new WaitForSeconds(2.7f);
             _isAttacking    = false;
             _agent.isStopped = false;
-            yield return new WaitForSeconds(2.7f);
             yield break;
         }
 
