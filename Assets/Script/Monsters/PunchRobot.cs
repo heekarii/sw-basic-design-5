@@ -307,7 +307,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
         _attackAudio?.Play();
 
         // 캐스팅 후반부
-        yield return new WaitForSeconds(_attackCastingTime * 0.3f);
+        yield return new WaitForSeconds(2.7f);
 
         if (_playerTr == null)
         {
