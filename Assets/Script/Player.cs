@@ -360,7 +360,6 @@ public class Player : MonoBehaviour
         if (_moveDirection.sqrMagnitude > 0f)
         {
             float baseSpeed = CalculateBaseSpeed();
-
             _curSpeed = baseSpeed;
 
             Vector3 targetPos = _rb.position + _moveDirection * (_curSpeed * Time.fixedDeltaTime);
@@ -372,6 +371,8 @@ public class Player : MonoBehaviour
         }
         else
         {
+            // 입력이 없으면 실제 속도는 0
+            _curSpeed = 0f;
             UpdateMoveAnimation(isMoving: false);
         }
     }
