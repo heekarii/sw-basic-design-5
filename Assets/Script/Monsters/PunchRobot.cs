@@ -365,7 +365,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
             Die();
             return;
         }
-        _damagedEffect.Play();
+        // _damagedEffect.Play();
         _damagedSound.Play();
     }
 
