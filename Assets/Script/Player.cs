@@ -726,6 +726,7 @@ public class Player : MonoBehaviour
             _curSpeedLevel,
             displayWeaponLevel,
             _currentWeaponData.Bullets,
+            _curBullets,
             speedWithBoost
         );
     }
@@ -840,6 +841,7 @@ public class PlayerStatus
     public readonly int CurrentSpeedLevel;
     public readonly int CurrentWeaponLevel;
     public readonly int BulletCount;
+    public readonly int BulletRemaining;
     public readonly float SpeedWithBoost;
 
     public PlayerStatus(
@@ -852,6 +854,7 @@ public class PlayerStatus
         int curSpeedLevel,
         int curWeaponLevel,
         int bulletCount = 0,
+        int bulletRemaining = 0,
         float speedWithBoost = 0)
     {
         AttackPower = attack;
@@ -863,6 +866,7 @@ public class PlayerStatus
         CurrentSpeedLevel = curSpeedLevel;
         CurrentWeaponLevel = curWeaponLevel;
         BulletCount = bulletCount;
+        BulletRemaining = bulletRemaining;
         SpeedWithBoost = speedWithBoost;
     }
 }
