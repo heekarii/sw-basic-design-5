@@ -56,7 +56,9 @@ public class ScoreManager : MonoBehaviour
 
         float targetPercent = _gameManager.Resources.Battery; // 0~100
         float target = targetPercent / 100f;                  // 0~1 정규화
-
+        
+        Debug.Log("Target Battery Fill: " + targetPercent);
+        
         float current = 0f;
 
         // animation duration

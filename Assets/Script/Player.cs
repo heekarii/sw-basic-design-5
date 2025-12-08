@@ -160,6 +160,7 @@ public class Player : MonoBehaviour
         if (_currentHealth <= 0)
         {
             EnterStationaryState();
+            Debug.Log($"Battery Remaining: {_gm.Resources.Battery}");
             TransitionManager.Instance.UnloadGameScenes();
         }
         if (_isStunned) return; // 스턴 중에는 입력/카메라 불가
