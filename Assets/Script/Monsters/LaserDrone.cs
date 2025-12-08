@@ -22,7 +22,6 @@ public class LaserDrone : MonoBehaviour, IEnemy
     [SerializeField] private Image _flashOverlay;            // 섬광 피격용 UI (Canvas Image)
     [SerializeField] private ScrapData _scrapData;          // 스크랩 데이터
     [SerializeField] private AudioSource _attackAudio;
-    [SerializeField] private ParticleSystem _damagedEffect;
     [SerializeField] private AudioSource _damagedSound;
     
     [Header("HP Bar UI")]
@@ -237,7 +236,6 @@ public class LaserDrone : MonoBehaviour, IEnemy
             Die();
             return;
         }
-        _damagedEffect.Play();
         _damagedSound.Play();
     }
     

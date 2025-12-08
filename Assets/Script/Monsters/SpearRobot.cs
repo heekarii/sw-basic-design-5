@@ -25,7 +25,6 @@ public class SpearRobot : MonoBehaviour, IEnemy
     [SerializeField] private Player _player;
     [SerializeField] private AudioClip _attackSound;
     [SerializeField] private AudioClip _electricSound;
-    [SerializeField] private ParticleSystem _damagedEffect;
     [SerializeField] private AudioSource _damagedSound;
     private AudioSource _electricAudioSource;
     private AudioSource _attackAudioSource;
@@ -309,7 +308,6 @@ public class SpearRobot : MonoBehaviour, IEnemy
             Die();
             return;
         }
-        _damagedEffect.Play();
         _damagedSound.Play();
         Debug.Log($"SpearRobot took {dmg} damage, current HP: {_curHp}");
     }

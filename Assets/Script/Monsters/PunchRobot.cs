@@ -18,7 +18,6 @@ public class PunchRobot : MonoBehaviour, IEnemy
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 3;
     [SerializeField] private AudioSource _attackAudio;
-    [SerializeField] private ParticleSystem _damagedEffect;
     [SerializeField] private AudioSource _damagedSound;
     [SerializeField] private Player _player;
     
@@ -365,7 +364,6 @@ public class PunchRobot : MonoBehaviour, IEnemy
             Die();
             return;
         }
-        // _damagedEffect.Play();
         _damagedSound.Play();
     }
 

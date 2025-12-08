@@ -20,7 +20,6 @@ public class AIRobot : MonoBehaviour, IEnemy
     [SerializeField] private GameObject _redFx;              // vfx_Lightning_red (몸에 붙은 경고 이펙트)
     [SerializeField] private GameObject _blueFx;             // vfx_Lightning_blue (공격 중 이펙트)
     [SerializeField] private AudioSource _attackStartSource; // 공격 시작 사운드 (별도 AudioSource)
-    [SerializeField] private ParticleSystem _damagedEffect;
     [SerializeField] private AudioSource _damagedSound;
     
     [Header("Drop")]
@@ -426,7 +425,6 @@ public class AIRobot : MonoBehaviour, IEnemy
             Die();
             return;
         }
-        _damagedEffect.Play();
         _damagedSound.Play();
     }
 

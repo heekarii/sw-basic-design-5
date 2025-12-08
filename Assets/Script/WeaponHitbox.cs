@@ -6,19 +6,10 @@ public class WeaponHitbox : MonoBehaviour
     private float _damage;
     [SerializeField]private bool _active = false;
     private HashSet<IEnemy> _hitEnemies = new HashSet<IEnemy>();
-
-    // [SerializeField]private ParticleSystem _hitEffect;
-    [Header("Hit Effect")]
-    [SerializeField] private ParticleSystem _hitEffectPrefab; // 프리팹 넣는 공간 (Inspector에 넣음)
     
-    // private void Awake()
-    // {
-    //     // 자식 중에서 ParticleSystem 자동 검색
-    //     _hitEffect = GetComponentInChildren<ParticleSystem>(true);
-    //
-    //     if (_hitEffect == null)
-    //         Debug.LogWarning("[WeaponHitbox] No ParticleSystem found in children!");
-    // }
+    [Header("Hit Effect")]
+    [SerializeField] private ParticleSystem _hitEffectPrefab;
+    
     
     public void Activate(float damage)
     {
@@ -61,19 +52,7 @@ public class WeaponHitbox : MonoBehaviour
         );
 
         effect.Play();
-
-        // 파티클이 끝나면 자동 삭제
+        
         Destroy(effect.gameObject, effect.main.duration);
     }
-
-    
-    // private void PlayHitEffect(Collider target)
-    // {
-    //     if (_hitEffect == null) return;
-    //
-    //     // 이펙트를 적 위치에서 재생
-    //     _hitEffect.transform.position = target.ClosestPoint(transform.position);
-    //
-    //     _hitEffect.Play();   // 파티클 재생
-    // }
 }

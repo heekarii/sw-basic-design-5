@@ -15,7 +15,6 @@ public class Rat : MonoBehaviour, IEnemy
     [SerializeField] private float _moveSpeed = 8f;
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 2;
-    [SerializeField] private ParticleSystem _damagedEffect;
     [SerializeField] private AudioSource _damagedSound;
     [SerializeField] private Player _player;
     [SerializeField] private ParticleSystem _explosionEffect;
@@ -254,7 +253,6 @@ public class Rat : MonoBehaviour, IEnemy
             Die();
             return;
         }
-        _damagedEffect.Play();
         _damagedSound.Play();
         Debug.Log($"Rat took {dmg} damage, current HP: {_curHp}");
     }

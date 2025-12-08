@@ -207,6 +207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _active: 0
+  _hitEffectPrefab: {fileID: 9157931737747118812, guid: 05290dd6dfce94c4ea083d4f7db53995, type: 3}
 --- !u!1 &7929532819254633968
 GameObject:
   m_ObjectHideFlags: 0
