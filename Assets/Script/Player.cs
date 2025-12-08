@@ -819,7 +819,8 @@ public class Player : MonoBehaviour
         WeaponData nextWeapon = _gm.WeaponDB.GetWeapon(_currentWeaponIdx);
         InitWeapon(nextWeapon);
 
-        Debug.Log($"[Player] 무기 업그레이드 적용: 레벨 {_currentWeaponIdx + 1}");
+        Debug.Log("[Player] 무기 레벨 업그레이드 적용: " +
+                  $"{nextWeapon?.WeaponName} (인덱스 {_currentWeaponIdx})");
     }
 
     public void ApplySpeedUpgrade()

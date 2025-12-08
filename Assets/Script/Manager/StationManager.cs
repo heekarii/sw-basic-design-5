@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Collections;
+using NUnit.Framework.Constraints;
 
 public class StationManager : MonoBehaviour
 {
@@ -179,13 +180,33 @@ public class StationManager : MonoBehaviour
 
         if (_amount != null)
         {
-            _amount.text = UpgradeIdx switch
+            // _amount.text = UpgradeIdx switch
+            // {
+            //     1 => $"+{(int)(newStatus.MaxHealth - _enterStationStatus.MaxHealth)}",
+            //     2 => $"+{(int)(newStatus.AttackPower - _enterStationStatus.AttackPower)}", 
+            //     3 => $"+{(newStatus.SpeedWithBoost - _enterStationStatus.SpeedWithBoost):F0}",
+            //     _ => ""
+            // };
+
+            if (UpgradeIdx == 1)
             {
-                1 => $"+{(int)(newStatus.MaxHealth - _enterStationStatus.MaxHealth)}",
-                2 => $"+{(int)(newStatus.AttackPower - _enterStationStatus.AttackPower)}",
-                3 => $"+{(newStatus.SpeedWithBoost - _enterStationStatus.SpeedWithBoost):F0}",
-                _ => ""
-            };
+                _amount.text = $"+{(int)(newStatus.MaxHealth - _enterStationStatus.MaxHealth)}";
+            }
+            else if (UpgradeIdx == 2)
+            {
+                if (newStatus.BulletCount == 0)
+                {
+                    _amount.text = $"+{(int)(newStatus.AttackPower - _enterStationStatus.AttackPower)}";
+                }
+                else
+                {
+                    _amount.text = $"+{(int)(newStatus.BulletCount - _enterStationStatus.BulletCount)}";
+                }
+            }
+            else if (UpgradeIdx == 3)
+            {
+                _amount.text = $"+{(newStatus.SpeedWithBoost - _enterStationStatus.SpeedWithBoost):F0}";
+            }
         }
     }
 
