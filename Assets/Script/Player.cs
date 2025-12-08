@@ -161,6 +161,7 @@ public class Player : MonoBehaviour
         {
             EnterStationaryState();
             Debug.Log($"Battery Remaining: {_gm.Resources.Battery}");
+            Debug.Log($"Battery Remaining: {_gm.Resources.Battery}");
             TransitionManager.Instance.UnloadGameScenes();
         }
         if (_isStunned) return; // 스턴 중에는 입력/카메라 불가
@@ -719,7 +720,7 @@ public class Player : MonoBehaviour
 
         return new PlayerStatus(
             _attackPower,
-            _moveSpeed,
+            _curSpeed,
             _maxHealth,
             _currentHealth,
             battery,

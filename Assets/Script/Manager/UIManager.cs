@@ -98,7 +98,7 @@ public class UIManager : MonoBehaviour
         _attackLevel?.SetText(s.CurrentWeaponLevel.ToString());
         _curAttackText?.SetText(s.AttackPower.ToString("F0"));
 
-        bool isMelee = s.BulletCount != 0;
+        bool isMelee = s.BulletCount == 0;
 
         if (isMelee)
         {
