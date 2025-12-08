@@ -103,6 +103,12 @@ public class GameManager : Singleton<GameManager>
     {
         if (!_initialized) return;
 
+        if (Resources.Battery <= 0f)
+        {
+            Player.EnterStationaryState();
+            TransitionManager.Instance.UnloadGameScenes();
+        }
+        
         if (Player == null)
             CachePlayerIfNeeded();
 
@@ -145,7 +151,11 @@ public class GameManager : Singleton<GameManager>
     public PlayerStatus GetLatestStatus() => StatusManager.CurrentStatus;
 
     public bool HasKey => _hasKey;
-    public void SetHasKey(bool v) => _hasKey = v;
+    public void SetHasKey(bool v)
+    {
+        _hasKey = v;
+        _uiManager.GetKey();
+    }
 
     public void AddScrap(int amount) => Resources.AddScrap(amount);
     public void DecreaseScrap(int amount) => Resources.DecreaseScrap(amount);

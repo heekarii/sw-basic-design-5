@@ -33,6 +33,8 @@ public class UIManager : MonoBehaviour
     [Header("UI - Resource")]
     [SerializeField] private TextMeshProUGUI _curScrapText;
 
+    [SerializeField] private Image _keyImage;
+
     private void Awake()
     {
         _gameManager = GameManager.Instance;
@@ -51,6 +53,8 @@ public class UIManager : MonoBehaviour
 
         if (_curBulletText != null)
             _curBulletText.gameObject.SetActive(true);
+        if (_keyImage != null)
+            _keyImage.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -66,6 +70,11 @@ public class UIManager : MonoBehaviour
         UpdateAttackUI(status);
         UpdateMoveUI(status);
         UpdateResourceUI(curScrap);
+    }
+
+    public void GetKey()
+    {
+        _keyImage.gameObject.SetActive(true);
     }
 
     private void UpdateBatteryUI(float battery)

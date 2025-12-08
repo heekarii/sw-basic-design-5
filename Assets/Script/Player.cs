@@ -157,6 +157,11 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (_currentHealth <= 0)
+        {
+            EnterStationaryState();
+            TransitionManager.Instance.UnloadGameScenes();
+        }
         if (_isStunned) return; // 스턴 중에는 입력/카메라 불가
 
         HandleInput();
