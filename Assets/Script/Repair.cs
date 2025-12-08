@@ -31,4 +31,16 @@ public class Repair : MonoBehaviour
     {
         _isEntered = state;
     }
+
+    public void SetExit()
+    {
+        StartCoroutine(ExitRoutine());
+    }
+    
+    private IEnumerator ExitRoutine()
+    {
+        _isEntered = true;
+        yield return new WaitForSeconds(3f);
+        _isEntered = false;
+    }
 }

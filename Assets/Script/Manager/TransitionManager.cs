@@ -119,11 +119,16 @@ public class TransitionManager : Singleton<TransitionManager>
     }
 
     // ▣ Repair 종료 → Map 복귀
-    public void ExitRepairStation()
+    public void ExitRepairStation(Repair source)
     {
         SceneManager.UnloadSceneAsync("RepairShopUIscene");
         Cursor.visible = false; 
         SetSceneActive("Map_SCENE", true);
+        if (source != null)
+        {
+            Debug.Log($"Station Status : {source}");
+            source.SetExit();
+        }
         if (_player != null)
             _player.ExitStationaryState();
         else

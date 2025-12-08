@@ -239,7 +239,10 @@ public class StationManager : MonoBehaviour
         _selectUpgradeImage?.gameObject.SetActive(true);
     }
 
-    private void OnExitStationClick() => _transitionManager.ExitRepairStation();
-    private void OnClickSuccessImage() => _transitionManager.ExitRepairStation();
-    private void OnClickFailureImage() => _transitionManager.ExitRepairStation();
+    private void OnExitStationClick()
+    {
+        _transitionManager.ExitRepairStation(_repairSource);
+    }
+    private void OnClickSuccessImage() => _transitionManager.ExitRepairStation(null);
+    private void OnClickFailureImage() => _transitionManager.ExitRepairStation(null);
 }
