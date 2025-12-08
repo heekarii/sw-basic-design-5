@@ -40,11 +40,10 @@ public class TransitionManager : Singleton<TransitionManager>
 
     public void StartGame(int weaponType)
     {
+        GameManager.Instance.SetWeaponType(weaponType);
+        Debug.Log($"Transition weaponType : {weaponType}");
         SetSceneActive("MainUIScene", false);
         LoadSceneWithLoading("Map_SCENE", LoadSceneMode.Single);
-        
-        GameManager.Instance.SetWeaponType(weaponType);
-        
     }
 
     #endregion

@@ -243,7 +243,8 @@ public class Player : MonoBehaviour
         if (_gm == null || _gm.WeaponDB == null)
             return;
 
-        if (_gm.WeaponType == 0)
+        Debug.Log($"Player weaponType : {GameManager.Instance.WeaponType}");
+        if (GameManager.Instance.WeaponType == 0)
         {
             _currentWeaponIdx = 0;   // 근접 계열 시작 인덱스
         }

@@ -405,22 +405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8bab88c3349c7640a911edc86c2aa21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _curScrap: 0
-  _curBattery: 0
   _hasKey: 0
-  _batteryFillbar: {fileID: 0}
-  _batteryText: {fileID: 0}
-  _healthLevel: {fileID: 0}
-  _maxHPText: {fileID: 0}
-  _curHealthText: {fileID: 0}
-  _attackLevel: {fileID: 0}
-  _curAttackText: {fileID: 0}
-  _curBulletText: {fileID: 0}
-  _meleeImage: {fileID: 0}
-  _moveLevel: {fileID: 0}
-  _curSpeedText: {fileID: 0}
-  _curBoostText: {fileID: 0}
-  _curScrapText: {fileID: 0}
   Player: {fileID: 0}
   WeaponType: 1
   Buildings:
@@ -431,7 +416,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  _buildingToActivate: 0
+  weaponList: []
 --- !u!4 &328708225
 Transform:
   m_ObjectHideFlags: 0
@@ -482,8 +467,11 @@ MonoBehaviour:
   _tutorialExitButton: {fileID: 1568779291}
   _rankingButton: {fileID: 123227303581195459}
   _settingsButton: {fileID: 5282773889793497457}
+  _selectPanel: {fileID: 1094495341}
   _tutorialImage: {fileID: 942503414}
   _weaponType: 0
+  _meleeButton: {fileID: 614480759}
+  _rangedButton: {fileID: 1619204713}
 --- !u!4 &494447742
 Transform:
   m_ObjectHideFlags: 0
@@ -990,7 +978,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1094495340
 RectTransform:
   m_ObjectHideFlags: 0

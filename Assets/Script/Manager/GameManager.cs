@@ -86,8 +86,6 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-
-
     private void Start()
     {
         if (SceneManager.GetActiveScene().name=="Map_SCENE")
@@ -169,5 +167,6 @@ public class GameManager : Singleton<GameManager>
     {
         this.Buildings = sceneGM.Buildings;
         this.BuildingOutlines = sceneGM.BuildingOutlines;
+        sceneGM.WeaponType = this.WeaponType;
     }
 }
