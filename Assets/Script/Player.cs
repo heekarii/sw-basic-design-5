@@ -725,7 +725,7 @@ public class Player : MonoBehaviour
             _curHealthLevel,
             _curSpeedLevel,
             displayWeaponLevel,
-            _curBullets,
+            _currentWeaponData.Bullets,
             speedWithBoost
         );
     }

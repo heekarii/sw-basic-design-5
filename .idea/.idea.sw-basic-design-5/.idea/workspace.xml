@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.sw-basic-design-5/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/InGameUIscene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/InGameUIscene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scenes/MainUIScene.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MainUIScene.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/GameManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/GameManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/LobbyManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/LobbyManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Manager/TransitionManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Manager/TransitionManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Script/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Script/Player.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Sprite/UI/MainUI/RT_MENUCHAR.renderTexture" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Sprite/UI/MainUI/RT_MENUCHAR.renderTexture" afterDir="false" />
-    </list>
+    <list default="true" id="b18b4c66-ece7-447a-9ae0-440f08aaecd6" name="변경" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -217,7 +208,7 @@
       <workItem from="1765127679069" duration="131000" />
       <workItem from="1765127993678" duration="1556000" />
       <workItem from="1765195621775" duration="793000" />
-      <workItem from="1765196872855" duration="3296000" />
+      <workItem from="1765196872855" duration="3628000" />
     </task>
     <servers />
   </component>
