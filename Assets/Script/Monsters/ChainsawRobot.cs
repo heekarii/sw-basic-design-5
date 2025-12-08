@@ -319,11 +319,11 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
         }
 
         Debug.Log("ChainsawRobot start attack casting!");
-        // 공격 사운드 대기 시간
-        yield return new WaitForSeconds(0.5f);
+
         // 공격 사운드 재생
         if (_attackAudioSource != null && _attackSound != null)
             _attackAudioSource.Play();
+        yield return new WaitForSeconds(1.0f);
         yield return new WaitForSeconds(_attackCastingTime);
 
         // 유효성 재확인 후 대미지
