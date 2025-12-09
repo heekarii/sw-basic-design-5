@@ -112,6 +112,8 @@ public class Player : MonoBehaviour
         SetupBoostAudio();
         _BGMAudioSource.Play();
 
+        TransitionManager.Instance.RegisterPlayer(this);
+
         Cursor.visible = false;
         if (damageOverlay == null)
             damageOverlay = FindObjectOfType<PlayerDamageEffect>();

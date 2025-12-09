@@ -108,9 +108,18 @@ public class TransitionManager : Singleton<TransitionManager>
         }
     }
 
+    public void RegisterPlayer(Player player)
+    {
+        _player = player;
+    }
+
     // 호출한 Repair 컴포넌트를 전달받아 추적합니다.
     public void EnterRepairStation(Repair source)
     {
+        if (_player != null)
+            _player.EnterStationaryState();
+        else
+            Debug.LogWarning("[TransitionManager] EnterRepairStation: Player가 할당되지 않았습니다.");
         _lastRepairSource = source;
         
         LoadSceneWithLoading("RepairShopUIscene", LoadSceneMode.Additive);
@@ -122,10 +131,6 @@ public class TransitionManager : Singleton<TransitionManager>
             CurStationManager.SetRepairSource(_lastRepairSource);
         }
 
-        if (_player != null)
-            _player.EnterStationaryState();
-        else
-            Debug.LogWarning("[TransitionManager] EnterRepairStation: Player가 할당되지 않았습니다.");
         
     }
 
