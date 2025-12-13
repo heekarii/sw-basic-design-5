@@ -48,6 +48,7 @@ public class GameManager : Singleton<GameManager>
     [Header("References")]
     public Player Player;         
     public int WeaponType;         
+    private bool _weaponTypeLocked = false;
 
     [Header("Start Buildings")]
     public List<GameObject> Buildings;
@@ -64,6 +65,22 @@ public class GameManager : Singleton<GameManager>
 
     private bool _initialized = false;
 
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += HandleSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= HandleSceneLoaded;
+    }
+
+    private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainUIScene")
+            _weaponTypeLocked = false;
+    }
+
     protected override void Awake()
     {
         // 중복 인스턴스가 존재하면 데이터만 전달하고 씬 인스턴스는 제거
@@ -78,8 +95,8 @@ public class GameManager : Singleton<GameManager>
         }
         else
         {
-            // 내가 싱글톤인 경우에만 Awake 초기화
-            base.Awake(); // DontDestroyOnLoad 적용
+            base.Awake();
+            DontDestroyOnLoad(gameObject); // explicit to survive even if base skipped
             Resources = new ResourceManager();
             StatusManager = new PlayerStatusManager();
             WeaponDB = new WeaponManager(weaponList);
@@ -161,12 +178,24 @@ public class GameManager : Singleton<GameManager>
 
     public void DecreaseBattery(float amount) => Resources.DecreaseBattery(amount);
 
-    public void SetWeaponType(int type) => WeaponType = type;
+    public void SetWeaponType(int type)
+    {
+        WeaponType = type;
+        _weaponTypeLocked = true;
+        Debug.Log($"[GameManager] SetWeaponType -> {WeaponType} (locked)");
+    }
 
     public void AbsorbSceneDataFrom(GameManager sceneGM)
     {
+        Debug.Log($"[GameManager] AbsorbSceneDataFrom (locked={_weaponTypeLocked}, incomingType={sceneGM.WeaponType})");
         this.Buildings = sceneGM.Buildings;
         this.BuildingOutlines = sceneGM.BuildingOutlines;
-        sceneGM.WeaponType = this.WeaponType;
+        if (sceneGM.weaponList != null && sceneGM.weaponList.Length > 0)
+        {
+            this.weaponList = sceneGM.weaponList;
+            this.WeaponDB = new WeaponManager(this.weaponList);
+        }
+        if (!_weaponTypeLocked)
+            this.WeaponType = sceneGM.WeaponType;
     }
 }
