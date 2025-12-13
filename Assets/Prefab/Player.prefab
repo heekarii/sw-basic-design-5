@@ -560,7 +560,6 @@ MonoBehaviour:
   _isShifting: 0
   _isSlowed: 0
   _isStationary: 0
-  _curBattery: 100
   _batteryReductionAmount:
   - 0.0002
   _batteryReductionTerm:
@@ -578,7 +577,7 @@ MonoBehaviour:
   _attackRaycastDist: 0
   _coolDownTime:
   - 0.8
-  - 0.5
+  - 0.1
   _castingTime: 0.7
   _isMeleeCasting: 0
   _isStunned: 0

@@ -18,7 +18,7 @@ MonoBehaviour:
   AnimatorController: {fileID: 0}
   AttackAnimation: 
   baseAttackPower: 25
-  BatteryUsage: 0.2
+  BatteryUsage: 0.3
   Bullets: 0
   range: 1.5
   HitEffectPrefab: {fileID: 0}
