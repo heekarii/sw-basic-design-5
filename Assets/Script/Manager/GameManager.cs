@@ -106,7 +106,10 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         if (SceneManager.GetActiveScene().name=="Map_SCENE")
+        {
+            Debug.Log("activate building");
             ActivateBuildingOnStart();
+        }
         CachePlayerIfNeeded();
         _initialized = true;
 
@@ -197,5 +200,7 @@ public class GameManager : Singleton<GameManager>
         }
         if (!_weaponTypeLocked)
             this.WeaponType = sceneGM.WeaponType;
+        
+        ActivateBuildingOnStart();
     }
 }
