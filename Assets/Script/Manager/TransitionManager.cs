@@ -8,6 +8,9 @@ public class TransitionManager : Singleton<TransitionManager>
     public StationManager CurStationManager;
     private Repair _lastRepairSource;
     
+    // Escape 씬 로딩 재진입 방지 플래그
+    private bool _isEscapeLoading = false;
+    
     protected override void Awake()
     {
         base.Awake();
@@ -40,11 +43,10 @@ public class TransitionManager : Singleton<TransitionManager>
 
     public void StartGame(int weaponType)
     {
+        GameManager.Instance.SetWeaponType(weaponType);
+        Debug.Log($"Transition weaponType : {weaponType}");
         SetSceneActive("MainUIScene", false);
         LoadSceneWithLoading("Map_SCENE", LoadSceneMode.Single);
-        
-        GameManager.Instance.SetWeaponType(weaponType);
-        
     }
 
     #endregion
@@ -53,8 +55,43 @@ public class TransitionManager : Singleton<TransitionManager>
 
     public void UnloadGameScenes()
     {
-        SceneManager.UnloadSceneAsync("Map_SCENE");
+        // 이미 Escape 로딩을 시작한 상태면 추가 호출 무시
+        if (_isEscapeLoading)
+        {
+            Debug.LogWarning("[TransitionManager] UnloadGameScenes: Escape loading already in progress, ignore.");
+            return;
+        }
+
+        // Map_SCENE가 실제로 로드되어 있을 때만 언로드 시도
+        Scene mapScene = SceneManager.GetSceneByName("Map_SCENE");
+        if (mapScene.IsValid() && mapScene.isLoaded)
+        {
+            Debug.Log("[TransitionManager] UnloadGameScenes: Unloading Map_SCENE");
+            SceneManager.UnloadSceneAsync("Map_SCENE");
+        }
+        else
+        {
+            Debug.LogWarning("[TransitionManager] UnloadGameScenes: Map_SCENE is not loaded or invalid, skip unload.");
+        }
+
+        // Escape Scene이 이미 로드되어 있다면 중복 로드를 막기 위해 스킵
+        Scene escapeScene = SceneManager.GetSceneByName("Escape Scene");
+        if (escapeScene.IsValid() && escapeScene.isLoaded)
+        {
+            Debug.LogWarning("[TransitionManager] UnloadGameScenes: 'Escape Scene' already loaded, skip loading.");
+            return;
+        }
+
+        _isEscapeLoading = true;
+        Debug.Log("[TransitionManager] UnloadGameScenes: Start loading Escape Scene via LoadingScene");
         LoadSceneWithLoading("Escape Scene", LoadSceneMode.Additive);
+    }
+
+    // LoadingScreen에서 Escape 씬 로딩이 끝났을 때 호출해 플래그를 초기화할 수 있도록 public 메서드 추가
+    public void OnEscapeSceneLoaded()
+    {
+        _isEscapeLoading = false;
+        Debug.Log("[TransitionManager] OnEscapeSceneLoaded: Escape loading flag reset");
     }
 
     #endregion
@@ -71,9 +108,18 @@ public class TransitionManager : Singleton<TransitionManager>
         }
     }
 
+    public void RegisterPlayer(Player player)
+    {
+        _player = player;
+    }
+
     // 호출한 Repair 컴포넌트를 전달받아 추적합니다.
     public void EnterRepairStation(Repair source)
     {
+        if (_player != null)
+            _player.EnterStationaryState();
+        else
+            Debug.LogWarning("[TransitionManager] EnterRepairStation: Player가 할당되지 않았습니다.");
         _lastRepairSource = source;
         
         LoadSceneWithLoading("RepairShopUIscene", LoadSceneMode.Additive);
@@ -85,10 +131,6 @@ public class TransitionManager : Singleton<TransitionManager>
             CurStationManager.SetRepairSource(_lastRepairSource);
         }
 
-        if (_player != null)
-            _player.EnterStationaryState();
-        else
-            Debug.LogWarning("[TransitionManager] EnterRepairStation: Player가 할당되지 않았습니다.");
         
     }
 
@@ -119,11 +161,27 @@ public class TransitionManager : Singleton<TransitionManager>
     }
 
     // ▣ Repair 종료 → Map 복귀
-    public void ExitRepairStation()
+    public void ExitRepairStation(Repair source)
     {
-        SceneManager.UnloadSceneAsync("RepairShopUIscene");
+        // RepairShopUIscene이 실제로 로드되어 있을 때만 언로드 시도
+        Scene repairScene = SceneManager.GetSceneByName("RepairShopUIscene");
+        if (repairScene.IsValid() && repairScene.isLoaded)
+        {
+            Debug.Log("[TransitionManager] ExitRepairStation: Unloading RepairShopUIscene");
+            SceneManager.UnloadSceneAsync("RepairShopUIscene");
+        }
+        else
+        {
+            Debug.LogWarning("[TransitionManager] ExitRepairStation: RepairShopUIscene is not loaded or invalid, skip unload.");
+        }
+
         Cursor.visible = false; 
         SetSceneActive("Map_SCENE", true);
+        if (source != null)
+        {
+            Debug.Log($"Station Status : {source}");
+            source.SetExit();
+        }
         if (_player != null)
             _player.ExitStationaryState();
         else

@@ -12,6 +12,7 @@ public class BulletRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _aggravationRange = 15.1f;
     [SerializeField] private float _attackRange = 12.1f;      // 사거리(= 원뿔 길이와 같게 맞춰도 OK)
     [SerializeField] private float _moveSpeed = 3.5f;
+    [SerializeField] private AudioSource _damagedSound;
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private float _lookAtTurnSpeed = 8f;
     [SerializeField] private Player _player;
@@ -502,7 +503,11 @@ public class BulletRobot : MonoBehaviour, IEnemy
         _curHp -= dmg;
         UpdateHpUI();
         if (_curHp <= 0f)
+        {
             Die();
+            return;
+        }
+        _damagedSound.Play();
     }
     
     // private void PlayDeath()

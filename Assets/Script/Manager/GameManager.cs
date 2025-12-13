@@ -1,85 +1,136 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
+using UnityEngine.SceneManagement;
+
+public class ResourceManager
+{
+    public int Scrap { get; private set; }
+    public float Battery { get; private set; }
+
+    public ResourceManager()
+    {
+        Scrap = 0;
+        Battery = 100f;
+    }
+
+    public void AddScrap(int amount)
+    {
+        Scrap = Mathf.Max(0, Scrap + amount);
+    }
+
+    public void DecreaseScrap(int amount)
+    {
+        Scrap = Mathf.Max(0, Scrap - amount);
+    }
+
+    public void DecreaseBattery(float amount)
+    {
+        Battery = Mathf.Max(0, Battery - amount);
+    }
+}
+
+public class PlayerStatusManager
+{
+    public PlayerStatus CurrentStatus { get; private set; }
+
+    public void UpdateStatus(Player player)
+    {
+        if (player == null) return;
+        CurrentStatus = player.GetStatus();
+    }
+}
 
 public class GameManager : Singleton<GameManager>
 {
-    [Header("Game Status")] 
-    [SerializeField] private int _curScrap;
-    [SerializeField] private float _curBattery;
+    [Header("Game Flags")]
     [SerializeField] private bool _hasKey = false;
 
-    private PlayerStatus _playerStatus;  // 항상 마지막으로 계산된 스냅샷
-    private bool _initialized;
-
-    [Header("UI - Battery")]
-    [SerializeField] private Image _batteryFillbar;
-    [SerializeField] private TextMeshProUGUI _batteryText;
-
-    [Header("UI - Health")]
-    [SerializeField] private TextMeshProUGUI _healthLevel;
-    [SerializeField] private TextMeshProUGUI _maxHPText;
-    [SerializeField] private TextMeshProUGUI _curHealthText;
-    
-    [Header("UI - Attack")]
-    [SerializeField] private TextMeshProUGUI _attackLevel;
-    [SerializeField] private TextMeshProUGUI _curAttackText;
-    [SerializeField] private TextMeshProUGUI _curBulletText;
-    [SerializeField] private Image _meleeImage;
-    
-    [Header("UI - Move")]
-    [SerializeField] private TextMeshProUGUI _moveLevel;
-    [SerializeField] private TextMeshProUGUI _curSpeedText;
-    [SerializeField] private TextMeshProUGUI _curBoostText;
-    
-    [Header("UI - Resource")]
-    [SerializeField] private TextMeshProUGUI _curScrapText;
-    
     [Header("References")]
-    public Player Player;          // 씬에 존재하는 플레이어 참조
-    public int WeaponType;        // 0 : 근거리, 1 : 원거리 (플레이어 초기 무기 선택용)
+    public Player Player;         
+    public int WeaponType;         
+    private bool _weaponTypeLocked = false;
 
-    [Header("Game Start Settings")] 
+    [Header("Start Buildings")]
     public List<GameObject> Buildings;
     public List<GameObject> BuildingOutlines;
-    [SerializeField] private int _buildingToActivate = 0;
-    
+    private int _buildingToActivate = 0;
+
+    [Header("Weapon Data")]
+    [SerializeField] private WeaponData[] weaponList;
+
+    private UIManager _uiManager;
+    public ResourceManager Resources { get; private set; }
+    public PlayerStatusManager StatusManager { get; private set; }
+    public WeaponManager WeaponDB { get; private set; }
+
+    private bool _initialized = false;
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += HandleSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= HandleSceneLoaded;
+    }
+
+    private void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name == "MainUIScene")
+            _weaponTypeLocked = false;
+    }
+
     protected override void Awake()
     {
-        base.Awake();
-        InitStatus();
+        // 중복 인스턴스가 존재하면 데이터만 전달하고 씬 인스턴스는 제거
+        if (Instance != null && Instance != this)
+        {
+            // 씬 GM → Persistent GM에게 데이터만 전달
+            Instance.AbsorbSceneDataFrom(this);
+
+            // 씬에 있는 중복 인스턴스는 파괴해서 Persistent Singleton이 유지되도록 함
+            Destroy(gameObject);
+            return;
+        }
+        else
+        {
+            base.Awake();
+            DontDestroyOnLoad(gameObject); // explicit to survive even if base skipped
+            Resources = new ResourceManager();
+            StatusManager = new PlayerStatusManager();
+            WeaponDB = new WeaponManager(weaponList);
+        }
     }
 
     private void Start()
     {
-        ActivateBuildingOnStart();
+        if (SceneManager.GetActiveScene().name=="Map_SCENE")
+            ActivateBuildingOnStart();
         CachePlayerIfNeeded();
-        InitUIVisibility();
         _initialized = true;
 
-        // 처음 한 번 상태/ UI 동기화
-        SafeUpdateStatusAndUI();
+        if (_uiManager != null && StatusManager.CurrentStatus != null)
+            _uiManager.Refresh(StatusManager.CurrentStatus, Resources.Scrap);
     }
 
     private void Update()
     {
-        // Player가 아직 null이면 한 번 더 시도 (씬 전환 후 등)
-        if (Player == null)
+        if (!_initialized) return;
+
+        if (Resources.Battery <= 0f)
         {
-            CachePlayerIfNeeded();
+            Player.EnterStationaryState();
+            TransitionManager.Instance.UnloadGameScenes();
         }
+        
+        if (Player == null)
+            CachePlayerIfNeeded();
 
-        SafeUpdateStatusAndUI();
-    }
+        StatusManager.UpdateStatus(Player);
 
-    #region Initialization
-
-    private void InitStatus()
-    {
-        _curScrap = 0;
-        _curBattery = 100f;
-        _playerStatus = null;
+        if (_uiManager != null && StatusManager.CurrentStatus != null)
+            _uiManager.Refresh(StatusManager.CurrentStatus, Resources.Scrap);
     }
 
     private void CachePlayerIfNeeded()
@@ -88,210 +139,63 @@ public class GameManager : Singleton<GameManager>
 
         Player = FindAnyObjectByType<Player>();
         if (Player == null)
-        {
-            Debug.LogWarning("[GameManager] Player를 씬에서 찾지 못했습니다.");
-        }
+            Debug.LogWarning("[GameManager] Player not found in scene.");
     }
 
-    private void InitUIVisibility()
-    {
-        if (_meleeImage != null)
-            _meleeImage.gameObject.SetActive(false);
-
-        if (_curBulletText != null)
-            _curBulletText.gameObject.SetActive(true);
-    }
-    
     private void ActivateBuildingOnStart()
     {
+        if (Buildings == null || Buildings.Count == 0) return;
+        if (BuildingOutlines == null || BuildingOutlines.Count == 0) return;
+
         _buildingToActivate = Random.Range(0, Buildings.Count);
+
         EndingBuilding buildingComponent = Buildings[_buildingToActivate].GetComponent<EndingBuilding>();
         if (buildingComponent != null)
             buildingComponent.SetActivate(true, _buildingToActivate);
+
         BuildingOutlines[_buildingToActivate].SetActive(true);
     }
 
-    #endregion
+    // -------------------- PUBLIC API --------------------
 
-    #region Status & UI Update
-
-    /// <summary>
-    /// Player가 null일 수 있는 상황을 고려해 안전하게 상태/ UI를 갱신.
-    /// </summary>
-    private void SafeUpdateStatusAndUI()
+    public void RegisterUIManager(UIManager uiManager)
     {
-        if (!_initialized) return;
-        if (Player == null) return;
-
-        UpdateStatusFromPlayer();
-        UpdateUI();
+        _uiManager = uiManager;
     }
 
-    /// <summary>
-    /// Player로부터 PlayerStatus 스냅샷을 받아와 내부 상태를 갱신.
-    /// </summary>
-    private void UpdateStatusFromPlayer()
-    {
-        _playerStatus = Player.GetStatus();
-        _curBattery = _playerStatus.BatteryRemaining;
-    }
+    public PlayerStatus GetLatestStatus() => StatusManager.CurrentStatus;
 
-    /// <summary>
-    /// 현재 상태(_playerStatus, _curBattery, _curScrap 등)를 기반으로 UI를 갱신.
-    /// </summary>
-    private void UpdateUI()
-    {
-        if (_playerStatus == null) return;
-
-        UpdateBatteryUI();
-        UpdateHealthUI();
-        UpdateAttackUI();
-        UpdateMoveUI();
-        UpdateResourceUI();
-    }
-
-    private void UpdateBatteryUI()
-    {
-        if (_batteryFillbar != null)
-            _batteryFillbar.fillAmount = Mathf.Clamp01(_curBattery / 100f);
-
-        if (_batteryText != null)
-            _batteryText.text = $"{_curBattery:F2}%";
-    }
-
-    private void UpdateHealthUI()
-    {
-        if (_healthLevel != null)
-            _healthLevel.text = _playerStatus.CurrentHealthLevel.ToString();
-
-        if (_maxHPText != null)
-            _maxHPText.text = _playerStatus.MaxHealth.ToString();
-
-        if (_curHealthText != null)
-            _curHealthText.text = _playerStatus.CurrentHealth.ToString("F0");
-    }
-
-    private void UpdateAttackUI()
-    {
-        if (_attackLevel != null)
-            _attackLevel.text = _playerStatus.CurrentWeaponLevel.ToString();
-
-        if (_curAttackText != null)
-            _curAttackText.text = _playerStatus.AttackPower.ToString();
-
-        bool isMelee = _playerStatus.CurrentWeaponLevel <= 4; // 기존 로직 유지
-
-        if (isMelee)
-        {
-            if (_curBulletText != null)
-                _curBulletText.gameObject.SetActive(false);
-
-            if (_meleeImage != null)
-                _meleeImage.gameObject.SetActive(true);
-        }
-        else
-        {
-            if (_meleeImage != null)
-                _meleeImage.gameObject.SetActive(false);
-
-            if (_curBulletText != null)
-            {
-                _curBulletText.gameObject.SetActive(true);
-                _curBulletText.text = _playerStatus.BulletCount.ToString();
-            }
-        }
-    }
-
-    private void UpdateMoveUI()
-    {
-        if (_moveLevel != null)
-            _moveLevel.text = _playerStatus.CurrentSpeedLevel.ToString();
-
-        if (_curSpeedText != null)
-            _curSpeedText.text = _playerStatus.MoveSpeed.ToString("F2");
-
-        if (_curBoostText != null)
-            _curBoostText.text = _playerStatus.SpeedWithBoost.ToString("F2");
-    }
-
-    private void UpdateResourceUI()
-    {
-        if (_curScrapText != null)
-            _curScrapText.text = _curScrap.ToString();
-    }
-
-    #endregion
-
-    #region Public API
-
-    /// <summary>
-    /// 다른 시스템에서 플레이어 상태 스냅샷을 조회할 수 있도록 제공.
-    /// 항상 가장 마지막으로 계산된 상태를 반환한다.
-    /// </summary>
-    public PlayerStatus SendStatus => _playerStatus;
-    
     public bool HasKey => _hasKey;
-    
-    public void SetHasKey(bool value)
+    public void SetHasKey(bool v)
     {
-        _hasKey = value;
+        _hasKey = v;
+        _uiManager.GetKey();
     }
 
-    /// <summary>
-    /// StationManager 등에서 "지금 이 시점의 스냅샷"이 필요할 때 호출.
-    /// 내부적으로 PlayerStatus를 한 번 더 계산해 두는 것이 필요하면 여기에서 처리.
-    /// 현재는 Update()에서 매 프레임 갱신하므로, 단순히 캐시된 값을 반환한다.
-    /// </summary>
-    public PlayerStatus GetLatestStatus()
-    {
-        return _playerStatus;
-    }
+    public void AddScrap(int amount) => Resources.AddScrap(amount);
+    public void DecreaseScrap(int amount) => Resources.DecreaseScrap(amount);
+    public int ScrapAmount => Resources.Scrap;
 
-    /// <summary>
-    /// 스크랩 자원을 증가시키고, 디버그 로그를 남깁니다.
-    /// </summary>
-    public void AddScrap(int amount)
-    {
-        if (amount == 0) return;
-
-        _curScrap += amount;
-        if (_curScrap < 0) _curScrap = 0;
-
-        Debug.Log($"[GameManager] 스크랩 {_curScrap} 보유 중");
-    }
-
-    /// <summary>
-    /// 체력 미니게임 결과를 적용합니다.
-    /// </summary>
-    public void ApplyHealthMiniGame(bool isSuccess)
-    {
-        if (!isSuccess) return;
-        if (Player == null) return;
-
-        // Player에 추가한 공개 업그레이드 API 사용
-        Player.ApplyHealthUpgrade();
-        
-        // 즉시 상태/ UI를 최신화
-        UpdateStatusFromPlayer();
-        UpdateUI();
-    }
-
-    public void DecreaseBattery(float amount)
-    {
-        _curBattery -= amount;
-    }
-    
-    public void DecreaseScrap(int amount)
-    {
-        _curScrap -= amount;
-    }
+    public void DecreaseBattery(float amount) => Resources.DecreaseBattery(amount);
 
     public void SetWeaponType(int type)
     {
         WeaponType = type;
+        _weaponTypeLocked = true;
+        Debug.Log($"[GameManager] SetWeaponType -> {WeaponType} (locked)");
     }
-    
-    public int GetScrapAmount => _curScrap;
-    
-    #endregion
+
+    public void AbsorbSceneDataFrom(GameManager sceneGM)
+    {
+        Debug.Log($"[GameManager] AbsorbSceneDataFrom (locked={_weaponTypeLocked}, incomingType={sceneGM.WeaponType})");
+        this.Buildings = sceneGM.Buildings;
+        this.BuildingOutlines = sceneGM.BuildingOutlines;
+        if (sceneGM.weaponList != null && sceneGM.weaponList.Length > 0)
+        {
+            this.weaponList = sceneGM.weaponList;
+            this.WeaponDB = new WeaponManager(this.weaponList);
+        }
+        if (!_weaponTypeLocked)
+            this.WeaponType = sceneGM.WeaponType;
+    }
 }

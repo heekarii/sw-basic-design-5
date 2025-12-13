@@ -13,6 +13,8 @@ public class AirRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _detectDistance = 19.4f; // 활성화 거리
     [SerializeField] private float _windLength = 19.4f;       // 바람 길이 (앞으로 뻗는 거리)
     [SerializeField] private float _windRadius = 1.5f;       // 바람 반지름 (원통형 범위)
+    [SerializeField] private AudioSource _damagedSound;
+    
     [FormerlySerializedAs("windEffectPrefab")] 
     [SerializeField] private GameObject _windEffectPrefab;
     [SerializeField] private Transform _windOrigin;
@@ -244,7 +246,11 @@ public class AirRobot : MonoBehaviour, IEnemy
         _currentHealth -= dmg;
         UpdateHpUI();
         if (_currentHealth <= 0)
+        {
             Die();
+            return;
+        }
+        _damagedSound.Play();
     }
 
     private void UpdateHpUI()

@@ -22,6 +22,7 @@ public class LaserDrone : MonoBehaviour, IEnemy
     [SerializeField] private Image _flashOverlay;            // 섬광 피격용 UI (Canvas Image)
     [SerializeField] private ScrapData _scrapData;          // 스크랩 데이터
     [SerializeField] private AudioSource _attackAudio;
+    [SerializeField] private AudioSource _damagedSound;
     
     [Header("HP Bar UI")]
     [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
@@ -231,7 +232,11 @@ public class LaserDrone : MonoBehaviour, IEnemy
         _currentHealth -= Mathf.RoundToInt(damage);
         UpdateHpUI();
         if (_currentHealth <= 0)
+        {
             Die();
+            return;
+        }
+        _damagedSound.Play();
     }
     
     private void PlayDeath()

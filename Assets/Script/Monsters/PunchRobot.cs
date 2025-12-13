@@ -18,6 +18,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private int _scrapAmount = 3;
     [SerializeField] private AudioSource _attackAudio;
+    [SerializeField] private AudioSource _damagedSound;
     [SerializeField] private Player _player;
     
     [Header("HP Bar UI")]
@@ -303,9 +304,10 @@ public class PunchRobot : MonoBehaviour, IEnemy
         yield return new WaitForSeconds(_attackCastingTime * 0.7f);
 
         _attackAudio?.Play();
+        
+        yield return new WaitForSeconds(0.2f);
 
         // 캐스팅 후반부
-        yield return new WaitForSeconds(_attackCastingTime * 0.3f);
 
         if (_playerTr == null)
         {
@@ -320,6 +322,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
         if (dist > hitRange || !HasLineOfSight())
         {
             Debug.Log($"[PunchRobot] Attack missed (dist={dist:F2})");
+            yield return new WaitForSeconds(2.7f);
             _isAttacking    = false;
             _agent.isStopped = false;
             yield break;
@@ -328,6 +331,7 @@ public class PunchRobot : MonoBehaviour, IEnemy
         // 실제 타격
         _player.TakeDamage(_damage);
         Debug.Log($"[PunchRobot] Hit player for {_damage} damage!");
+        yield return new WaitForSeconds(2.7f);
 
         _isAttacking   = false;
         _isCoolingDown = true;
@@ -353,11 +357,14 @@ public class PunchRobot : MonoBehaviour, IEnemy
     {
         _curHp = Mathf.Max(0f, _curHp - dmg);
         UpdateHpUI();
-
         Debug.Log($"[PunchRobot] took {dmg} damage, current HP: {_curHp}");
 
         if (_curHp <= 0f)
+        {
             Die();
+            return;
+        }
+        _damagedSound.Play();
     }
 
     // 체력바 채우기 갱신

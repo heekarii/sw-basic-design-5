@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -11,7 +10,7 @@ public class Player : MonoBehaviour
     [Header("Player Status")]
     [SerializeField] private float _attackPower = 10f;   // 공격력
     [SerializeField] private float _moveSpeed = 5f;      // 이동 속도
-    [SerializeField] private float _maxHealth = 1000f;    // 최대 체력
+    [SerializeField] private float _maxHealth = 1000f;   // 최대 체력
     [SerializeField] private float _currentHealth;       // 현재 체력
 
     [Header("Movement")]
@@ -21,9 +20,9 @@ public class Player : MonoBehaviour
     [SerializeField] private bool _isShifting = false;
     [SerializeField] private bool _isSlowed = false;
     [SerializeField] private bool _isStationary = false;
-
+    
     [Header("Battery & Upgrade")]
-    [SerializeField] private float _curBattery = 100;
+    // 배터리 실제 값은 GameManager.Resources.Battery 에서만 관리
     [SerializeField] private float[] _batteryReductionAmount =
     {
         0.0002f
@@ -34,11 +33,12 @@ public class Player : MonoBehaviour
     };
 
     private Coroutine _batteryReductionCo;
-    [FormerlySerializedAs("_curStatus")] [SerializeField] private int _curPlayerStatus;
+    [FormerlySerializedAs("_curStatus")] 
+    [SerializeField] private int _curPlayerStatus;
     [SerializeField] private int _curHealthLevel = 1;
     [SerializeField] private int _curSpeedLevel = 1;
-    [FormerlySerializedAs("_speedPerLevel")] [SerializeField]
-    private float[] _speedWithBoostPerLevel =
+    [FormerlySerializedAs("_speedPerLevel")] 
+    [SerializeField] private float[] _speedWithBoostPerLevel =
     {
         7f,
         8f,
@@ -48,8 +48,8 @@ public class Player : MonoBehaviour
     [Header("Combat")]
     [SerializeField] private LayerMask _attackRaycastMask;
     [SerializeField] private float _attackRaycastDist;
-    [FormerlySerializedAs("_attackSpeedRate")] [SerializeField]
-    private float[] _coolDownTime =
+    [FormerlySerializedAs("_attackSpeedRate")] 
+    [SerializeField] private float[] _coolDownTime =
     {
         1.5f,
         0.5f
@@ -83,14 +83,17 @@ public class Player : MonoBehaviour
     [Header("Sound")]
     [SerializeField] private AudioClip _stunSound;
     [SerializeField] private AudioClip _BGMSound;
+    [SerializeField] private AudioClip _damagedSound;
+    [SerializeField] private AudioClip _boostSound;
     private AudioSource _stunAudioSource;
     private AudioSource _BGMAudioSource;
+    private AudioSource _damagedAudioSource;
+    private AudioSource _boostAudioSource;
 
     // Cached Components & Managers
     private Rigidbody _rb;
     private Animator _animator;
-    private WeaponManager _wm;
-    private GameManager _gm;
+    private GameManager _gm;   // ✅ GameManager만 캐시
 
     // Runtime state
     private Vector3 _moveDirection;
@@ -105,7 +108,11 @@ public class Player : MonoBehaviour
         InitializeState();
         SetupStunAudio();
         SetupBGMAudio();
+        SetupDamagedAudio();
+        SetupBoostAudio();
         _BGMAudioSource.Play();
+
+        TransitionManager.Instance.RegisterPlayer(this);
 
         Cursor.visible = false;
         if (damageOverlay == null)
@@ -115,6 +122,7 @@ public class Player : MonoBehaviour
     private void Start()
     {
         CacheManagers();
+
         if (_flashOverlay == null)
         {
             foreach (var img in Resources.FindObjectsOfTypeAll<Image>())
@@ -126,6 +134,7 @@ public class Player : MonoBehaviour
                 }
             }
         }
+
         if (_stunOverlay == null)
         {
             foreach (var img in Resources.FindObjectsOfTypeAll<Image>())
@@ -137,6 +146,7 @@ public class Player : MonoBehaviour
                 }
             }
         }
+
         InitWeaponByGameManager();
         _batteryReductionCo = StartCoroutine(BatteryReduction());
     }
@@ -149,12 +159,20 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (_currentHealth <= 0)
+        {
+            EnterStationaryState();
+            Debug.Log($"Battery Remaining: {_gm.Resources.Battery}");
+            Debug.Log($"Battery Remaining: {_gm.Resources.Battery}");
+            TransitionManager.Instance.UnloadGameScenes();
+        }
         if (_isStunned) return; // 스턴 중에는 입력/카메라 불가
 
         HandleInput();
         HandleCamera();
         HandleAttackInput();
         HandleReloadInput();
+        ControlBoostAudio();
     }
 
     #endregion
@@ -173,7 +191,6 @@ public class Player : MonoBehaviour
     private void CacheManagers()
     {
         _gm = GameManager.Instance;
-        _wm = WeaponManager.Instance;
     }
 
     private void InitializeState()
@@ -197,24 +214,51 @@ public class Player : MonoBehaviour
         _BGMAudioSource.loop = true;
         _BGMAudioSource.playOnAwake = true;
     }
-
+    
+    private void SetupDamagedAudio()
+    {
+        _damagedAudioSource = gameObject.AddComponent<AudioSource>();
+        _damagedAudioSource.clip = _damagedSound;
+        _damagedAudioSource.loop = false;
+        _damagedAudioSource.playOnAwake = false;
+    } 
+    
+    private void SetupBoostAudio()
+    {
+        _boostAudioSource = gameObject.AddComponent<AudioSource>();
+        _boostAudioSource.clip = _boostSound;
+        _boostAudioSource.loop = true;
+        _boostAudioSource.playOnAwake = false;
+    }
+    
+    private void ControlBoostAudio()
+    {
+        if (_isShifting && !_boostAudioSource.isPlaying) 
+            _boostAudioSource.Play();
+        else if (!_isShifting && _boostAudioSource.isPlaying) 
+            _boostAudioSource.Stop();
+    }    
+    
     /// <summary>
-    /// GameManager의 무기 타입에 따라 시작 무기 장착
+    /// GameManager의 WeaponType + WeaponDB에 따라 시작 무기 장착
     /// </summary>
     private void InitWeaponByGameManager()
     {
-        if (_gm == null) return;
+        if (_gm == null || _gm.WeaponDB == null)
+            return;
 
-        if (_gm.WeaponType == 0)
+        Debug.Log($"Player weaponType : {GameManager.Instance.WeaponType}");
+        if (GameManager.Instance.WeaponType == 0)
         {
-            _currentWeaponIdx = 0;
-            _wm.EquipWeapon(_currentWeaponIdx); // 근접 무기 장착
+            _currentWeaponIdx = 0;   // 근접 계열 시작 인덱스
         }
         else
         {
-            _currentWeaponIdx = 4;
-            _wm.EquipWeapon(_currentWeaponIdx); // 원거리 무기 장착
+            _currentWeaponIdx = 4;   // 원거리 계열 시작 인덱스
         }
+
+        WeaponData data = _gm.WeaponDB.GetWeapon(_currentWeaponIdx);
+        InitWeapon(data);
     }
 
     #endregion
@@ -302,8 +346,8 @@ public class Player : MonoBehaviour
 
     private void HandleReloadInput()
     {
-        if (Input.GetKeyDown(KeyCode.R) && !_isReloading && _currentWeaponData != null &&
-            _curBullets < _currentWeaponData.Bullets)
+        if (Input.GetKeyDown(KeyCode.R) && !_isReloading && 
+            _currentWeaponData != null && _curBullets < _currentWeaponData.Bullets)
         {
             Reload();
         }
@@ -318,7 +362,6 @@ public class Player : MonoBehaviour
         if (_moveDirection.sqrMagnitude > 0f)
         {
             float baseSpeed = CalculateBaseSpeed();
-
             _curSpeed = baseSpeed;
 
             Vector3 targetPos = _rb.position + _moveDirection * (_curSpeed * Time.fixedDeltaTime);
@@ -330,6 +373,8 @@ public class Player : MonoBehaviour
         }
         else
         {
+            // 입력이 없으면 실제 속도는 0
+            _curSpeed = 0f;
             UpdateMoveAnimation(isMoving: false);
         }
     }
@@ -465,7 +510,9 @@ public class Player : MonoBehaviour
             HandleRangedAttack(hit, isHit);
         }
 
-        _curBattery -= _currentWeaponData.BatteryUsage;
+        // 배터리는 ResourceManager에서만 관리
+        if (_gm != null && _gm.Resources != null)
+            _gm.Resources.DecreaseBattery(_currentWeaponData.BatteryUsage);
     }
 
     private void HandleRangedAttack(RaycastHit hit, bool isHit)
@@ -514,7 +561,6 @@ public class Player : MonoBehaviour
         }
         else
         {
-            // Hitbox가 없을 때는 OverlapSphere로 대체하지 않고 경고만 출력
             Debug.LogWarning("[Player] Melee hitbox가 존재하지 않아 근접 공격이 적용되지 않습니다. 무기 프리팹에 WeaponHitbox가 있는지 확인하세요.");
         }
 
@@ -540,7 +586,8 @@ public class Player : MonoBehaviour
     public void TakeDamage(float damage)
     {
         _currentHealth = Mathf.Max(0, _currentHealth - damage);
-        damageOverlay.Play();
+        damageOverlay?.Play();
+        _damagedAudioSource.Play();
         Debug.Log($"[Player] 피격됨: {damage}, 남은 체력: {_currentHealth}");
     }
 
@@ -560,7 +607,8 @@ public class Player : MonoBehaviour
         _rb.linearVelocity = Vector3.zero;   // 관성 즉시 제거
         _moveDirection = Vector3.zero;       // 입력 방향 초기화
 
-        _stunOverlay.gameObject.SetActive(true);
+        if (_stunOverlay != null)
+            _stunOverlay.gameObject.SetActive(true);
         _stunAudioSource.Play();
         
         Debug.Log("[Player] isStunned");
@@ -570,7 +618,8 @@ public class Player : MonoBehaviour
 
         SetStunAnimation(false);
         Debug.Log("[Player] release Stun");
-        _stunOverlay.gameObject.SetActive(false);
+        if (_stunOverlay != null)
+            _stunOverlay.gameObject.SetActive(false);
         
         _isStunned = false;
         _stunCo = null;
@@ -580,7 +629,6 @@ public class Player : MonoBehaviour
     {
         _animator.SetBool("isStunning", isStunned);
 
-        // 스턴 시 이동 모션 OFF, 해제 시 기본 이동 모션 ON
         bool moving = !isStunned;
         _animator.SetBool("isWalking", moving);
         _animator.SetBool("isRunning", moving);
@@ -610,17 +658,23 @@ public class Player : MonoBehaviour
     
     private IEnumerator FlashRoutine(float duration)
     {
-        _flashOverlay.gameObject.SetActive(true);
-        _flashOverlay.color = new Color(1f, 1f, 0.7f, 0.8f);
-        yield return new WaitForSeconds(3f);
-        _flashOverlay.gameObject.SetActive(false);
+        if (_flashOverlay != null)
+        {
+            _flashOverlay.gameObject.SetActive(true);
+            _flashOverlay.color = new Color(1f, 1f, 0.7f, 0.8f);
+        }
+        yield return new WaitForSeconds(duration);
+        if (_flashOverlay != null)
+            _flashOverlay.gameObject.SetActive(false);
     }
 
-    
     #endregion
 
     #region Weapon Init & Status
 
+    /// <summary>
+    /// WeaponData 기반으로 실제 무기 모델/스탯 세팅
+    /// </summary>
     public void InitWeapon(WeaponData weaponData)
     {
         if (weaponData == null)
@@ -643,7 +697,6 @@ public class Player : MonoBehaviour
         _currentWeaponModel.transform.localPosition = new Vector3(0, 0.25f, 1);
         _currentWeaponModel.transform.localRotation = Quaternion.identity;
 
-        // ★ 여기서 melee hitbox 자동 연결
         _meleeHitbox = _currentWeaponModel.GetComponentInChildren<WeaponHitbox>();
 
         _attackPower = weaponData.baseAttackPower;
@@ -654,27 +707,30 @@ public class Player : MonoBehaviour
         Debug.Log($"[Player] 무기 초기화 완료: {weaponData.WeaponName}, 공격력: {_attackPower}");
     }
 
-
     /// <summary>
-    /// 현재 플레이어 상태를 조회
+    /// 현재 플레이어 상태 스냅샷 반환
     /// </summary>
     public PlayerStatus GetStatus()
     {
-        // GetStatus는 상태를 반환만 해야 하며 내부 필드를 변경하면 안됩니다.
-        int displayWeaponLevel = (_currentWeaponIdx >= 0) ? _currentWeaponIdx + 1 : 0;
+        int displayWeaponLevel = (_currentWeaponIdx < 4) ? _currentWeaponIdx + 1 : _currentWeaponIdx - 3;
 
-        float speedWithBoost = _speedWithBoostPerLevel[Mathf.Clamp(_curSpeedLevel - 1, 0,
-            _speedWithBoostPerLevel.Length - 1)];
+        float speedWithBoost =
+            _speedWithBoostPerLevel[Mathf.Clamp(_curSpeedLevel - 1, 0, _speedWithBoostPerLevel.Length - 1)];
+
+        float battery = (_gm != null && _gm.Resources != null)
+            ? _gm.Resources.Battery
+            : 0f;
 
         return new PlayerStatus(
             _attackPower,
-            _moveSpeed,
+            _curSpeed,
             _maxHealth,
             _currentHealth,
-            _curBattery,
+            battery,
             _curHealthLevel,
             _curSpeedLevel,
             displayWeaponLevel,
+            _currentWeaponData.Bullets,
             _curBullets,
             speedWithBoost
         );
@@ -686,15 +742,18 @@ public class Player : MonoBehaviour
 
     private IEnumerator BatteryReduction()
     {
-        GameManager gm = GameManager.Instance;
         while (true)
         {
             yield return new WaitForSeconds(1f);
 
-            float reductionAmount = _curBattery * _batteryReductionAmount[_curPlayerStatus];
+            if (_gm == null || _gm.Resources == null)
+                continue;
+
+            float baseBattery     = _gm.Resources.Battery;
+            float reductionAmount = baseBattery * _batteryReductionAmount[_curPlayerStatus];
             if (_isShifting) reductionAmount *= 2f;
 
-            _curBattery -= reductionAmount;
+            _gm.Resources.DecreaseBattery(reductionAmount);
         }
     }
     
@@ -703,6 +762,7 @@ public class Player : MonoBehaviour
         if (_batteryReductionCo == null) 
             _batteryReductionCo = StartCoroutine(BatteryReduction());
     }
+
     public void StopBatteryReduction()
     {
         if (_batteryReductionCo != null)
@@ -718,19 +778,19 @@ public class Player : MonoBehaviour
     public void ConsumeBatteryPercent(float percent)
     {
         if (percent <= 0f) return;
+        if (_gm == null || _gm.Resources == null) return;
 
-        float reduction = percent * 0.01f;
-        _curBattery -= reduction;
+        float baseBattery = _gm.Resources.Battery;
+        float reduction   = baseBattery * (percent * 0.01f);
+        _gm.Resources.DecreaseBattery(reduction);
     }
 
     #endregion
 
     #region Upgrade APIs
 
-    // StationManager 등의 외부에서 호출 가능한 업그레이드 적용 메서드
     public void ApplyHealthUpgrade()
     {
-        // 현재 레벨을 증가시키고 레벨에 따른 최대체력/현재체력 보정을 적용
         _curHealthLevel = Mathf.Min(_curHealthLevel + 1, 4);
         switch (_curHealthLevel)
         {
@@ -746,39 +806,35 @@ public class Player : MonoBehaviour
                 _maxHealth = 1800f;
                 _currentHealth = Mathf.Min(_currentHealth + 300f, _maxHealth);
                 break;
-            default:
-                break;
         }
         Debug.Log($"[Player] 체력 레벨 업그레이드 적용: 레벨 {_curHealthLevel}");
     }
 
     public void ApplyWeaponUpgrade()
     {
-        // WeaponManager에 무기 강화 요청 (공격력 증가 등은 WeaponManager에서 처리)
-        if (_wm == null) _wm = WeaponManager.Instance;
-        if (_wm != null)
+        if (_gm == null || _gm.WeaponDB == null)
         {
-            _wm.UpgradeWeapon(); // 예시 값으로 공격력 증가량 전달
-            _currentWeaponIdx++;
-            Debug.Log("[Player] 무기 업그레이드 적용 요청 전송");
+            Debug.LogWarning("[Player] WeaponDB가 없어 무기 업그레이드를 적용할 수 없습니다.");
+            return;
         }
-        else
-        {
-            Debug.LogWarning("[Player] WeaponManager가 없습니다. 무기 업그레이드 실패");
-        }
+
+        _currentWeaponIdx++;
+        WeaponData nextWeapon = _gm.WeaponDB.GetWeapon(_currentWeaponIdx);
+        InitWeapon(nextWeapon);
+
+        Debug.Log("[Player] 무기 레벨 업그레이드 적용: " +
+                  $"{nextWeapon?.WeaponName} (인덱스 {_currentWeaponIdx})");
     }
 
     public void ApplySpeedUpgrade()
     {
         _curSpeedLevel = Mathf.Min(_curSpeedLevel + 1, _speedWithBoostPerLevel.Length);
+        Debug.Log($"[Player] 이동 속도 레벨 업그레이드 적용: 레벨 {_curSpeedLevel}");
     }
 
     #endregion
 }
 
-/// <summary>
-/// 플레이어의 스냅샷 상태 데이터
-/// </summary>
 [Serializable]
 public class PlayerStatus
 {
@@ -791,6 +847,7 @@ public class PlayerStatus
     public readonly int CurrentSpeedLevel;
     public readonly int CurrentWeaponLevel;
     public readonly int BulletCount;
+    public readonly int BulletRemaining;
     public readonly float SpeedWithBoost;
 
     public PlayerStatus(
@@ -803,6 +860,7 @@ public class PlayerStatus
         int curSpeedLevel,
         int curWeaponLevel,
         int bulletCount = 0,
+        int bulletRemaining = 0,
         float speedWithBoost = 0)
     {
         AttackPower = attack;
@@ -814,6 +872,7 @@ public class PlayerStatus
         CurrentSpeedLevel = curSpeedLevel;
         CurrentWeaponLevel = curWeaponLevel;
         BulletCount = bulletCount;
+        BulletRemaining = bulletRemaining;
         SpeedWithBoost = speedWithBoost;
     }
 }

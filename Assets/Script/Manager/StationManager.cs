@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.Collections;
-using UnityEngine.Serialization;
+using NUnit.Framework.Constraints;
 
 public class StationManager : MonoBehaviour
 {
@@ -40,9 +40,9 @@ public class StationManager : MonoBehaviour
 
     [Header("Station Info")]
     [SerializeField] private int UpgradeIdx;
-    
+
     private PlayerStatus _enterStationStatus;
-    
+
     private void Awake()
     {
         _transitionManager = TransitionManager.Instance;
@@ -52,30 +52,27 @@ public class StationManager : MonoBehaviour
         InitUIState();
     }
 
-// 🔥 RegisterStationManager는 Start()에서 호출해야 한다
     private void Start()
     {
         _transitionManager?.RegisterStationManager(this);
     }
 
-
     private void OnEnable()
     {
-        _enterStationStatus = FetchLatestPlayerStatus();
+        _enterStationStatus = _gameManager.StatusManager.CurrentStatus;
 
         if (_enterStationStatus == null)
         {
-            Debug.LogWarning("[StationManager] OnEnable: PlayerStatus 가져오기 실패");
+            Debug.LogWarning("[StationManager] PlayerStatus 가져오기 실패");
             return;
         }
 
         PopulateOptionTextsFromStatus(_enterStationStatus);
-        Debug.Log("[StationManager] 최신 PlayerStatus로 UI 갱신 완료");
 
         if (_repairSource != null)
             Debug.Log($"[StationManager] Repair 진입 출처: {_repairSource.gameObject.name}");
     }
-    
+
     private void InitButtonEvents()
     {
         _runStation?.onClick.AddListener(OnRunStationClick);
@@ -89,71 +86,48 @@ public class StationManager : MonoBehaviour
         _upgradeWeapon?.onClick.AddListener(OnUpgradeWeapon);
         _upgradeMove?.onClick.AddListener(OnUpgradeMoveSpeed);
     }
-    
+
     private void OnUpgradeHealth()
     {
         UpgradeIdx = 1;
-        int neededScrap = CalculateNeededScrap(UpgradeIdx);
-        TryStartMiniGame(neededScrap);
+        TryStartMiniGame(CalculateNeededScrap(1));
     }
 
     private void OnUpgradeWeapon()
     {
         UpgradeIdx = 2;
-        int neededScrap = CalculateNeededScrap(UpgradeIdx);
-        TryStartMiniGame(neededScrap);
+        TryStartMiniGame(CalculateNeededScrap(2));
     }
 
     private void OnUpgradeMoveSpeed()
     {
         UpgradeIdx = 3;
-        int neededScrap = CalculateNeededScrap(UpgradeIdx);
-        TryStartMiniGame(neededScrap);
+        TryStartMiniGame(CalculateNeededScrap(3));
     }
-    
+
     private int CalculateNeededScrap(int upgradeType)
     {
-        if (_enterStationStatus == null) return 0;
+        var s = _enterStationStatus;
+        if (s == null) return 0;
 
         return upgradeType switch
         {
-            1 => _enterStationStatus.CurrentHealthLevel switch
-            {
-                1 => 20,
-                2 => 30,
-                3 => 50,
-                _ => 0
-            },
-
-            2 => _enterStationStatus.CurrentWeaponLevel switch
-            {
-                1 => 20,
-                2 => 50,
-                3 => 80,
-                _ => 0
-            },
-
-            3 => _enterStationStatus.CurrentSpeedLevel switch
-            {
-                1 => 20,
-                2 => 40,
-                _ => 0
-            },
-
+            1 => s.CurrentHealthLevel switch { 1 => 20, 2 => 30, 3 => 50, _ => 0 },
+            2 => s.CurrentWeaponLevel switch { 1 => 20, 2 => 40, 3 => 70, _ => 0 },
+            3 => s.CurrentSpeedLevel  switch { 1 => 20, 2 => 40, _ => 0 },
             _ => 0
         };
     }
 
-    
     private void TryStartMiniGame(int neededScrap)
     {
-        if (GameManager.Instance.GetScrapAmount >= neededScrap)
-        {
-            GameManager.Instance.DecreaseScrap(neededScrap);
+        int scrapNow = _gameManager.Resources.Scrap;
 
-            if (_selectUpgradeImage != null)
-                _selectUpgradeImage.gameObject.SetActive(false);
-            
+        if (scrapNow >= neededScrap)
+        {
+            _gameManager.Resources.DecreaseScrap(neededScrap);
+
+            _selectUpgradeImage?.gameObject.SetActive(false);
             _transitionManager.StartMiniGame("MCardGame");
         }
         else
@@ -169,9 +143,6 @@ public class StationManager : MonoBehaviour
         _notEnoughScrapImage?.gameObject.SetActive(false);
     }
 
-    /* ──────────────────────────────────────────────────────────────────────── */
-    /* 7) 미니게임 종료 후 결과 화면 처리 */
-    /* ──────────────────────────────────────────────────────────────────────── */
     public void ShowEndingPage(bool isSuccess)
     {
         if (!isSuccess)
@@ -189,53 +160,56 @@ public class StationManager : MonoBehaviour
             return;
         }
 
-        // 실제 업그레이드 적용
         if      (UpgradeIdx == 1) player.ApplyHealthUpgrade();
         else if (UpgradeIdx == 2) player.ApplyWeaponUpgrade();
         else if (UpgradeIdx == 3) player.ApplySpeedUpgrade();
 
-        // 업그레이드 후 상태 비교
         PlayerStatus newStatus = player.GetStatus();
         if (newStatus == null) return;
 
         if (_level != null)
         {
-            if (UpgradeIdx == 1) _level.text = $"{newStatus.CurrentHealthLevel}";
-            else if (UpgradeIdx == 2) _level.text = $"{newStatus.CurrentWeaponLevel}";
-            else if (UpgradeIdx == 3) _level.text = $"{newStatus.CurrentSpeedLevel}";
+            _level.text = UpgradeIdx switch
+            {
+                1 => $"{newStatus.CurrentHealthLevel}",
+                2 => $"{newStatus.CurrentWeaponLevel}",
+                3 => $"{newStatus.CurrentSpeedLevel}",
+                _ => "-"
+            };
         }
 
         if (_amount != null)
         {
+            // _amount.text = UpgradeIdx switch
+            // {
+            //     1 => $"+{(int)(newStatus.MaxHealth - _enterStationStatus.MaxHealth)}",
+            //     2 => $"+{(int)(newStatus.AttackPower - _enterStationStatus.AttackPower)}", 
+            //     3 => $"+{(newStatus.SpeedWithBoost - _enterStationStatus.SpeedWithBoost):F0}",
+            //     _ => ""
+            // };
+
             if (UpgradeIdx == 1)
+            {
                 _amount.text = $"+{(int)(newStatus.MaxHealth - _enterStationStatus.MaxHealth)}";
+            }
             else if (UpgradeIdx == 2)
-                _amount.text = $"+{(int)(newStatus.AttackPower - _enterStationStatus.AttackPower)}";
+            {
+                if (newStatus.BulletCount == 0)
+                {
+                    _amount.text = $"+{(int)(newStatus.AttackPower - _enterStationStatus.AttackPower)}";
+                }
+                else
+                {
+                    _amount.text = $"+{(int)(newStatus.BulletCount - _enterStationStatus.BulletCount)}";
+                }
+            }
             else if (UpgradeIdx == 3)
-                _amount.text = $"+{(newStatus.MoveSpeed - _enterStationStatus.MoveSpeed):F0}";
+            {
+                _amount.text = $"+{(newStatus.SpeedWithBoost - _enterStationStatus.SpeedWithBoost):F0}";
+            }
         }
     }
 
-
-    /* ──────────────────────────────────────────────────────────────────────── */
-    /* 8) PlayerStatus 최신값 가져오기 (완전 안정화) */
-    /* ──────────────────────────────────────────────────────────────────────── */
-    private PlayerStatus FetchLatestPlayerStatus()
-    {
-        if (_gameManager != null)
-        {
-            var s = _gameManager.GetLatestStatus();
-            if (s != null) return s;
-        }
-
-        Player p = FindAnyObjectByType<Player>();
-        return p?.GetStatus();
-    }
-
-
-    /* ──────────────────────────────────────────────────────────────────────── */
-    /* 9) 옵션 텍스트 세팅 */
-    /* ──────────────────────────────────────────────────────────────────────── */
     private void PopulateOptionTextsFromStatus(PlayerStatus status)
     {
         if (status == null) return;
@@ -244,15 +218,11 @@ public class StationManager : MonoBehaviour
         _curWeapon.text = $"Lv. {status.CurrentWeaponLevel}";
         _curMoveSpeed.text = $"Lv. {status.CurrentSpeedLevel}";
 
-        _scrapForHealth.text = status.CurrentHealthLevel switch { 1 => "20", 2 => "30", 3 => "50", _ => "-" };
-        _scrapForWeapon.text = status.CurrentWeaponLevel switch { 1 => "20", 2 => "50", 3 => "80", _ => "-" };
+        _scrapForHealth.text  = status.CurrentHealthLevel switch  { 1 => "20", 2 => "30", 3 => "50", _ => "-" };
+        _scrapForWeapon.text  = status.CurrentWeaponLevel switch  { 1 => "20", 2 => "40", 3 => "70", _ => "-" };
         _scrapForMoveSpeed.text = status.CurrentSpeedLevel switch { 1 => "20", 2 => "40", _ => "-" };
     }
 
-
-    /* ──────────────────────────────────────────────────────────────────────── */
-    /* 10) UI 초기 상태 설정 */
-    /* ──────────────────────────────────────────────────────────────────────── */
     private void InitUIState()
     {
         _bgoff?.gameObject.SetActive(true);
@@ -264,10 +234,6 @@ public class StationManager : MonoBehaviour
         _failureImage?.gameObject.SetActive(false);
     }
 
-
-    /* ──────────────────────────────────────────────────────────────────────── */
-    /* 11) 유틸리티 */
-    /* ──────────────────────────────────────────────────────────────────────── */
     private void AddClick(Image img, Action callback)
     {
         if (img == null) return;
@@ -283,14 +249,11 @@ public class StationManager : MonoBehaviour
         _repairSource = source;
     }
 
-
-    /* ──────────────────────────────────────────────────────────────────────── */
-    /* 12) 버튼 콜백 */
-    /* ──────────────────────────────────────────────────────────────────────── */
     private void OnRunStationClick()
     {
-        _gameManager.DecreaseBattery(2f);
-        _repairSource.SetEnter(true);
+        _gameManager.Resources.DecreaseBattery(2f);
+
+        _repairSource?.SetEnter(true);
         _bgoff?.gameObject.SetActive(false);
         _bgon?.gameObject.SetActive(true);
         _selectRunImage?.gameObject.SetActive(false);
@@ -299,17 +262,8 @@ public class StationManager : MonoBehaviour
 
     private void OnExitStationClick()
     {
-        _transitionManager.ExitRepairStation();
+        _transitionManager.ExitRepairStation(_repairSource);
     }
-
-    private void OnClickSuccessImage() => _transitionManager.ExitRepairStation();
-    private void OnClickFailureImage() => _transitionManager.ExitRepairStation();
+    private void OnClickSuccessImage() => _transitionManager.ExitRepairStation(null);
+    private void OnClickFailureImage() => _transitionManager.ExitRepairStation(null);
 }
-
-
-
-
-
-
-
-

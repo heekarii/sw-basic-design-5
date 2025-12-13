@@ -63,7 +63,7 @@ public class EndingBuilding : MonoBehaviour
         SetkeyPos();
         if (_isActivated)
         {
-            Instantiate(_key, _keyPos, _key.transform.rotation);
+            Instantiate(_key, _keyPos, _key.transform.rotation, null);
         }
     }
 
@@ -72,8 +72,8 @@ public class EndingBuilding : MonoBehaviour
         switch (_index)
         {
             case 0: _keyPos = new Vector3(-39.25f, 34.395f, 165.72f); break;
-            case 1: _keyPos = new Vector3(-19.3f, 34.395f, 120.67f); break;
-            case 2: _keyPos = new Vector3(-3.8f, 34.395f, 2.3f); break;
+            case 1: _keyPos = new Vector3(-3.8f, 34.395f, 2.3f); break;
+            case 2: _keyPos = new Vector3(-19.3f, 34.395f, 120.67f); break;
             default: break;
         }
     }

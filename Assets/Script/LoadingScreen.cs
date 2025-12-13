@@ -14,6 +14,9 @@ public class LoadingScreen : MonoBehaviour
 
     private Player _player;
 
+    // 중복 코루틴 실행 방지용 플래그
+    private bool _isProcessing = false;
+
     void Start()
     {
 #if UNITY_2023_2_OR_NEWER
@@ -23,6 +26,14 @@ public class LoadingScreen : MonoBehaviour
 #endif
         _targetScene = PlayerPrefs.GetString("LOAD_SCENE_NAME");
         _loadMode    = (LoadSceneMode)PlayerPrefs.GetInt("LOAD_SCENE_MODE", 0);
+
+        if (_isProcessing)
+        {
+            Debug.LogWarning("[LoadingScreen] Start called but already processing, ignore.");
+            return;
+        }
+
+        _isProcessing = true;
         StartCoroutine(LoadScene());
     }
 
@@ -83,11 +94,18 @@ public class LoadingScreen : MonoBehaviour
 
                 SceneManager.UnloadSceneAsync("LoadingScene");
                 Debug.Log("[LoadingScreen] Unload LoadingScene 호출");
+
+                // Escape Scene을 로드한 경우 TransitionManager에 완료 알림
+                if (_targetScene == "Escape Scene" && TransitionManager.Instance != null)
+                {
+                    TransitionManager.Instance.OnEscapeSceneLoaded();
+                }
             }
 
             yield return null;
         }
         if (_player != null) _player.StartBatteryReduction();
+        _isProcessing = false;
     }
 
 }

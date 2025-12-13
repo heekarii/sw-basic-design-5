@@ -54,9 +54,11 @@ public class ScoreManager : MonoBehaviour
         // UI가 초기화되도록 1프레임 기다린다 (Awake에서 바로 돌리면 문제 생김)
         yield return null;
 
-        float targetPercent = _playerStatus.BatteryRemaining; // 0~100
+        float targetPercent = _gameManager.Resources.Battery; // 0~100
         float target = targetPercent / 100f;                  // 0~1 정규화
-
+        
+        Debug.Log("Target Battery Fill: " + targetPercent);
+        
         float current = 0f;
 
         // animation duration

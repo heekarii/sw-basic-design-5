@@ -21,6 +21,9 @@ public class PlayerDamageEffect : MonoBehaviour
         {
             damageImage = GetComponent<Image>();
         }
+
+        var c = damageImage.color;
+        damageImage.color = new Color(c.r, c.g, c.b, 0f);
     }
 
     public void Play()

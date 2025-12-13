@@ -12,6 +12,7 @@ public class FireRobot : MonoBehaviour, IEnemy
     [SerializeField] private float _aggravationRange = 15.0f;
     [SerializeField] private float _attackRange = 6.0f;
     [SerializeField] private float _moveSpeed = 4.0f;
+    [SerializeField] private AudioSource _damagedSound;
     [SerializeField] private ScrapData _scrapData;
     [SerializeField] private float _lookAtTurnSpeed = 8f; // 회전 속도 조절
     [SerializeField] private Player _player;
@@ -399,7 +400,12 @@ public class FireRobot : MonoBehaviour, IEnemy
     {
         _curHp -= dmg;
         UpdateHpUI();
-        if (_curHp <= 0f) Die();
+        if (_curHp <= 0f)
+        {
+            Die();
+            return;
+        }
+        _damagedSound.Play();
         Debug.Log($"FireRobot took {dmg} damage, current HP: {_curHp}");
     }
 

@@ -12,12 +12,16 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] private Button _tutorialExitButton;
     [SerializeField] private Button _rankingButton;
     [SerializeField] private Button _settingsButton;
-
+    [SerializeField] private Image _selectPanel;
+    
     [SerializeField] private Image _tutorialImage;
 
     [Header("Game Settings")] 
     [SerializeField] private int _weaponType = 0;
 
+    [SerializeField] private Button _meleeButton;
+    [SerializeField] private Button _rangedButton;
+    
     private TransitionManager _transitionManager;
     
     private void Start()
@@ -26,6 +30,9 @@ public class LobbyManager : MonoBehaviour
         _tutorialButton.onClick.AddListener(OnTutorialButtonClicked);
         _rankingButton.onClick.AddListener(OnRankingButtonClicked);
         _settingsButton.onClick.AddListener(OnSettingsButtonClicked);
+        
+        _meleeButton.onClick.AddListener(OnClickMeleeButton);
+        _rangedButton.onClick.AddListener(OnClickRangedButton);
 
         _transitionManager = TransitionManager.Instance;
         
@@ -34,9 +41,23 @@ public class LobbyManager : MonoBehaviour
     
     private void OnStartButtonClicked()
     {
-        Debug.Log("Start Button Clicked - Load Game Scene");
+        _selectPanel.gameObject.SetActive(true);
+    }
+
+    private void OnClickMeleeButton()
+    {
+        _weaponType = 0;
+        Debug.Log(_weaponType);
         _transitionManager.StartGame(_weaponType);
     }
+
+    private void OnClickRangedButton()
+    {
+        _weaponType = 1;
+        Debug.Log(_weaponType);
+        _transitionManager.StartGame(_weaponType);
+    }
+    
     private void OnTutorialButtonClicked()
     {
         Debug.Log("Tutorial Button Clicked - Load Tutorial Scene");

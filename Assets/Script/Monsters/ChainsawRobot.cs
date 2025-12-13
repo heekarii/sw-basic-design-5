@@ -26,6 +26,7 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     [SerializeField] private AudioClip _sawSound;
     [SerializeField] private AudioClip _attackSound;
     [SerializeField] private AudioClip _hitSound;
+    [SerializeField] private AudioSource _damagedSound;
     
     [Header("HP Bar UI")]
     [SerializeField] private Image _hpFillImage;   // 빨간 체력바 (HPBar_Fill)
@@ -318,11 +319,11 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
         }
 
         Debug.Log("ChainsawRobot start attack casting!");
-        // 공격 사운드 대기 시간
-        yield return new WaitForSeconds(0.5f);
+
         // 공격 사운드 재생
         if (_attackAudioSource != null && _attackSound != null)
             _attackAudioSource.Play();
+        yield return new WaitForSeconds(1.0f);
         yield return new WaitForSeconds(_attackCastingTime);
 
         // 유효성 재확인 후 대미지
@@ -352,7 +353,12 @@ public class ChainsawRobot : MonoBehaviour, IEnemy
     {
         _curHp -= dmg;
         UpdateHpUI();
-        if (_curHp <= 0f) Die();
+        if (_curHp <= 0f)
+        {
+            Die();
+            return;
+        }
+        _damagedSound.Play();
         Debug.Log($"ChainsawRobot took {dmg} damage, current HP: {_curHp}");
     }
 
