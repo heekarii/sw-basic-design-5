@@ -94,6 +94,23 @@ public class TransitionManager : Singleton<TransitionManager>
         Debug.Log("[TransitionManager] OnEscapeSceneLoaded: Escape loading flag reset");
     }
 
+    public void ReturnToLobby()
+    {
+        // Escape Scene이 실제로 로드되어 있을 때만 언로드 시도
+        Scene escapeScene = SceneManager.GetSceneByName("Escape Scene");
+        if (escapeScene.IsValid() && escapeScene.isLoaded)
+        {
+            Debug.Log("[TransitionManager] ReturnToLobby: Unloading Escape Scene");
+            SceneManager.UnloadSceneAsync("Escape Scene");
+        }
+        else
+        {
+            Debug.LogWarning("[TransitionManager] ReturnToLobby: Escape Scene is not loaded or invalid, skip unload.");
+        }
+
+        LoadSceneWithLoading("MainUIScene", LoadSceneMode.Single);
+    }
+    
     #endregion
     
     #region Repair Station Management

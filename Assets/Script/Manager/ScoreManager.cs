@@ -48,6 +48,14 @@ public class ScoreManager : MonoBehaviour
         
         
     }
+
+    void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            TransitionManager.Instance.ReturnToLobby();
+        }
+    }
     
     private IEnumerator UpdateBatteryUI()
     {
